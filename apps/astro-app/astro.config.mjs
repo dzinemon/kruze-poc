@@ -30,6 +30,12 @@ export default defineConfig({
       __SANITY_DATASET__: JSON.stringify(
         process.env.SANITY_DATASET || localEnv.SANITY_DATASET || localEnv.NEXT_PUBLIC_SANITY_DATASET
       ),
+      "process.env.NEXT_PUBLIC_SANITY_PROJECT_ID": JSON.stringify(
+        process.env.SANITY_PROJECT_ID || localEnv.SANITY_PROJECT_ID || localEnv.NEXT_PUBLIC_SANITY_PROJECT_ID
+      ),
+      "process.env.NEXT_PUBLIC_SANITY_DATASET": JSON.stringify(
+        process.env.SANITY_DATASET || localEnv.SANITY_DATASET || localEnv.NEXT_PUBLIC_SANITY_DATASET
+      ),
     },
     optimizeDeps: {
       include: [
