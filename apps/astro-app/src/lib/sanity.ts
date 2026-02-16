@@ -1,9 +1,12 @@
 import { createClient } from "@sanity/client";
 import { createImageUrlBuilder } from "@sanity/image-url";
 
+declare const __SANITY_PROJECT_ID__: string;
+declare const __SANITY_DATASET__: string;
+
 export const sanityClient = createClient({
-  projectId: import.meta.env.SANITY_PROJECT_ID,
-  dataset: import.meta.env.SANITY_DATASET,
+  projectId: __SANITY_PROJECT_ID__,
+  dataset: __SANITY_DATASET__,
   apiVersion: "2024-01-01",
   useCdn: true,
 });
