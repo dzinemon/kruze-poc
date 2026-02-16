@@ -20,11 +20,6 @@ function loadDotEnv(path) {
 const localEnv = loadDotEnv(".env.local");
 
 export default defineConfig({
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
