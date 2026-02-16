@@ -11,6 +11,7 @@
     "dev:studio": "turbo dev --filter=@kruze-poc/studio",
     "dev:next": "turbo dev --filter=@kruze-poc/next-app",
     "dev:astro": "turbo dev --filter=@kruze-poc/astro-app",
+    "build:astro": "turbo build --filter=@kruze-poc/astro-app",
     "build": "turbo build",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
