@@ -1,0 +1,39 @@
+export function SidebarCalculator() {
+  return (
+    <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+      <h3 className="text-lg font-black text-body mb-4">
+        How Much Tax Return Costs
+      </h3>
+      <form className="space-y-4">
+        <div>
+          <label htmlFor="revenue" className="block text-sm font-bold text-secondary mb-2">
+            Annual Revenue
+          </label>
+          <input
+            type="text"
+            id="revenue"
+            placeholder="e.g. $500,000"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+        <div>
+          <label htmlFor="employees" className="block text-sm font-bold text-secondary mb-2">
+            Number of Employees
+          </label>
+          <input
+            type="text"
+            id="employees"
+            placeholder="e.g. 10"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+        <button
+          type="button"
+          className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-btn transition-colors"
+        >
+          Calculate
+        </button>
+      </form>
+    </div>
+  );
+}

@@ -1,0 +1,20 @@
+---
+import type { BlockPageSection } from "@kruze-poc/sanity-schemas/src/types";
+import HeroSection from "./sections/hero-section.astro";
+import TextSection from "./sections/text-section.astro";
+import TestimonialsSection from "./sections/testimonials-section.astro";
+import FaqSection from "./sections/faq-section.astro";
+import ChartSection from "./sections/chart-section.astro";
+
+interface Props {
+  section: BlockPageSection;
+}
+
+const { section } = Astro.props;
+---
+
+{section._type === "heroSection" && <HeroSection section={section} />}
+{section._type === "textSection" && <TextSection section={section} />}
+{section._type === "testimonialsSection" && <TestimonialsSection section={section} />}
+{section._type === "faqSection" && <FaqSection section={section} />}
+{section._type === "chartSection" && <ChartSection section={section} />}

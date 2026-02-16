@@ -1,0 +1,35 @@
+---
+import Base from "../layouts/base.astro";
+---
+
+<Base title="Kruze POC — Astro">
+  <div class="max-w-container-lg mx-auto px-4 py-16">
+    <h1 class="text-4xl font-black text-body mb-4">Kruze POC</h1>
+    <p class="text-lg text-secondary mb-8">
+      Astro 5 + Sanity CMS proof of concept. Evaluating the editor
+      experience for content-driven pages.
+    </p>
+
+    <div class="grid gap-4 sm:grid-cols-2 max-w-md">
+      <a
+        href="/blog"
+        class="block p-6 border border-gray-200 rounded-lg hover:border-primary transition-colors"
+      >
+        <h2 class="text-xl font-bold text-primary mb-2">Blog</h2>
+        <p class="text-sm text-secondary">
+          Blog posts with Portable Text, charts, and custom blocks.
+        </p>
+      </a>
+
+      <a
+        href="/landing"
+        class="block p-6 border border-gray-200 rounded-lg hover:border-primary transition-colors"
+      >
+        <h2 class="text-xl font-bold text-primary mb-2">Pages</h2>
+        <p class="text-sm text-secondary">
+          Block pages with section-based page builder.
+        </p>
+      </a>
+    </div>
+  </div>
+</Base>

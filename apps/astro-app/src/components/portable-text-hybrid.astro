@@ -1,0 +1,73 @@
+---
+import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
+import ChartIsland from "./react/chart-island";
+
+interface Props {
+  value: unknown[];
+}
+
+const { value } = Astro.props;
+
+// Group consecutive non-chart blocks together for better HTML rendering
+const segments: Array<{ type: "html" | "chart"; content: any }> = [];
+let currentHtmlBlocks: any[] = [];
+
+value.forEach((block: any) => {
+  if (block._type === "chartBlock") {
+    // Flush any accumulated HTML blocks
+    if (currentHtmlBlocks.length > 0) {
+      segments.push({
+        type: "html",
+        content: renderPortableTextHtml(currentHtmlBlocks),
+      });
+      currentHtmlBlocks = [];
+    }
+    // Add chart segment
+    segments.push({ type: "chart", content: block });
+  } else {
+    // Accumulate non-chart blocks
+    currentHtmlBlocks.push(block);
+  }
+});
+
+// Flush any remaining HTML blocks
+if (currentHtmlBlocks.length > 0) {
+  segments.push({
+    type: "html",
+    content: renderPortableTextHtml(currentHtmlBlocks),
+  });
+}
+---
+
+<div
+  class="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-body prose-a:text-primary hover:prose-a:text-primary-dark prose-blockquote:border-info"
+>
+  {
+    segments.map((segment, index) => {
+      if (segment.type === "html") {
+        return <Fragment key={index} set:html={segment.content} />;
+      } else {
+        return (
+          <div key={index} class="my-8 not-prose">
+            <ChartIsland
+              client:load
+              chartType={segment.content.chartType}
+              title={segment.content.title}
+              labels={segment.content.labels || []}
+              datasets={(segment.content.datasets || []).map(
+                (ds: { label: string; values: number[] }) => ({
+                  label: ds.label,
+                  values: ds.values,
+                })
+              )}
+              colorScheme={segment.content.colorScheme}
+              showLegend={segment.content.showLegend}
+              height={segment.content.height || 400}
+              sourceText={segment.content.sourceText}
+            />
+          </div>
+        );
+      }
+    })
+  }
+</div>

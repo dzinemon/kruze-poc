@@ -1,0 +1,55 @@
+import groq from "groq";
+import { imageWithMeta, imageMinimal, authorImage } from "./fragments";
+
+export const blogPostsListQuery = groq`
+  *[_type == "blogPost"] | order(date desc) [0...20] {
+    _id,
+    title,
+    slug,
+    description,
+    date,
+    heroImage ${imageMinimal},
+    author-> { fullName, slug, image ${authorImage} },
+    topicCategories[]-> { title, slug }
+  }
+`;
+
+export const blogPostQuery = groq`
+  *[_type == "blogPost" && slug.current == $slug][0] {
+    _id,
+    title,
+    headlineText,
+    slug,
+    description,
+    date,
+    modifiedDate,
+    tableOfContents,
+    heroImage ${imageWithMeta},
+    heroCta,
+    author-> {
+      fullName,
+      slug,
+      position,
+      certification,
+      image ${authorImage},
+      shortDescription,
+      social
+    },
+    topicCategories[]-> { _id, title, slug },
+    topicTags[]-> { _id, title, slug },
+    body[] {
+      ...,
+      _type == "image" => ${imageWithMeta}
+    },
+    seo
+  }
+`;
+
+export const relatedPostsQuery = groq`
+  *[_type == "blogPost" && slug.current != $slug && count(topicCategories[@._ref in $categoryIds]) > 0]
+  | order(date desc) [0...3] {
+    _id, title, slug, description, date,
+    heroImage ${imageMinimal},
+    author-> { fullName }
+  }
+`;

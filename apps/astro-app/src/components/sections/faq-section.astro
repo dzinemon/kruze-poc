@@ -1,0 +1,43 @@
+---
+import type { FaqSection as FaqSectionType } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: FaqSectionType;
+}
+
+const { section } = Astro.props;
+
+interface PortableBlock {
+  children?: { text: string }[];
+}
+
+function extractText(answer: unknown): string {
+  if (typeof answer === "string") return answer;
+  const blocks = answer as PortableBlock[];
+  return blocks
+    ?.map((block) => block.children?.map((c) => c.text).join(""))
+    .join(" ") || "";
+}
+---
+
+<section class="py-16">
+  <div class="max-w-container-lg mx-auto px-4">
+    {section.heading && (
+      <h2 class="text-3xl font-black text-body mb-8">{section.heading}</h2>
+    )}
+
+    <div class="space-y-4">
+      {section.faqs?.map((faq) => (
+        <details class="group border border-gray-200 rounded-lg">
+          <summary class="cursor-pointer px-6 py-4 font-bold text-body hover:text-primary transition-colors list-none flex items-center justify-between">
+            {faq.question}
+            <span class="text-muted group-open:rotate-180 transition-transform">&#9662;</span>
+          </summary>
+          <div class="px-6 pb-4 text-secondary">
+            <p>{extractText(faq.answer)}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

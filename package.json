@@ -1,0 +1,23 @@
+{
+  "name": "kruze-poc",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=24.12.0",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:studio": "turbo dev --filter=@kruze-poc/studio",
+    "dev:next": "turbo dev --filter=@kruze-poc/next-app",
+    "dev:astro": "turbo dev --filter=@kruze-poc/astro-app",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check",
+    "migrate-content": "tsx scripts/migrate-demo-content.ts"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.3"
+  }
+}

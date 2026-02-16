@@ -1,0 +1,54 @@
+---
+import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
+import SanityImage from "./sanity-image.astro";
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+
+const formattedDate = post.date
+  ? new Date(post.date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  : null;
+---
+
+<a
+  href={`/blog/${post.slug.current}`}
+  class="group block border border-gray-200 rounded-lg overflow-hidden hover:border-primary transition-colors"
+>
+  {post.heroImage?.asset && (
+    <div class="h-48 overflow-hidden bg-gray-100">
+      <SanityImage
+        image={post.heroImage}
+        alt={post.title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        widths={[320, 480, 640]}
+      />
+    </div>
+  )}
+
+  <div class="p-4">
+    <h2 class="text-lg font-bold text-body mb-2 group-hover:text-primary transition-colors">
+      {post.title}
+    </h2>
+
+    {post.description && (
+      <p class="text-sm text-secondary line-clamp-2 mb-3">
+        {post.description}
+      </p>
+    )}
+
+    <div class="flex items-center gap-3 text-xs text-muted">
+      {post.author && <span>{post.author.fullName}</span>}
+      {formattedDate && (
+        <time datetime={post.date}>{formattedDate}</time>
+      )}
+    </div>
+  </div>
+</a>

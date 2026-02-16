@@ -1,0 +1,24 @@
+---
+import Base from "../../layouts/base.astro";
+import SectionRenderer from "../../components/section-renderer.astro";
+import { sanityClient } from "../../lib/sanity";
+import { blockPageQuery } from "@kruze-poc/groq-queries";
+import type { BlockPage } from "@kruze-poc/sanity-schemas/src/types";
+
+export async function getStaticPaths() {
+  const pages = await sanityClient.fetch<{ slug: { current: string } }[]>(
+    `*[_type == "blockPage"]{ slug }`
+  );
+  return pages.map((p) => ({ params: { slug: p.slug.current } }));
+}
+
+const { slug } = Astro.params;
+const page = await sanityClient.fetch<BlockPage>(blockPageQuery, { slug });
+if (!page) return Astro.redirect("/404");
+---
+
+<Base title={`${page.title} — Kruze POC`}>
+  {page.sections?.map((section) => (
+    <SectionRenderer section={section} />
+  ))}
+</Base>

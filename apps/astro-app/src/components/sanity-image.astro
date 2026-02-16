@@ -1,0 +1,53 @@
+---
+import {
+  responsiveImageData,
+  fixedImageData,
+  lqipStyle,
+  type SanityImageInput,
+} from "@kruze-poc/ui/image";
+
+interface Props {
+  image: SanityImageInput;
+  alt?: string;
+  class?: string;
+  loading?: "lazy" | "eager";
+  sizes?: string;
+  fixedWidth?: number;
+  fixedHeight?: number;
+  widths?: number[];
+}
+
+const {
+  image,
+  alt,
+  class: className,
+  loading = "lazy",
+  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+  fixedWidth,
+  fixedHeight,
+  widths,
+} = Astro.props;
+
+const isFixed = fixedWidth && fixedHeight;
+
+const imgData = isFixed
+  ? fixedImageData(image, { width: fixedWidth, height: fixedHeight })
+  : responsiveImageData(image, widths ? { widths } : undefined);
+
+const lqip = !isFixed ? lqipStyle(image.asset.metadata?.lqip) : undefined;
+const resolvedAlt = alt ?? image.alt ?? "";
+---
+
+<img
+  src={imgData.src}
+  srcset={imgData.srcset}
+  sizes={isFixed ? undefined : sizes}
+  width={imgData.width}
+  height={imgData.height}
+  alt={resolvedAlt}
+  loading={loading}
+  decoding="async"
+  class={className}
+  style={lqip}
+  onload={lqip ? "this.style.backgroundImage=''" : undefined}
+/>

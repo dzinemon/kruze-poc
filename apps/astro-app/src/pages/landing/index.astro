@@ -1,0 +1,36 @@
+---
+import Base from "../../layouts/base.astro";
+import { sanityClient } from "../../lib/sanity";
+import { blockPagesListQuery } from "@kruze-poc/groq-queries";
+import type { BlockPage } from "@kruze-poc/sanity-schemas/src/types";
+
+const pages = await sanityClient.fetch<BlockPage[]>(blockPagesListQuery);
+---
+
+<Base title="Pages — Kruze POC">
+  <div class="max-w-container-lg mx-auto px-4 py-16">
+    <h1 class="text-4xl font-black text-body mb-8">Pages</h1>
+
+    {pages.length === 0 ? (
+      <p class="text-secondary">
+        No block pages yet. Create one in Sanity Studio.
+      </p>
+    ) : (
+      <div class="grid gap-4 sm:grid-cols-2">
+        {pages.map((page) => (
+          <a
+            href={`/landing/${page.slug.current}`}
+            class="block p-6 border border-gray-200 rounded-lg hover:border-primary transition-colors"
+          >
+            <h2 class="text-lg font-bold text-primary mb-2">
+              {page.title}
+            </h2>
+            {page.description && (
+              <p class="text-sm text-secondary">{page.description}</p>
+            )}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Base>

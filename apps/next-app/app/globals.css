@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@config "../tailwind.config.ts";
+
+@source "../../packages/ui/src/**/*.{ts,tsx}";

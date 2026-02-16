@@ -1,0 +1,20 @@
+{
+  "name": "@kruze-poc/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/preset.ts",
+  "types": "./src/preset.ts",
+  "exports": {
+    ".": "./src/preset.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "tailwindcss": "^4.0.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,129 @@
+---
+import Base from "../../layouts/base.astro";
+import PortableTextHybrid from "../../components/portable-text-hybrid.astro";
+import BlogSidebar from "../../components/blog/blog-sidebar.astro";
+import SanityImage from "../../components/sanity-image.astro";
+import { sanityClient, imageBuilder } from "../../lib/sanity";
+import { blogPostQuery } from "@kruze-poc/groq-queries";
+import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
+
+export async function getStaticPaths() {
+  const posts = await sanityClient.fetch<{ slug: { current: string } }[]>(
+    `*[_type == "blogPost"]{ slug }`
+  );
+  return posts.map((p) => ({ params: { slug: p.slug.current } }));
+}
+
+const { slug } = Astro.params;
+const post = await sanityClient.fetch<BlogPost>(blogPostQuery, { slug });
+if (!post) return Astro.redirect("/404");
+
+const formattedDate = post.date
+  ? new Date(post.date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : null;
+
+const authorImageUrl = post.author?.image?.asset
+  ? imageBuilder.image(post.author.image).width(80).height(80).url()
+  : null;
+
+const authorInitials = post.author
+  ? post.author.fullName
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+  : "";
+---
+
+<Base title={`${post.title} — Kruze POC`} description={post.description}>
+  <article>
+    {post.heroImage?.asset && (
+      <div class="relative w-full h-64 md:h-96 overflow-hidden bg-primary">
+        <SanityImage
+          image={post.heroImage}
+          alt={post.heroImage.alt || post.title}
+          class="absolute inset-0 w-full h-full object-cover opacity-40"
+          loading="eager"
+          sizes="100vw"
+          widths={[400, 800, 1200, 1600, 2000]}
+        />
+        <div class="absolute inset-0 flex items-center justify-center px-4">
+          <h1 class="text-3xl md:text-5xl font-black text-white text-center max-w-4xl uppercase">
+            {post.title}
+          </h1>
+        </div>
+      </div>
+    )}
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <nav class="text-sm text-muted mb-6">
+        <a href="/" class="hover:text-primary">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/blog" class="hover:text-primary">Blog</a>
+        <span class="mx-2">/</span>
+        <span class="text-secondary">{post.title}</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
+        <div>
+          {post.author && (
+            <div class="flex items-center gap-4 mb-6">
+              {authorImageUrl ? (
+                <img
+                  src={authorImageUrl}
+                  alt={post.author.fullName}
+                  width="60"
+                  height="60"
+                  class="rounded-full"
+                />
+              ) : (
+                <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white font-black text-xl">
+                  {authorInitials}
+                </div>
+              )}
+              <div>
+                <div class="font-black text-body">{post.author.fullName}</div>
+                {post.author.position && (
+                  <div class="text-sm text-secondary">{post.author.position}</div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {formattedDate && (
+            <div class="text-sm text-muted mb-8">
+              Published <time datetime={post.date}>{formattedDate}</time>
+            </div>
+          )}
+
+          {post.headlineText && (
+            <p class="text-xl text-secondary mb-8">{post.headlineText}</p>
+          )}
+
+          {post.body && <PortableTextHybrid value={post.body} />}
+
+          {post.topicCategories && post.topicCategories.length > 0 && (
+            <div class="flex flex-wrap gap-2 mt-12 pt-8 border-t border-gray-200">
+              <span class="font-bold text-secondary mr-2">Categories:</span>
+              {post.topicCategories.map((cat) => (
+                <a
+                  href="#"
+                  class="px-3 py-1 text-xs font-bold bg-gray-100 text-secondary rounded-full hover:bg-primary hover:text-white transition-colors"
+                >
+                  {cat.title}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="lg:sticky lg:top-8 self-start">
+          <BlogSidebar />
+        </div>
+      </div>
+    </div>
+  </article>
+</Base>

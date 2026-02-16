@@ -1,0 +1,44 @@
+---
+import type { HeroSection as HeroSectionType } from "@kruze-poc/sanity-schemas/src/types";
+import { backgroundImageUrl } from "@kruze-poc/ui/image";
+
+interface Props {
+  section: HeroSectionType;
+}
+
+const { section } = Astro.props;
+const hasBg = !!section.backgroundImage?.asset;
+const bgUrl = hasBg
+  ? backgroundImageUrl(section.backgroundImage!, { width: 1600 })
+  : undefined;
+---
+
+<section
+  class="relative py-24 md:py-32"
+  style={bgUrl ? `background-image: url(${bgUrl}); background-size: cover; background-position: center;` : undefined}
+>
+  {hasBg && <div class="absolute inset-0 bg-black/50" />}
+
+  <div class={`relative max-w-container-lg mx-auto px-4 text-center ${hasBg ? "text-white" : ""}`}>
+    {section.headline && (
+      <h1 class={`text-4xl md:text-5xl font-black mb-4 ${hasBg ? "text-white" : "text-body"}`}>
+        {section.headline}
+      </h1>
+    )}
+
+    {section.subheadline && (
+      <p class={`text-xl mb-8 ${hasBg ? "text-gray-200" : "text-secondary"}`}>
+        {section.subheadline}
+      </p>
+    )}
+
+    {section.ctaText && section.ctaUrl && (
+      <a
+        href={section.ctaUrl}
+        class="inline-block px-8 py-3 bg-primary text-white font-bold rounded-btn hover:bg-primary-dark transition-colors"
+      >
+        {section.ctaText}
+      </a>
+    )}
+  </div>
+</section>
