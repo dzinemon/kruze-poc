@@ -24,8 +24,12 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     define: {
-      "process.env.NEXT_PUBLIC_SANITY_PROJECT_ID": JSON.stringify(localEnv.NEXT_PUBLIC_SANITY_PROJECT_ID),
-      "process.env.NEXT_PUBLIC_SANITY_DATASET": JSON.stringify(localEnv.NEXT_PUBLIC_SANITY_DATASET),
+      "import.meta.env.SANITY_PROJECT_ID": JSON.stringify(
+        process.env.SANITY_PROJECT_ID || localEnv.SANITY_PROJECT_ID || localEnv.NEXT_PUBLIC_SANITY_PROJECT_ID
+      ),
+      "import.meta.env.SANITY_DATASET": JSON.stringify(
+        process.env.SANITY_DATASET || localEnv.SANITY_DATASET || localEnv.NEXT_PUBLIC_SANITY_DATASET
+      ),
     },
     optimizeDeps: {
       include: [
