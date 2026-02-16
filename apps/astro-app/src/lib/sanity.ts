@@ -1,12 +1,16 @@
 import { createClient } from "@sanity/client";
 import { createImageUrlBuilder } from "@sanity/image-url";
 
-declare const __SANITY_PROJECT_ID__: string;
-declare const __SANITY_DATASET__: string;
+function getEnv(key: string): string {
+  const env = process.env;
+  const value = env[key];
+  if (!value) throw new Error(`Missing environment variable: ${key}`);
+  return value;
+}
 
 export const sanityClient = createClient({
-  projectId: __SANITY_PROJECT_ID__,
-  dataset: __SANITY_DATASET__,
+  projectId: getEnv("SANITY_PROJECT_ID"),
+  dataset: getEnv("SANITY_DATASET"),
   apiVersion: "2024-01-01",
   useCdn: true,
 });

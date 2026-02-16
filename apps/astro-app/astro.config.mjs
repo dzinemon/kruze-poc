@@ -19,17 +19,21 @@ function loadDotEnv(path) {
 
 const localEnv = loadDotEnv(".env.local");
 
+// Populate process.env for Sanity client (used at build time for static generation)
+// On Cloudflare, SANITY_PROJECT_ID is set as a build env var.
+// Locally, it comes from .env.local as NEXT_PUBLIC_SANITY_PROJECT_ID or SANITY_PROJECT_ID.
+if (!process.env.SANITY_PROJECT_ID) {
+  process.env.SANITY_PROJECT_ID = localEnv.SANITY_PROJECT_ID || localEnv.NEXT_PUBLIC_SANITY_PROJECT_ID;
+}
+if (!process.env.SANITY_DATASET) {
+  process.env.SANITY_DATASET = localEnv.SANITY_DATASET || localEnv.NEXT_PUBLIC_SANITY_DATASET;
+}
+
 export default defineConfig({
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
     define: {
-      __SANITY_PROJECT_ID__: JSON.stringify(
-        process.env.SANITY_PROJECT_ID || localEnv.SANITY_PROJECT_ID || localEnv.NEXT_PUBLIC_SANITY_PROJECT_ID
-      ),
-      __SANITY_DATASET__: JSON.stringify(
-        process.env.SANITY_DATASET || localEnv.SANITY_DATASET || localEnv.NEXT_PUBLIC_SANITY_DATASET
-      ),
       "process.env.NEXT_PUBLIC_SANITY_PROJECT_ID": JSON.stringify(
         process.env.SANITY_PROJECT_ID || localEnv.SANITY_PROJECT_ID || localEnv.NEXT_PUBLIC_SANITY_PROJECT_ID
       ),
