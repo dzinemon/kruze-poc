@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@sanity/client": "^7.3.0",
+    "@sanity/client": "^7.15.0",
     "gray-matter": "^4.0.3"
   },
   "devDependencies": {

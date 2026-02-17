@@ -4,7 +4,7 @@ import {
 } from "@portabletext/to-html";
 import { responsiveImageData } from "../image/sanity-image-url";
 
-const components: PortableTextHtmlComponents = {
+const components: Partial<PortableTextHtmlComponents> = {
   types: {
     image: ({ value }) => {
       const caption = value.caption
@@ -61,5 +61,5 @@ const components: PortableTextHtmlComponents = {
 
 export function renderPortableTextHtml(blocks: unknown[]): string {
   if (!blocks || blocks.length === 0) return "";
-  return toHTML(blocks, { components });
+  return toHTML(blocks as Parameters<typeof toHTML>[0], { components });
 }
