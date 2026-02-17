@@ -3,6 +3,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["SANITY_PROJECT_ID", "SANITY_DATASET"],
       "outputs": [".next/**", "dist/**", "out/**"]
     },
     "dev": {
