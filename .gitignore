@@ -24,6 +24,9 @@ Thumbs.db
 *.swp
 *.swo
 
+# Cloudflare
+.wrangler/
+
 # Sanity
 .sanity/
 

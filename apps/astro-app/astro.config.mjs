@@ -1,5 +1,6 @@
 import { defineConfig, fontProviders } from "astro/config";
 import { readFileSync } from "fs";
+import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -73,7 +74,12 @@ export default defineConfig({
       },
     },
   },
-  output: "static",
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }),
+  output: "server",
   experimental: {
     fonts: [
       {
