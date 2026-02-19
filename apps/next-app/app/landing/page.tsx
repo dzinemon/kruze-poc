@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { sanityClient } from "@/lib/sanity";
+import { sanityFetch } from "@/lib/sanity";
 import { blockPagesListQuery } from "@kruze-poc/groq-queries";
 import type { BlockPage } from "@kruze-poc/sanity-schemas/src/types";
 
@@ -9,7 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default async function LandingListingPage() {
-  const pages = await sanityClient.fetch<BlockPage[]>(blockPagesListQuery);
+  const { data: pages } = await sanityFetch({
+    query: blockPagesListQuery,
+  }) as { data: BlockPage[] };
 
   return (
     <div className="max-w-container-lg mx-auto px-4 py-16">

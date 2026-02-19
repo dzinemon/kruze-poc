@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { sanityClient, imageBuilder } from "@/lib/sanity";
+import { client, imageBuilder, sanityFetch } from "@/lib/sanity";
 import { blogPostQuery } from "@kruze-poc/groq-queries";
 import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
 import { KruzePortableText } from "@kruze-poc/ui/portable-text";
@@ -13,7 +13,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = await sanityClient.fetch<{ slug: { current: string } }[]>(
+  const posts = await client.fetch<{ slug: { current: string } }[]>(
     `*[_type == "blogPost"]{ slug }`
   );
   return posts.map((p) => ({ slug: p.slug.current }));
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await sanityClient.fetch<BlogPost>(blogPostQuery, { slug });
+  const post = await client.fetch<BlogPost>(blogPostQuery, { slug });
   if (!post) return { title: "Not Found" };
   return {
     title: `${post.title} — Kruze POC`,
@@ -31,7 +31,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = await sanityClient.fetch<BlogPost>(blogPostQuery, { slug });
+  const { data: post } = await sanityFetch({
+    query: blogPostQuery,
+    params: { slug },
+  }) as { data: BlogPost };
   if (!post) notFound();
 
   const heroImageUrl = post.heroImage?.asset

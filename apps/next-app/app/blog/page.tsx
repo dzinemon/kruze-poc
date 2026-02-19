@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { sanityClient } from "@/lib/sanity";
+import { sanityFetch } from "@/lib/sanity";
 import { blogPostsListQuery } from "@kruze-poc/groq-queries";
 import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
 import { BlogCard } from "@/components/blog-card";
@@ -9,7 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogListingPage() {
-  const posts = await sanityClient.fetch<BlogPost[]>(blogPostsListQuery);
+  const { data: posts } = await sanityFetch({
+    query: blogPostsListQuery,
+  }) as { data: BlogPost[] };
 
   return (
     <div className="max-w-container-lg mx-auto px-4 py-16">

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { VisualEditing } from "next-sanity/visual-editing";
+import { draftMode } from "next/headers";
+import { SanityLive } from "@/lib/sanity";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -7,11 +10,13 @@ export const metadata: Metadata = {
   description: "Proof of concept: Next.js + Sanity CMS",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { isEnabled: isDraftMode } = await draftMode();
+
   return (
     <html lang="en">
       <head>
@@ -50,6 +55,9 @@ export default function RootLayout({
             Kruze POC — Next.js 15 + Sanity CMS
           </div>
         </footer>
+
+        <SanityLive />
+        {isDraftMode && <VisualEditing />}
       </body>
     </html>
   );

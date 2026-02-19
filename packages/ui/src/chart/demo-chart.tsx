@@ -22,6 +22,10 @@ interface DemoChartProps {
 
 const chartComponents = { bar: Bar, pie: Pie, line: Line, doughnut: Doughnut };
 
+function stripStega(str: string): string {
+  return str.replace(/[\u200b-\u200f\u2028-\u202f\ufeff]/g, "");
+}
+
 export function DemoChart({
   chartType,
   title,
@@ -32,21 +36,27 @@ export function DemoChart({
   height = 400,
   sourceText,
 }: DemoChartProps) {
-  const ChartComponent = chartComponents[chartType];
-  const colors = colorSchemes[colorScheme];
+  const cleanType = stripStega(chartType) as keyof typeof chartComponents;
+  const cleanScheme = stripStega(colorScheme) as keyof typeof colorSchemes;
+  const ChartComponent = chartComponents[cleanType];
+  const colors = colorSchemes[cleanScheme] ?? colorSchemes.brand;
+
+  if (!ChartComponent || !datasets?.length) {
+    return null;
+  }
 
   const data = {
-    labels,
+    labels: labels ?? [],
     datasets: datasets.map((ds, i) => ({
       label: ds.label,
-      data: ds.values,
+      data: ds.values ?? [],
       backgroundColor:
-        chartType === "line"
+        cleanType === "line"
           ? colors[i % colors.length]
-          : colors.slice(0, ds.values.length),
+          : colors.slice(0, (ds.values ?? []).length),
       borderColor:
-        chartType === "line" ? colors[i % colors.length] : undefined,
-      borderWidth: chartType === "line" ? 2 : 0,
+        cleanType === "line" ? colors[i % colors.length] : undefined,
+      borderWidth: cleanType === "line" ? 2 : 0,
       tension: 0.3,
     })),
   };
@@ -63,7 +73,7 @@ export function DemoChart({
       },
     },
     scales:
-      chartType === "pie" || chartType === "doughnut"
+      cleanType === "pie" || cleanType === "doughnut"
         ? {}
         : {
             y: { beginAtZero: true, ticks: { font: { family: "Lato" } } },
