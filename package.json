@@ -1,10 +1,10 @@
 {
   "name": "kruze-poc",
   "private": true,
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.30.2",
   "engines": {
     "node": ">=24.12.0",
-    "pnpm": ">=9"
+    "pnpm": ">=10"
   },
   "scripts": {
     "dev": "turbo dev",
@@ -18,7 +18,7 @@
     "migrate-content": "tsx scripts/migrate-demo-content.ts"
   },
   "devDependencies": {
-    "turbo": "^2.3.3",
-    "typescript": "^5.7.3"
+    "turbo": "^2.8.10",
+    "typescript": "^5.9.3"
   }
 }
