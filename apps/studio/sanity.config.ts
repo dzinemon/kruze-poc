@@ -1,8 +1,10 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
+import { RocketIcon } from "@sanity/icons";
 import { schemaTypes } from "./schemas";
 import { resolve } from "./presentation/resolve";
+import { DeployWidget } from "./plugins/deployWidget/DeployWidget";
 
 export default defineConfig({
   name: "kruze-poc",
@@ -15,7 +17,7 @@ export default defineConfig({
     structureTool(),
     presentationTool({
       previewUrl: {
-        initial: "http://localhost:3000",
+        initial: import.meta.env.SANITY_STUDIO_PREVIEW_URL ?? "http://localhost:3000",
         previewMode: {
           enable: "/api/draft-mode/enable",
         },
@@ -27,4 +29,14 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
+
+  tools: (prev) => [
+    ...prev,
+    {
+      name: "deploy",
+      title: "Deploy",
+      icon: RocketIcon,
+      component: DeployWidget,
+    },
+  ],
 });

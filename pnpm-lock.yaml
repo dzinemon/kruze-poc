@@ -157,6 +157,12 @@ importers:
       '@kruze-poc/sanity-schemas':
         specifier: workspace:*
         version: link:../../packages/sanity-schemas
+      '@sanity/icons':
+        specifier: ^3.7.4
+        version: 3.7.4(react@19.2.4)
+      '@sanity/ui':
+        specifier: ^3.1.11
+        version: 3.1.11(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.4(react@19.2.4))(react-is@19.2.4)(react@19.2.4)(styled-components@6.3.9(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       react:
         specifier: ^19.0.0
         version: 19.2.4

@@ -29,6 +29,12 @@ if (!process.env.SANITY_PROJECT_ID) {
 if (!process.env.SANITY_DATASET) {
   process.env.SANITY_DATASET = localEnv.SANITY_DATASET || localEnv.NEXT_PUBLIC_SANITY_DATASET;
 }
+if (!process.env.SANITY_IS_STAGING) {
+  process.env.SANITY_IS_STAGING = localEnv.SANITY_IS_STAGING;
+}
+if (!process.env.SANITY_API_READ_TOKEN) {
+  process.env.SANITY_API_READ_TOKEN = localEnv.SANITY_API_READ_TOKEN;
+}
 
 export default defineConfig({
   integrations: [react()],
@@ -46,6 +52,12 @@ export default defineConfig({
       ),
       "process.env.NEXT_PUBLIC_SANITY_DATASET": JSON.stringify(
         process.env.SANITY_DATASET || localEnv.SANITY_DATASET || localEnv.NEXT_PUBLIC_SANITY_DATASET
+      ),
+      "process.env.SANITY_IS_STAGING": JSON.stringify(
+        process.env.SANITY_IS_STAGING || localEnv.SANITY_IS_STAGING || ""
+      ),
+      "process.env.SANITY_API_READ_TOKEN": JSON.stringify(
+        process.env.SANITY_API_READ_TOKEN || localEnv.SANITY_API_READ_TOKEN || ""
       ),
     },
     optimizeDeps: {
