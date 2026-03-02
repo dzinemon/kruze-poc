@@ -4,7 +4,7 @@ import Link from "next/link";
 import { client, imageBuilder, sanityFetch } from "@/lib/sanity";
 import { blogPostQuery } from "@kruze-poc/groq-queries";
 import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
-import { KruzePortableText } from "@kruze-poc/ui/portable-text";
+import { PortableTextHybrid } from "@/components/portable-text-hybrid";
 import { BlogSidebar } from "@/components/blog/blog-sidebar";
 import Image from "next/image";
 
@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <p className="text-xl text-secondary mb-8">{post.headlineText}</p>
             )}
 
-            {post.body && <KruzePortableText value={post.body} />}
+            {post.body && <PortableTextHybrid value={post.body} />}
 
             {post.topicCategories && post.topicCategories.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-gray-200">
