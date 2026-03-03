@@ -9,8 +9,9 @@ export const blogPostsListQuery = groq`
     description,
     date,
     heroImage ${imageMinimal},
-    author-> { fullName, slug, image ${authorImage} },
-    topicCategories[]-> { title, slug }
+    author-> { fullName, slug, position, certification, image ${authorImage} },
+    topicCategories[]-> { title, slug },
+    "readTime": select(defined(body) => round(length(pt::text(body)) / 1200), null)
   }
 `;
 

@@ -114,6 +114,7 @@ export interface BlogPost {
     modalId?: string;
   };
   body?: any[]; // Portable Text blocks
+  readTime?: number; // estimated minutes, computed from body via GROQ
   seo?: {
     robots?: string;
     sitemap?: boolean;
