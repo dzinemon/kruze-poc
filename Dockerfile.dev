@@ -1,0 +1,27 @@
+# syntax=docker/dockerfile:1
+# Shared dev image for all apps in docker-compose
+FROM node:24-alpine
+
+# Install pnpm via corepack
+RUN corepack enable && corepack prepare pnpm@10.30.2 --activate
+
+WORKDIR /app
+
+# Copy workspace manifests to install dependencies as a cacheable layer
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY turbo.json ./
+
+# Copy package.json files for all apps and packages to leverage workspace hoisting and caching
+COPY apps/next-app/package.json ./apps/next-app/
+COPY apps/astro-app/package.json ./apps/astro-app/
+COPY apps/studio/package.json ./apps/studio/
+
+# Copy package.json files for all packages in the monorepo to ensure their dependencies are also installed and cached
+COPY packages/sanity-schemas/package.json ./packages/sanity-schemas/
+COPY packages/groq-queries/package.json ./packages/groq-queries/
+COPY packages/tailwind-config/package.json ./packages/tailwind-config/
+COPY packages/ui/package.json ./packages/ui/
+
+# Install dependencies with pnpm, using a cache mount for the pnpm store to speed up subsequent builds
+RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile

@@ -1,0 +1,16 @@
+**/node_modules
+**/.next
+**/dist
+**/.turbo
+**/.git
+**/.gitignore
+**/*.log
+**/.env
+**/.env.local
+**/.env.example
+**/out
+**/.wrangler
+**/.astro
+**/tsconfig.tsbuildinfo
+scripts/
+*.md

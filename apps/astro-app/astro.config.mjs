@@ -1,6 +1,7 @@
 import { defineConfig, fontProviders } from "astro/config";
 import { readFileSync } from "fs";
 import cloudflare from "@astrojs/cloudflare";
+import node from "@astrojs/node";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -86,11 +87,11 @@ export default defineConfig({
       },
     },
   },
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+  // Use the Node.js adapter when building for Docker (BUILD_TARGET=docker).
+  // Defaults to Cloudflare adapter for normal dev and Cloudflare Pages deployment.
+  adapter: process.env.BUILD_TARGET === "docker"
+    ? node({ mode: "standalone" })
+    : cloudflare({ platformProxy: { enabled: true } }),
   output: "server",
   experimental: {
     fonts: [

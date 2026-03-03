@@ -8,6 +8,7 @@ out/
 .astro/
 .turbo/
 .vercel/
+*.tsbuildinfo
 
 # Environment
 .env

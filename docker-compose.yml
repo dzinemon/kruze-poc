@@ -1,0 +1,68 @@
+services:
+  next-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /app/apps/next-app
+    # Next.js 15 binds to :: (all interfaces) by default
+    command: pnpm exec next dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      # Protect installed node_modules from being overwritten by the bind mount.
+      # All 3 services share this named volume since pnpm uses a single root node_modules.
+      - root_node_modules:/app/node_modules
+    env_file:
+      - path: .env          # base config (checked in)
+        required: true
+      - path: .env.local    # secrets — copy from .env.example and fill in tokens
+        required: false
+    environment:
+      NODE_ENV: development
+
+  astro-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /app/apps/astro-app
+    # --host exposes the dev server on all interfaces inside the container
+    command: pnpm exec astro dev --host 0.0.0.0
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+      - root_node_modules:/app/node_modules
+    env_file:
+      - path: .env
+        required: true
+      - path: .env.local
+        required: false
+    environment:
+      NODE_ENV: development
+      # Use @astrojs/node adapter instead of @astrojs/cloudflare to avoid wrangler/workerd
+      # in Docker. The workerd binary requires a postinstall step that doesn't run in Docker.
+      BUILD_TARGET: docker
+
+  studio:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /app/apps/studio
+    command: pnpm exec sanity dev --host 0.0.0.0
+    ports:
+      - "3333:3333"
+    volumes:
+      - .:/app
+      - root_node_modules:/app/node_modules
+    env_file:
+      - path: .env
+        required: true
+      - path: .env.local
+        required: false
+    environment:
+      NODE_ENV: development
+
+volumes:
+  # Shared pnpm root node_modules — all services read from the same pre-installed tree
+  root_node_modules:
