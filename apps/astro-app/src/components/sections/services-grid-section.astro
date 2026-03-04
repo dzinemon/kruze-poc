@@ -1,0 +1,31 @@
+---
+import type { ServicesGridBlock } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: ServicesGridBlock;
+}
+
+const { section } = Astro.props;
+const cols = section.columns ?? 3;
+const gridClass = cols === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+---
+
+<section class="py-16 px-6 bg-bg-subtle">
+  <div class="max-w-6xl mx-auto">
+    <p class="text-xs text-text-muted mb-8">servicesGridBlock</p>
+    {section.tiles && section.tiles.length > 0 && (
+      <div class={`grid ${gridClass} gap-6`}>
+        {section.tiles.map((tile) => (
+          <div class="rounded-md bg-bg-base border border-border-subtle p-6">
+            <p class="text-xl font-bold text-text-primary">{tile.title}</p>
+            {tile.linkUrl && (
+              <a href={tile.linkUrl} class="text-sm text-brand-500 mt-2 inline-block">
+                Learn more →
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>

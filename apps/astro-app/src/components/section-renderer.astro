@@ -1,10 +1,21 @@
 ---
 import type { BlockPageSection } from "@kruze-poc/sanity-schemas/src/types";
 import HeroSection from "./sections/hero-section.astro";
-import TextSection from "./sections/text-section.astro";
 import TestimonialsSection from "./sections/testimonials-section.astro";
 import FaqSection from "./sections/faq-section.astro";
-import ChartSection from "./sections/chart-section.astro";
+import FeatureGridSection from "./sections/feature-grid-section.astro";
+import CtaStripSection from "./sections/cta-strip-section.astro";
+import RecentBlogsSection from "./sections/recent-blogs-section.astro";
+import ServicesGridSection from "./sections/services-grid-section.astro";
+import MediaAndTextSection from "./sections/media-and-text-section.astro";
+import StatsRowSection from "./sections/stats-row-section.astro";
+import AlertSection from "./sections/alert-section.astro";
+import CalculatorSection from "./sections/calculator-section.astro";
+import PressLogosSection from "./sections/press-logos-section.astro";
+import NewsSection from "./sections/news-section.astro";
+import ContactFormSection from "./sections/contact-form-section.astro";
+import CustomEmbedSection from "./sections/custom-embed-section.astro";
+import FlexSection from "./sections/flex-section.astro";
 
 interface Props {
   section: BlockPageSection;
@@ -14,7 +25,18 @@ const { section } = Astro.props;
 ---
 
 {section._type === "heroSection" && <HeroSection section={section} />}
-{section._type === "textSection" && <TextSection section={section} />}
 {section._type === "testimonialsSection" && <TestimonialsSection section={section} />}
 {section._type === "faqSection" && <FaqSection section={section} />}
-{section._type === "chartSection" && <ChartSection section={section} />}
+{section._type === "featureGridSection" && <FeatureGridSection section={section} />}
+{section._type === "ctaStripSection" && <CtaStripSection section={section} />}
+{section._type === "recentBlogsSection" && <RecentBlogsSection section={section} />}
+{section._type === "servicesGridBlock" && <ServicesGridSection section={section} />}
+{section._type === "mediaAndTextBlock" && <MediaAndTextSection section={section} />}
+{section._type === "statsRowBlock" && <StatsRowSection section={section} />}
+{section._type === "alertBlock" && <AlertSection section={section} />}
+{section._type === "calculatorBlock" && <CalculatorSection section={section} />}
+{section._type === "pressLogosBlock" && <PressLogosSection section={section} />}
+{section._type === "newsBlock" && <NewsSection section={section} />}
+{section._type === "contactFormBlock" && <ContactFormSection section={section} />}
+{section._type === "customEmbedBlock" && <CustomEmbedSection section={section} />}
+{section._type === "flexSectionBlock" && <FlexSection section={section} />}

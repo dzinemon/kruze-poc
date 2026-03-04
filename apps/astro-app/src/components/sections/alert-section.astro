@@ -1,0 +1,27 @@
+---
+import type { AlertBlock } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: AlertBlock;
+}
+
+const { section } = Astro.props;
+const type = section.alertType ?? "info";
+
+const alertStyles: Record<string, string> = {
+  primary: "bg-brand-50 border-brand-200 text-brand-800",
+  warning: "bg-warning-light border-warning/30 text-warning-dark",
+  success: "bg-success-light border-success/30 text-success-dark",
+  info: "bg-info-light border-info/30 text-info-dark",
+};
+const style = alertStyles[type] ?? alertStyles.info;
+---
+
+<section class="py-8 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class={`rounded-sm border p-4 ${style}`}>
+      <p class="text-xs text-text-muted mb-2">alertBlock — {type}</p>
+      {!section.content && <p class="text-sm">No content</p>}
+    </div>
+  </div>
+</section>

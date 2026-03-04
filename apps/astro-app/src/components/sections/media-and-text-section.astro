@@ -1,0 +1,36 @@
+---
+import type { MediaAndTextBlock } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: MediaAndTextBlock;
+}
+
+const { section } = Astro.props;
+const isImageLeft = (section.imagePosition ?? "left") === "left";
+const rowClass = isImageLeft ? "flex-row" : "flex-row-reverse";
+---
+
+<section class="py-16 px-6 bg-bg-base">
+  <div class="max-w-6xl mx-auto">
+    <p class="text-xs text-text-muted mb-8">mediaAndTextBlock — image {section.imagePosition ?? "left"}</p>
+    <div class={`flex flex-col lg:${rowClass} gap-12 items-center`}>
+      {section.image?.asset ? (
+        <div class="flex-1">
+          <img
+            src={section.image.asset.url}
+            alt={section.image.alt ?? ""}
+            class="rounded-md w-full object-cover"
+          />
+          {section.caption && (
+            <p class="text-sm text-text-muted mt-2">{section.caption}</p>
+          )}
+        </div>
+      ) : (
+        <div class="flex-1 rounded-md bg-bg-subtle border border-border-subtle h-48 flex items-center justify-center text-text-muted">
+          No image
+        </div>
+      )}
+      <div class="flex-1" />
+    </div>
+  </div>
+</section>

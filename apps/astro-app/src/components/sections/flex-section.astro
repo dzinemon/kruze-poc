@@ -1,0 +1,31 @@
+---
+import type { FlexSectionBlock } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: FlexSectionBlock;
+}
+
+const { section } = Astro.props;
+const totalColumns = (section.rows ?? []).reduce(
+  (acc, row) => acc + (row.columns?.length ?? 0),
+  0
+);
+---
+
+<section class="py-16 px-6 bg-bg-base">
+  <div class="max-w-6xl mx-auto">
+    <div class="rounded-md border border-dashed border-border-default p-8">
+      <p class="text-xs text-text-muted mb-4">flexSectionBlock — escape hatch</p>
+      {section.backgroundStyle && (
+        <p class="text-sm text-text-secondary">Background: <code>{section.backgroundStyle}</code></p>
+      )}
+      {section.rows && section.rows.length > 0 && (
+        <p class="text-sm text-text-secondary mt-1">
+          {section.rows.length} row{section.rows.length !== 1 ? "s" : ""}
+          {" · "}
+          {totalColumns} columns total
+        </p>
+      )}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,99 @@
+---
+import type { FeatureGridSection as FeatureGridSectionType } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: FeatureGridSectionType;
+}
+
+const { section } = Astro.props;
+const cols = section.columns ?? 3;
+const bgClass = section.background === "light" ? "bg-neutral-50" : "bg-white";
+
+const colsClass: Record<number, string> = {
+  2: "grid-cols-1 md:grid-cols-2",
+  3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+};
+const gridCols = colsClass[cols] ?? colsClass[3];
+
+interface PortableBlock {
+  _type: string;
+  _key: string;
+  style?: string;
+  children?: { text: string }[];
+}
+
+const contentBlocks = (section.content ?? []).filter(
+  (b: any) => b._type === "block"
+) as PortableBlock[];
+---
+
+<section class={`${bgClass} py-20 px-6`}>
+  <div class="max-w-6xl mx-auto">
+    {contentBlocks.length > 0 && (
+      <div class="text-center mb-12 flex flex-col gap-3">
+        {contentBlocks.map((b) => {
+          const text = (b.children ?? []).map((c) => c.text).join("");
+          return b.style === "h2" ? (
+            <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+              {text}
+            </h2>
+          ) : (
+            <p class="text-lg font-normal text-text-secondary leading-relaxed max-w-2xl mx-auto">
+              {text}
+            </p>
+          );
+        })}
+      </div>
+    )}
+    {section.tiles && section.tiles.length > 0 && (
+      <div class={`grid ${gridCols} gap-6`}>
+        {section.tiles.map((tile) => {
+          const bodyText = Array.isArray(tile.body)
+            ? tile.body
+                .filter((b: any) => b._type === "block")
+                .map((b: any) => (b.children ?? []).map((c: any) => c.text ?? "").join(""))
+                .join(" ")
+            : "";
+          return (
+            <div class="flex flex-col gap-4 p-6 rounded-xl bg-bg-subtle border border-border-subtle hover-lift">
+              {tile.icon?.asset?.url && (
+                <div
+                  class="icon-container icon-container-xl squircle flex-shrink-0"
+                  style="background: var(--gradient-brand);"
+                >
+                  <img
+                    src={tile.icon.asset.url}
+                    alt=""
+                    width={28}
+                    height={28}
+                    class="object-contain"
+                  />
+                </div>
+              )}
+              <div class="flex flex-col gap-2">
+                <h3 class="text-xl font-bold text-text-primary">{tile.title}</h3>
+                {bodyText && (
+                  <p class="text-base font-normal text-text-secondary leading-relaxed">
+                    {bodyText}
+                  </p>
+                )}
+              </div>
+              {tile.link?.url && tile.link?.text && (
+                <a
+                  href={tile.link.url}
+                  class="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-brand-500 hover:text-brand-600 transition-fast"
+                >
+                  {tile.link.text}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</section>

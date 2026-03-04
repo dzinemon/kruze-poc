@@ -1,44 +1,178 @@
 ---
 import type { HeroSection as HeroSectionType } from "@kruze-poc/sanity-schemas/src/types";
-import { backgroundImageUrl } from "@kruze-poc/ui/image";
 
 interface Props {
   section: HeroSectionType;
 }
 
 const { section } = Astro.props;
-const hasBg = !!section.backgroundImage?.asset;
-const bgUrl = hasBg
-  ? backgroundImageUrl(section.backgroundImage!, { width: 1600 })
-  : undefined;
+const layout = section.layout ?? "centered";
+
+// ── Inline portable text renderer ─────────────────────────────────────────────
+// Mirrors apps/next-app/components/sections/hero-section.tsx logic exactly.
+
+interface RawSpan { _type: string; text?: string; marks?: string[] }
+
+function applyMarks(text: string, marks: string[], gradientStrong: boolean): string {
+  const esc = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  let out = esc;
+  if (marks.includes("strong")) {
+    out = gradientStrong
+      ? `<span class="text-gradient-brand">${out}</span>`
+      : `<strong>${out}</strong>`;
+  }
+  if (marks.includes("em")) out = `<em>${out}</em>`;
+  if (marks.includes("underline")) out = `<span class="underline">${out}</span>`;
+  return out;
+}
+
+function renderInline(children: RawSpan[], gradientStrong = false): string {
+  if (!Array.isArray(children)) return "";
+  return children.map((c) =>
+    c._type === "break" ? "<br>" : applyMarks(c.text ?? "", c.marks ?? [], gradientStrong)
+  ).join("");
+}
+
+const eyebrowHtml = Array.isArray(section.eyebrow) && section.eyebrow.length
+  ? renderInline(section.eyebrow[0]?.children ?? [])
+  : null;
+
+const headlineBlocks = Array.isArray(section.headline)
+  ? section.headline.filter((b: any) => b._type === "block")
+  : [];
 ---
 
-<section
-  class="relative py-24 md:py-32"
-  style={bgUrl ? `background-image: url(${bgUrl}); background-size: cover; background-position: center;` : undefined}
->
-  {hasBg && <div class="absolute inset-0 bg-black/50" />}
+<section class="bg-mesh-gradient">
+  <div class="max-w-7xl mx-auto px-6">
 
-  <div class={`relative max-w-container-lg mx-auto px-4 text-center ${hasBg ? "text-white" : ""}`}>
-    {section.headline && (
-      <h1 class={`text-4xl md:text-5xl font-black mb-4 ${hasBg ? "text-white" : "text-body"}`}>
-        {section.headline}
-      </h1>
+    {layout === "split" ? (
+      <!-- Split layout -->
+      <div class="py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="flex flex-col gap-6">
+          {eyebrowHtml && (
+            <span class="inline-flex items-center gap-2 w-fit px-4 py-1.5 text-xs font-black uppercase tracking-wider text-brand-600 bg-brand-50 rounded-full border border-brand-200">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
+              <Fragment set:html={eyebrowHtml} />
+            </span>
+          )}
+          {headlineBlocks.map((block: any) => {
+            const isH1 = block.style === "h1";
+            const html = renderInline(block.children ?? [], isH1);
+            return isH1
+              ? <h1 class="text-6xl font-bold text-neutral-900 tracking-tight leading-[1.05]" set:html={html} />
+              : <p class="text-lg font-normal text-neutral-500 leading-relaxed max-w-md" set:html={html} />;
+          })}
+          {Array.isArray(section.ctas) && section.ctas.length > 0 && (
+            <div class="flex flex-wrap items-center gap-3">
+              {section.ctas.map((cta: any) => (
+                cta.style === "secondary"
+                  ? <a href={cta.url ?? "#"} class="inline-flex items-center gap-2 px-7 py-3 text-base font-bold text-neutral-700 rounded-full ring-1 ring-neutral-300 hover:bg-neutral-50 focus-ring transition-all duration-200">{cta.text}</a>
+                  : <a href={cta.url ?? "#"} class="inline-flex items-center gap-2 px-7 py-3 text-base font-bold text-white rounded-full bg-brand-500 hover:bg-brand-600 shadow-md hover:shadow-brand focus-ring transition-all duration-200">
+                      {cta.text}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- Decorative glass dashboard -->
+        <div class="relative hidden lg:flex items-center justify-center min-h-[440px] py-8">
+          <div class="glass rounded-2xl overflow-hidden w-80 hover-lift">
+            <div class="flex items-center gap-2 px-4 py-3 border-b border-white/50 bg-white/20">
+              <div class="flex gap-1.5">
+                <div class="w-2.5 h-2.5 rounded-full bg-red-400/60"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-yellow-400/60"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-green-400/60"></div>
+              </div>
+              <span class="text-xs font-bold text-neutral-500 ml-1 tracking-tight">Financial Dashboard</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5 p-4">
+              <div class="bg-white/55 rounded-xl p-3 border border-white/70">
+                <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Runway</p>
+                <p class="text-2xl font-black text-neutral-900 mt-0.5">18 mo</p>
+                <span class="inline-flex items-center gap-1 text-xs font-black text-green-600 mt-0.5">On track</span>
+              </div>
+              <div class="bg-white/55 rounded-xl p-3 border border-white/70">
+                <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Burn</p>
+                <p class="text-2xl font-black text-neutral-900 mt-0.5">$84K</p>
+                <span class="text-xs font-bold text-brand-500 mt-0.5 block">/ month</span>
+              </div>
+            </div>
+            <div class="px-4 pb-4">
+              <div class="bg-white/55 rounded-xl p-3 border border-white/70">
+                <div class="flex items-center justify-between mb-3">
+                  <p class="text-xs font-bold text-neutral-600">Revenue Growth</p>
+                  <span class="text-xs font-black text-green-600">↑ 340% YoY</span>
+                </div>
+                <svg width="100%" height="56" viewBox="0 0 220 56" preserveAspectRatio="none">
+                  <rect x="0"   y="42" width="26" height="14" rx="3" fill="rgba(47,116,178,.15)" />
+                  <rect x="32"  y="32" width="26" height="24" rx="3" fill="rgba(47,116,178,.28)" />
+                  <rect x="64"  y="22" width="26" height="34" rx="3" fill="rgba(47,116,178,.44)" />
+                  <rect x="96"  y="14" width="26" height="42" rx="3" fill="rgba(47,116,178,.62)" />
+                  <rect x="128" y="6"  width="26" height="50" rx="3" fill="rgba(47,116,178,.80)" />
+                  <rect x="160" y="0"  width="26" height="56" rx="3" fill="#2f74b2" />
+                </svg>
+                <div class="flex justify-between mt-1.5">
+                  <span class="text-xs font-normal text-neutral-400">Q1 '24</span>
+                  <span class="text-xs font-normal text-neutral-400">Q2 '25</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="absolute top-4 right-0 glass rounded-xl px-3 py-2.5 flex items-center gap-2.5 shadow-md">
+            <div class="icon-container icon-container-sm squircle bg-green-500 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+            </div>
+            <div>
+              <p class="text-xs font-black text-neutral-900 leading-none">Audit Ready</p>
+              <p class="text-xs font-normal text-neutral-400 leading-none mt-0.5">Books closed ✓</p>
+            </div>
+          </div>
+          <div class="absolute bottom-4 -left-2 glass rounded-xl px-4 py-3 shadow-md">
+            <p class="text-xs font-bold text-neutral-400 uppercase tracking-wider">R&D Credit Found</p>
+            <p class="text-2xl font-black text-gradient-brand">$280K</p>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <!-- Centered layout -->
+      <div class="py-24 flex flex-col items-center text-center gap-7">
+        {eyebrowHtml && (
+          <span class="inline-flex items-center gap-2 w-fit px-4 py-1.5 text-xs font-black uppercase tracking-wider text-brand-600 bg-brand-50 rounded-full border border-brand-200">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
+            <Fragment set:html={eyebrowHtml} />
+          </span>
+        )}
+        {headlineBlocks.map((block: any) => {
+          const isH1 = block.style === "h1";
+          const html = renderInline(block.children ?? [], isH1);
+          return isH1
+            ? <h1 class="text-6xl font-bold text-neutral-900 tracking-tight leading-[1.05] max-w-3xl" set:html={html} />
+            : <p class="text-lg font-normal text-neutral-500 leading-relaxed max-w-xl" set:html={html} />;
+        })}
+        {Array.isArray(section.ctas) && section.ctas.length > 0 && (
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            {section.ctas.map((cta: any) => (
+              cta.style === "secondary"
+                ? <a href={cta.url ?? "#"} class="inline-flex items-center gap-2 px-7 py-3 text-base font-bold text-neutral-700 rounded-full ring-1 ring-neutral-300 hover:bg-neutral-50 focus-ring transition-all duration-200">{cta.text}</a>
+                : <a href={cta.url ?? "#"} class="inline-flex items-center gap-2 px-7 py-3 text-base font-bold text-white rounded-full bg-brand-500 hover:bg-brand-600 shadow-md hover:shadow-brand focus-ring transition-all duration-200">
+                    {cta.text}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </a>
+            ))}
+          </div>
+        )}
+        {section.showTrustBar && (
+          <div class="flex flex-wrap items-center justify-center gap-6 pt-4 border-t border-neutral-200 w-full max-w-xl">
+            <span class="text-xs font-bold text-neutral-400 uppercase tracking-wider">Backed by investors at</span>
+            <span class="text-sm font-black text-neutral-400">Y Combinator</span>
+            <span class="text-sm font-black text-neutral-400">Andreessen</span>
+            <span class="text-sm font-black text-neutral-400">Sequoia</span>
+          </div>
+        )}
+      </div>
     )}
 
-    {section.subheadline && (
-      <p class={`text-xl mb-8 ${hasBg ? "text-gray-200" : "text-secondary"}`}>
-        {section.subheadline}
-      </p>
-    )}
-
-    {section.ctaText && section.ctaUrl && (
-      <a
-        href={section.ctaUrl}
-        class="inline-block px-8 py-3 bg-primary text-white font-bold rounded-btn hover:bg-primary-dark transition-colors"
-      >
-        {section.ctaText}
-      </a>
-    )}
   </div>
 </section>

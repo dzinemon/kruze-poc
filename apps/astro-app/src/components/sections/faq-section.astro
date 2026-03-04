@@ -8,6 +8,9 @@ interface Props {
 const { section } = Astro.props;
 
 interface PortableBlock {
+  _type: string;
+  _key: string;
+  style?: string;
   children?: { text: string }[];
 }
 
@@ -18,12 +21,29 @@ function extractText(answer: unknown): string {
     ?.map((block) => block.children?.map((c) => c.text).join(""))
     .join(" ") || "";
 }
+
+const contentBlocks = (section.content ?? []).filter(
+  (b: any) => b._type === "block"
+) as PortableBlock[];
 ---
 
 <section class="py-16">
   <div class="max-w-container-lg mx-auto px-4">
-    {section.heading && (
-      <h2 class="text-3xl font-black text-body mb-8">{section.heading}</h2>
+    {contentBlocks.length > 0 && (
+      <div class="mb-8 flex flex-col gap-3">
+        {contentBlocks.map((b) => {
+          const text = (b.children ?? []).map((c) => c.text).join("");
+          return b.style === "h2" ? (
+            <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+              {text}
+            </h2>
+          ) : (
+            <p class="text-lg font-normal text-text-secondary leading-relaxed">
+              {text}
+            </p>
+          );
+        })}
+      </div>
     )}
 
     <div class="space-y-4">

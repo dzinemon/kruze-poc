@@ -1,0 +1,20 @@
+---
+import type { ContactFormBlock } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: ContactFormBlock;
+}
+
+const { section } = Astro.props;
+const label = section.formType === "newsletter" ? "Newsletter Signup" : "Free Consultation Form";
+---
+
+<section class="py-16 px-6 bg-bg-base">
+  <div class="max-w-xl mx-auto text-center">
+    <p class="text-xs text-text-muted mb-4">contactFormBlock — {section.formType ?? "consultation"}</p>
+    <div class="rounded-md border border-border-default p-8 bg-bg-subtle">
+      <p class="text-xl font-bold text-text-primary">{label}</p>
+      <p class="text-sm text-text-muted mt-2">Form embed: <code>{section.formType ?? "consultation"}</code></p>
+    </div>
+  </div>
+</section>

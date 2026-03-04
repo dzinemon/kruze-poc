@@ -1,0 +1,64 @@
+---
+import type { CtaStripSection as CtaStripSectionType } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  section: CtaStripSectionType;
+}
+
+const { section } = Astro.props;
+const bg = section.background ?? "white";
+const onDark = bg === "brand";
+const bgClass = bg === "light" ? "bg-neutral-50" : bg === "brand" ? "" : "bg-white";
+---
+
+<section
+  class={`${bgClass} py-20 px-6`}
+  style={onDark ? "background: var(--gradient-cta);" : undefined}
+>
+  <div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
+    {Array.isArray(section.content) && section.content.map((block: any) => {
+      if (block._type !== "block") return null;
+      const text = (block.children ?? []).map((c: any) => c.text ?? "").join("");
+      if (block.style === "h2") {
+        return (
+          <h2 class={`text-4xl lg:text-5xl font-bold tracking-tight ${onDark ? "text-white" : "text-text-primary"}`}>
+            {text}
+          </h2>
+        );
+      }
+      return (
+        <p class={`text-lg font-normal leading-relaxed ${onDark ? "text-white/80" : "text-text-secondary"}`}>
+          {text}
+        </p>
+      );
+    })}
+    {section.ctas && section.ctas.length > 0 && (
+      <div class="flex flex-wrap justify-center gap-3">
+        {section.ctas.map((cta) => (
+          cta.style === "secondary"
+            ? (
+              <a
+                href={cta.url ?? "#"}
+                class={`inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full ring-1 transition-fast focus-ring ${
+                  onDark ? "text-white ring-white/30 hover:bg-white/10" : "text-brand-500 ring-brand-500 hover:bg-brand-50"
+                }`}
+              >
+                {cta.text}
+              </a>
+            )
+            : (
+              <a
+                href={cta.url ?? "#"}
+                class={`inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full shadow-md transition-fast focus-ring ${
+                  onDark ? "bg-white text-brand-800 hover:bg-neutral-100" : "bg-brand-500 text-white hover:bg-brand-600 hover:shadow-brand"
+                }`}
+              >
+                {cta.text}
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            )
+        ))}
+      </div>
+    )}
+  </div>
+</section>
