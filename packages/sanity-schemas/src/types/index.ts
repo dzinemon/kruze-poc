@@ -64,6 +64,7 @@ export interface ChartDataset {
   values: number[];
 }
 
+// Portable Text custom block types (used in blog post body)
 export interface ChartBlock {
   _type: "chartBlock";
   chartType: "bar" | "pie" | "line" | "doughnut";
@@ -83,7 +84,7 @@ export interface CtaBlock {
   style?: "primary" | "secondary" | "outline";
 }
 
-export interface AlertBlock {
+export interface PortableTextAlertBlock {
   _type: "alertBlock";
   alertType: "info" | "warning" | "success" | "danger";
   content: string;
@@ -121,22 +122,22 @@ export interface BlogPost {
   };
 }
 
+export interface HeroCta {
+  _key: string;
+  text: string;
+  url?: string;
+  style?: "primary" | "secondary";
+}
+
 export interface HeroSection {
   _type: "heroSection";
   _key: string;
-  headline?: string;
-  subheadline?: string;
-  ctaText?: string;
-  ctaUrl?: string;
+  layout?: "centered" | "split";
+  eyebrow?: any[]; // inline portable text: bold, em, underline
+  headline?: any[]; // portable text: h1 blocks (strong → gradient) + normal blocks (subheadline)
+  ctas?: HeroCta[];
+  showTrustBar?: boolean;
   backgroundImage?: SanityImage;
-}
-
-export interface TextSection {
-  _type: "textSection";
-  _key: string;
-  heading?: string;
-  body?: any[];
-  background?: "white" | "light" | "gradient";
 }
 
 export interface TestimonialsSection {
@@ -154,32 +155,181 @@ export interface FaqItem {
 export interface FaqSection {
   _type: "faqSection";
   _key: string;
-  heading?: string;
+  content?: any[];
   faqs?: FaqItem[];
 }
 
-export interface ChartSection {
-  _type: "chartSection";
+export interface FeatureTile {
   _key: string;
-  heading?: string;
-  description?: string;
-  chart?: {
-    chartType: "bar" | "pie" | "line" | "doughnut";
-    title?: string;
-    labels?: string[];
-    datasets?: ChartDataset[];
-    showLegend?: boolean;
-    sourceText?: string;
-  };
+  icon?: SanityImage;
+  title: string;
+  body?: any[];
+  link?: { text?: string; url?: string };
+}
+
+export interface FeatureGridSection {
+  _type: "featureGridSection";
+  _key: string;
+  content?: any[];
+  columns?: 2 | 3 | 4;
+  tiles?: FeatureTile[];
   background?: "white" | "light";
+}
+
+export interface CtaButton {
+  _key: string;
+  text: string;
+  url?: string;
+  style?: "primary" | "secondary";
+}
+
+export interface CtaStripSection {
+  _type: "ctaStripSection";
+  _key: string;
+  content?: any[];
+  ctas?: CtaButton[];
+  background?: "white" | "brand" | "light";
+}
+
+export interface RecentBlogsSection {
+  _type: "recentBlogsSection";
+  _key: string;
+  content?: any[];
+  category?: Category;
+  limit?: number;
+  background?: "white" | "light";
+}
+
+export interface ServiceTile {
+  _key: string;
+  icon?: SanityImage;
+  title: string;
+  body?: any[];
+}
+
+export interface ServicesGridBlock {
+  _type: "servicesGridBlock";
+  _key: string;
+  content?: any[];
+  columns?: 3 | 4;
+  tiles?: ServiceTile[];
+}
+
+export interface MediaAndTextBlock {
+  _type: "mediaAndTextBlock";
+  _key: string;
+  image?: SanityImage;
+  caption?: string;
+  content?: any[];
+  imagePosition?: "left" | "right";
+}
+
+export interface StatItem {
+  _key: string;
+  value: string;
+  label: string;
+  footnote?: string;
+}
+
+export interface StatsRowBlock {
+  _type: "statsRowBlock";
+  _key: string;
+  stats?: StatItem[];
+  layout?: "2-col" | "3-col" | "4-col";
+}
+
+export interface AlertBlock {
+  _type: "alertBlock";
+  _key: string;
+  content?: any[];
+  alertType?: "primary" | "warning" | "success" | "info";
+}
+
+export interface CalculatorBlock {
+  _type: "calculatorBlock";
+  _key: string;
+  calculatorType: "rd" | "delaware" | "vropd" | "tax-return" | "ceo-salary" | "cash-burn";
+}
+
+export interface LogoItem {
+  _key: string;
+  name?: string;
+  image?: SanityImage;
+  url?: string;
+}
+
+export interface PressLogosBlock {
+  _type: "pressLogosBlock";
+  _key: string;
+  content?: any[];
+  logos?: LogoItem[];
+  variant?: "clients" | "press" | "partners";
+}
+
+export interface NewsItem {
+  _key: string;
+  title: string;
+  url?: string;
+  publication?: string;
+  date?: string;
+}
+
+export interface NewsBlock {
+  _type: "newsBlock";
+  _key: string;
+  content?: any[];
+  items?: NewsItem[];
+}
+
+export interface ContactFormBlock {
+  _type: "contactFormBlock";
+  _key: string;
+  formType?: "consultation" | "newsletter";
+}
+
+export interface CustomEmbedBlock {
+  _type: "customEmbedBlock";
+  _key: string;
+  embedId: string;
+}
+
+export interface FlexColumn {
+  _key: string;
+  columnWidth?: string;
+  content?: any[];
+}
+
+export interface FlexRow {
+  _key: string;
+  paddingStyle?: string;
+  columns?: FlexColumn[];
+}
+
+export interface FlexSectionBlock {
+  _type: "flexSectionBlock";
+  _key: string;
+  backgroundStyle?: string;
+  paddingStyle?: string;
+  rows?: FlexRow[];
 }
 
 export type BlockPageSection =
   | HeroSection
-  | TextSection
   | TestimonialsSection
   | FaqSection
-  | ChartSection;
+  | FeatureGridSection
+  | CtaStripSection
+  | RecentBlogsSection
+  | ServicesGridBlock
+  | MediaAndTextBlock
+  | StatsRowBlock
+  | AlertBlock
+  | CalculatorBlock
+  | PressLogosBlock
+  | NewsBlock
+  | ContactFormBlock
+  | CustomEmbedBlock
+  | FlexSectionBlock;
 
 export interface BlockPage {
   _id: string;

@@ -12,16 +12,12 @@ export const blockPageQuery = groq`
       _type,
       _key,
       _type == "heroSection" => {
-        headline, subheadline, ctaText, ctaUrl,
+        layout,
+        eyebrow[] { ..., markDefs[] { ... } },
+        headline[] { ..., markDefs[] { ... } },
+        ctas[] { _key, text, url, style },
+        showTrustBar,
         backgroundImage ${imageMinimal}
-      },
-      _type == "textSection" => {
-        heading,
-        body[] {
-          ...,
-          _type == "image" => ${imageWithMeta}
-        },
-        background
       },
       _type == "testimonialsSection" => {
         heading,
@@ -32,15 +28,94 @@ export const blockPageQuery = groq`
         }
       },
       _type == "faqSection" => {
-        heading,
+        content[] { ..., markDefs[] { ... } },
         faqs[] { question, answer }
       },
-      _type == "chartSection" => {
-        heading, description, background,
-        chart { chartType, title, labels, datasets, showLegend, sourceText }
+      _type == "featureGridSection" => {
+        content[] { ..., markDefs[] { ... } },
+        columns, background,
+        tiles[] {
+          _key, title, body, link,
+          icon { asset-> { _id, url }, hotspot, crop }
+        }
+      },
+      _type == "ctaStripSection" => {
+        content[] { ..., markDefs[] { ... } },
+        ctas[] { _key, text, url, style },
+        background
+      },
+      _type == "recentBlogsSection" => {
+        content[] { ..., markDefs[] { ... } },
+        category-> { _id, title, slug },
+        limit,
+        background
+      },
+      _type == "servicesGridBlock" => {
+        content[] { ..., markDefs[] { ... } },
+        columns,
+        tiles[] {
+          _key, title, body,
+          icon { asset-> { _id, url }, hotspot, crop }
+        }
+      },
+      _type == "mediaAndTextBlock" => {
+        image ${imageWithMeta},
+        caption,
+        content[] { ..., markDefs[] { ... } },
+        imagePosition
+      },
+      _type == "statsRowBlock" => {
+        stats[] { _key, value, label, footnote },
+        layout
+      },
+      _type == "alertBlock" => {
+        content[] { ..., markDefs[] { ... } },
+        alertType
+      },
+      _type == "calculatorBlock" => {
+        calculatorType
+      },
+      _type == "pressLogosBlock" => {
+        content[] { ..., markDefs[] { ... } },
+        logos[] {
+          _key, name, url,
+          image { asset-> { _id, url }, hotspot, crop }
+        },
+        variant
+      },
+      _type == "newsBlock" => {
+        content[] { ..., markDefs[] { ... } },
+        items[] { _key, title, url, publication, date }
+      },
+      _type == "contactFormBlock" => {
+        formType
+      },
+      _type == "customEmbedBlock" => {
+        embedId
+      },
+      _type == "flexSectionBlock" => {
+        backgroundStyle,
+        paddingStyle,
+        rows[] {
+          _key, paddingStyle,
+          columns[] {
+            _key, columnWidth,
+            content[] { ..., markDefs[] { ... } }
+          }
+        }
       }
     },
     seo
+  }
+`;
+
+/** Sub-query for recentBlogsSection — runs at render time with $categoryId and $limit params */
+export const recentBlogsByCategoryQuery = groq`
+  *[_type == "blogPost" && (!defined($categoryId) || $categoryId in topicCategories[]->._id)]
+  | order(date desc)[0...$limit] {
+    _id, title, slug, date, description,
+    heroImage { asset-> { _id, url }, hotspot, crop },
+    author-> { fullName }
   }
 `;
 
