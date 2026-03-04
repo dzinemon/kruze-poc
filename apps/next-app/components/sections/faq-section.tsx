@@ -8,10 +8,26 @@ export function FaqSection({ section }: FaqSectionProps) {
   return (
     <section className="py-16">
       <div className="max-w-container-lg mx-auto px-4">
-        {section.heading && (
-          <h2 className="text-3xl font-black text-body mb-8">
-            {section.heading}
-          </h2>
+        {section.content && section.content.length > 0 && (
+          <div className="mb-8 flex flex-col gap-3">
+            {section.content
+              .filter((b: any) => b._type === "block")
+              .map((b: any) => {
+                const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
+                if (b.style === "h2") {
+                  return (
+                    <h2 key={b._key} className="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+                      {text}
+                    </h2>
+                  );
+                }
+                return (
+                  <p key={b._key} className="text-lg font-normal text-text-secondary leading-relaxed">
+                    {text}
+                  </p>
+                );
+              })}
+          </div>
         )}
 
         <div className="space-y-4">
