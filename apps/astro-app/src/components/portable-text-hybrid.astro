@@ -51,19 +51,9 @@ if (currentHtmlBlocks.length > 0) {
           <div key={index} class="my-8 not-prose">
             <ChartIsland
               client:load
-              chartType={segment.content.chartType}
+              jsonConfig={segment.content.jsonConfig}
               title={segment.content.title}
-              labels={segment.content.labels || []}
-              datasets={(segment.content.datasets || []).map(
-                (ds: { label: string; values: number[] }) => ({
-                  label: ds.label,
-                  values: ds.values,
-                })
-              )}
-              colorScheme={segment.content.colorScheme}
-              showLegend={segment.content.showLegend}
-              height={segment.content.height || 400}
-              sourceText={segment.content.sourceText}
+              height={segment.content.height}
             />
           </div>
         );

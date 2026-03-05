@@ -59,22 +59,12 @@ export interface Testimonial {
   companyImage?: SanityImage;
 }
 
-export interface ChartDataset {
-  label: string;
-  values: number[];
-}
-
 // Portable Text custom block types (used in blog post body)
 export interface ChartBlock {
   _type: "chartBlock";
-  chartType: "bar" | "pie" | "line" | "doughnut";
   title?: string;
   height?: number;
-  colorScheme?: "brand" | "warm" | "cool" | "mono";
-  labels?: string[];
-  datasets?: ChartDataset[];
-  showLegend?: boolean;
-  sourceText?: string;
+  jsonConfig: string; // Raw JSON: { "type": "ColumnChart", "data": [...], "options": {...} }
 }
 
 export interface CtaBlock {

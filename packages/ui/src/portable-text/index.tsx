@@ -3,7 +3,7 @@ import {
   type PortableTextComponents,
 } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import { ChartBlockClient } from "../chart/chart-block-client";
+import { GoogleChart } from "../chart";
 import { CtaBlock } from "./cta-block";
 import { AlertBlock } from "./alert-block";
 import { responsiveImageData, lqipStyle } from "../image/sanity-image-url";
@@ -55,20 +55,10 @@ const components: PortableTextComponents = {
 
     chartBlock: ({ value }) => (
       <div className="my-8 not-prose">
-        <ChartBlockClient
-          chartType={value.chartType}
+        <GoogleChart
+          jsonConfig={value.jsonConfig}
           title={value.title}
-          labels={value.labels || []}
-          datasets={(
-            value.datasets || []
-          ).map((ds: { label: string; values: number[] }) => ({
-            label: ds.label,
-            values: ds.values,
-          }))}
-          colorScheme={value.colorScheme}
-          showLegend={value.showLegend}
-          height={value.height || 400}
-          sourceText={value.sourceText}
+          height={value.height}
         />
       </div>
     ),

@@ -21,7 +21,7 @@ const components: Partial<PortableTextHtmlComponents> = {
     },
 
     chartBlock: ({ value }) =>
-      `<div class="my-8 not-prose" data-chart-block='${JSON.stringify(value)}'><p class="text-sm text-muted italic text-center py-8">[Interactive chart: ${value.title || value.chartType}]</p></div>`,
+      `<div class="my-8 not-prose" data-chart-block='${JSON.stringify(value)}'><p class="text-sm text-muted italic text-center py-8">[Chart: ${value.title ?? "Interactive chart"}]</p></div>`,
 
     ctaBlock: ({ value }) => {
       const styles: Record<string, string> = {

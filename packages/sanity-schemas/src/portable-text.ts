@@ -56,31 +56,17 @@ export const portableText = defineType({
       ],
     }),
 
-    // Custom block: Chart
+    // Custom block: Chart (Google Charts with JSON config)
     defineArrayMember({
       name: "chartBlock",
       title: "Chart",
       type: "object",
       fields: [
         defineField({
-          name: "chartType",
-          title: "Chart Type",
-          type: "string",
-          options: {
-            list: [
-              { title: "Bar Chart", value: "bar" },
-              { title: "Pie Chart", value: "pie" },
-              { title: "Line Chart", value: "line" },
-              { title: "Doughnut Chart", value: "doughnut" },
-            ],
-          },
-          initialValue: "bar",
-          validation: (rule) => rule.required(),
-        }),
-        defineField({
           name: "title",
-          title: "Chart Title",
+          title: "Chart Title (optional)",
           type: "string",
+          description: "Display title above the chart",
         }),
         defineField({
           name: "height",
@@ -89,68 +75,28 @@ export const portableText = defineType({
           initialValue: 400,
         }),
         defineField({
-          name: "colorScheme",
-          title: "Color Scheme",
-          type: "string",
-          options: {
-            list: [
-              { title: "Brand (Blue)", value: "brand" },
-              { title: "Warm", value: "warm" },
-              { title: "Cool", value: "cool" },
-              { title: "Monochrome", value: "mono" },
-            ],
-          },
-          initialValue: "brand",
-        }),
-        defineField({
-          name: "labels",
-          title: "Labels",
-          type: "array",
-          of: [{ type: "string" }],
-          description: "X-axis labels or slice labels",
-        }),
-        defineField({
-          name: "datasets",
-          title: "Datasets",
-          type: "array",
-          of: [
-            defineArrayMember({
-              type: "object",
-              name: "dataset",
-              fields: [
-                defineField({ name: "label", title: "Dataset Label", type: "string" }),
-                defineField({
-                  name: "values",
-                  title: "Values",
-                  type: "array",
-                  of: [{ type: "number" }],
-                }),
-              ],
-              preview: {
-                select: { title: "label" },
-              },
+          name: "jsonConfig",
+          title: "Chart JSON Config",
+          type: "text",
+          description: 'Paste JSON: { "type": "ColumnChart", "data": [["Year", "Sales"], ["2024", 1000]], "options": {...} }',
+          validation: (rule) =>
+            rule.required().custom((val) => {
+              if (!val) return "JSON config is required";
+              try {
+                JSON.parse(val);
+                return true;
+              } catch (e) {
+                return "Must be valid JSON";
+              }
             }),
-          ],
-        }),
-        defineField({
-          name: "showLegend",
-          title: "Show Legend",
-          type: "boolean",
-          initialValue: true,
-        }),
-        defineField({
-          name: "sourceText",
-          title: "Source / Citation",
-          type: "string",
-          description: "e.g. 'Source: Kruze Consulting analysis, 2025'",
         }),
       ],
       preview: {
-        select: { title: "title", chartType: "chartType" },
-        prepare({ title, chartType }) {
+        select: { title: "title" },
+        prepare({ title }) {
           return {
             title: title || "Chart",
-            subtitle: chartType ? `${chartType} chart` : "Chart",
+            subtitle: "Google Chart (JSON config)",
           };
         },
       },

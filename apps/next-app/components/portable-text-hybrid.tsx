@@ -1,25 +1,15 @@
 import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
-import { DemoChart } from "@kruze-poc/ui/chart/demo-chart";
+import { GoogleChart } from "@kruze-poc/ui/chart";
 
 interface PortableTextHybridProps {
   value: unknown[];
 }
 
-interface ChartDataset {
-  label: string;
-  values: number[];
-}
-
 interface ChartBlock {
   _type: "chartBlock";
-  chartType: "bar" | "pie" | "line" | "doughnut";
   title?: string;
-  labels?: string[];
-  datasets?: ChartDataset[];
-  colorScheme?: "brand" | "warm" | "cool" | "mono";
-  showLegend?: boolean;
   height?: number;
-  sourceText?: string;
+  jsonConfig: string;
 }
 
 type Segment =
@@ -78,18 +68,10 @@ export function PortableTextHybrid({ value }: PortableTextHybridProps) {
         } else {
           return (
             <div key={index} className="my-8 not-prose">
-              <DemoChart
-                chartType={segment.content.chartType}
+              <GoogleChart
+                jsonConfig={segment.content.jsonConfig}
                 title={segment.content.title}
-                labels={segment.content.labels || []}
-                datasets={(segment.content.datasets || []).map((ds) => ({
-                  label: ds.label,
-                  values: ds.values,
-                }))}
-                colorScheme={segment.content.colorScheme}
-                showLegend={segment.content.showLegend}
-                height={segment.content.height || 400}
-                sourceText={segment.content.sourceText}
+                height={segment.content.height}
               />
             </div>
           );
