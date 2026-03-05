@@ -56,7 +56,7 @@ export default async function RootLayout({
           </div>
         </footer>
 
-        <SanityLive />
+        {isDraftMode && <SanityLive />}
         {isDraftMode && <VisualEditing />}
       </body>
     </html>
