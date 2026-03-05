@@ -6,15 +6,141 @@ interface Props {
 }
 
 const { section } = Astro.props;
-const label = section.formType === "newsletter" ? "Newsletter Signup" : "Free Consultation Form";
+const isNewsletter = section.formType === "newsletter";
+const gradientWord = isNewsletter ? "loop" : "consultation";
+const headingStart = isNewsletter ? "Stay in the " : "Get a free ";
+const eyebrow = isNewsletter ? "Newsletter" : "Free Consultation";
+const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
 ---
 
-<section class="py-16 px-6 bg-bg-base">
-  <div class="max-w-xl mx-auto text-center">
-    <p class="text-xs text-text-muted mb-4">contactFormBlock — {section.formType ?? "consultation"}</p>
-    <div class="rounded-md border border-border-default p-8 bg-bg-subtle">
-      <p class="text-xl font-bold text-text-primary">{label}</p>
-      <p class="text-sm text-text-muted mt-2">Form embed: <code>{section.formType ?? "consultation"}</code></p>
+<section class="bg-hero-gradient py-20 px-6">
+  <div class="max-w-xl mx-auto flex flex-col gap-8">
+
+    <!-- Header -->
+    <div class="text-center flex flex-col gap-4">
+      <span class="inline-flex items-center gap-1.5 mx-auto px-3 py-1 text-xs font-black tracking-wide uppercase text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950 rounded-full border border-brand-200 dark:border-brand-800">
+        <span class="size-1.5 rounded-full bg-brand-500"></span>
+        {eyebrow}
+      </span>
+      <h2 class="text-4xl font-bold tracking-tight text-text-primary">
+        {headingStart}<span class="text-gradient-brand">{gradientWord}</span>
+      </h2>
+      <p class="text-base font-normal text-text-secondary leading-relaxed">
+        {isNewsletter
+          ? "Get startup finance tips, tax deadlines, and CFO insights delivered to your inbox."
+          : "Talk to a Kruze CFO about your startup's accounting, taxes, and financial strategy."}
+      </p>
     </div>
+
+    <!-- Form card -->
+    <div class="rounded-lg bg-bg-subtle border border-border-subtle shadow-sm p-8">
+      <form novalidate class="flex flex-col gap-3">
+
+        <!-- First name + Last name -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label for="firstName" class="text-sm font-bold text-text-primary">First name</label>
+            <input
+              id="firstName"
+              type="text"
+              autocomplete="given-name"
+              placeholder="Jane"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="lastName" class="text-sm font-bold text-text-primary">Last name</label>
+            <input
+              id="lastName"
+              type="text"
+              autocomplete="family-name"
+              placeholder="Smith"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            />
+          </div>
+        </div>
+
+        <!-- Company name -->
+        <div class="flex flex-col gap-1.5">
+          <label for="company" class="text-sm font-bold text-text-primary">Company name</label>
+          <input
+            id="company"
+            type="text"
+            autocomplete="organization"
+            placeholder="Acme Inc."
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="flex flex-col gap-1.5">
+          <label for="email" class="text-sm font-bold text-text-primary">Email address</label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            placeholder="jane@acme.com"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+          />
+        </div>
+
+        <!-- Phone -->
+        <div class="flex flex-col gap-1.5">
+          <label for="phone" class="text-sm font-bold text-text-primary">
+            Phone <span class="font-normal text-text-muted">(optional)</span>
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            autocomplete="tel"
+            placeholder="+1 (415) 000-0000"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+          />
+        </div>
+
+        <!-- Message (consultation only) -->
+        {!isNewsletter && (
+          <div class="flex flex-col gap-1.5">
+            <label for="message" class="text-sm font-bold text-text-primary">
+              Message <span class="font-normal text-text-muted">(optional)</span>
+            </label>
+            <textarea
+              id="message"
+              rows={4}
+              placeholder="Tell us about your startup and what you need help with…"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
+            ></textarea>
+          </div>
+        )}
+
+        <!-- Marketing emails checkbox -->
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="mt-0.5 size-4 rounded-xs border-border-default accent-brand-500 focus-ring cursor-pointer"
+          />
+          <span class="text-sm font-normal text-text-secondary leading-relaxed">
+            I agree to receive marketing emails from Kruze Consulting. You can unsubscribe at any time.
+          </span>
+        </label>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center w-full px-5 py-2.5 text-sm font-bold text-white rounded-sm bg-brand-500 hover:bg-brand-600 active:bg-brand-700 shadow-sm hover:shadow-brand transition-fast focus-ring"
+        >
+          {submitLabel}
+        </button>
+
+        <!-- Privacy note -->
+        <p class="text-xs text-text-muted text-center">
+          By submitting, you agree to our
+          <span class="text-brand-500 underline cursor-pointer">Privacy Policy</span>.
+          We never share your data.
+        </p>
+
+      </form>
+    </div>
+
   </div>
 </section>

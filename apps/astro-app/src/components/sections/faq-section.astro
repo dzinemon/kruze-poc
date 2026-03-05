@@ -17,20 +17,35 @@ interface PortableBlock {
 function extractText(answer: unknown): string {
   if (typeof answer === "string") return answer;
   const blocks = answer as PortableBlock[];
-  return blocks
-    ?.map((block) => block.children?.map((c) => c.text).join(""))
-    .join(" ") || "";
+  return blocks?.map((block) => block.children?.map((c) => c.text).join("")).join(" ") ?? "";
 }
 
 const contentBlocks = (section.content ?? []).filter(
   (b: any) => b._type === "block"
 ) as PortableBlock[];
+
+const faqs = section.faqs ?? [];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: extractText(faq.answer),
+    },
+  })),
+};
 ---
 
-<section class="py-16">
-  <div class="max-w-container-lg mx-auto px-4">
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+<section class="py-20 px-6 bg-white dark:bg-[var(--color-bg-base)]">
+  <div class="max-w-3xl mx-auto">
     {contentBlocks.length > 0 && (
-      <div class="mb-8 flex flex-col gap-3">
+      <div class="mb-12 flex flex-col gap-4 text-center">
         {contentBlocks.map((b) => {
           const text = (b.children ?? []).map((c) => c.text).join("");
           return b.style === "h2" ? (
@@ -38,26 +53,93 @@ const contentBlocks = (section.content ?? []).filter(
               {text}
             </h2>
           ) : (
-            <p class="text-lg font-normal text-text-secondary leading-relaxed">
-              {text}
-            </p>
+            <p class="text-lg font-normal text-text-secondary leading-relaxed">{text}</p>
           );
         })}
       </div>
     )}
 
-    <div class="space-y-4">
-      {section.faqs?.map((faq) => (
-        <details class="group border border-gray-200 rounded-lg">
-          <summary class="cursor-pointer px-6 py-4 font-bold text-body hover:text-primary transition-colors list-none flex items-center justify-between">
-            {faq.question}
-            <span class="text-muted group-open:rotate-180 transition-transform">&#9662;</span>
-          </summary>
-          <div class="px-6 pb-4 text-secondary">
-            <p>{extractText(faq.answer)}</p>
+    <div class="flex flex-col gap-3">
+      {faqs.map((faq, i) => {
+        const panelId = `faq-panel-${i}`;
+        const triggerId = `faq-trigger-${i}`;
+        return (
+          <div class="faq-item rounded-md border border-border-default bg-bg-subtle shadow-xs overflow-hidden">
+            {/* h3 wrapping the button: ARIA Accordion Pattern — helps crawlers
+                understand question hierarchy and qualifies for FAQPage rich results */}
+            <h3 class="m-0">
+              <button
+                id={triggerId}
+                class="faq-trigger w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-text-primary hover:text-brand-500 focus-ring"
+                aria-expanded="false"
+                aria-controls={panelId}
+              >
+                <span class="text-base">{faq.question}</span>
+                <svg
+                  class="faq-chevron flex-shrink-0 text-text-muted"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </h3>
+
+            {/* Content stays in DOM (not conditionally rendered) so crawlers
+                index it. max-height animation keeps it visually hidden when closed
+                without removing it from the accessibility tree. */}
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={triggerId}
+              class="faq-panel overflow-hidden"
+              style="max-height: 0;"
+            >
+              <div class="px-6 pb-5 pt-0">
+                <div class="border-t border-border-subtle pt-4">
+                  <p class="text-base font-normal text-text-secondary leading-relaxed">
+                    {extractText(faq.answer)}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </details>
-      ))}
+        );
+      })}
     </div>
   </div>
 </section>
+
+<style>
+  .faq-chevron {
+    transition: transform var(--transition-base);
+  }
+  .faq-trigger {
+    transition: color var(--transition-fast);
+  }
+  .faq-panel {
+    transition: max-height var(--transition-spring);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>(".faq-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const item = trigger.closest<HTMLElement>(".faq-item")!;
+      const panel = item.querySelector<HTMLElement>(".faq-panel")!;
+      const chevron = trigger.querySelector<SVGElement>(".faq-chevron")!;
+      const isOpen = trigger.getAttribute("aria-expanded") === "true";
+
+      trigger.setAttribute("aria-expanded", String(!isOpen));
+      panel.style.maxHeight = isOpen ? "0" : `${panel.scrollHeight}px`;
+      chevron.style.transform = isOpen ? "rotate(0deg)" : "rotate(180deg)";
+    });
+  });
+</script>

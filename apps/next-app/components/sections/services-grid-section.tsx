@@ -1,4 +1,10 @@
 import type { ServicesGridBlock } from "@kruze-poc/sanity-schemas/src/types";
+import { KruzePortableText } from "@kruze-poc/ui/portable-text";
+
+const colsClass: Record<number, string> = {
+  3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+};
 
 interface ServicesGridSectionProps {
   section: ServicesGridBlock;
@@ -6,17 +12,60 @@ interface ServicesGridSectionProps {
 
 export function ServicesGridSection({ section }: ServicesGridSectionProps) {
   const cols = section.columns ?? 3;
-  const gridClass = cols === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 
   return (
-    <section className="py-16 px-6 bg-bg-subtle">
+    <section className="bg-bg-subtle py-20 px-6">
       <div className="max-w-6xl mx-auto">
-        <p className="text-xs text-text-muted mb-8">servicesGridBlock</p>
+        {section.content && section.content.length > 0 && (
+          <div className="text-center mb-12 flex flex-col gap-3">
+            {section.content
+              .filter((b: any) => b._type === "block")
+              .map((b: any) => {
+                const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
+                if (b.style === "h2") {
+                  return (
+                    <h2 key={b._key} className="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+                      {text}
+                    </h2>
+                  );
+                }
+                return (
+                  <p key={b._key} className="text-lg font-normal text-text-secondary leading-relaxed max-w-2xl mx-auto">
+                    {text}
+                  </p>
+                );
+              })}
+          </div>
+        )}
         {section.tiles && section.tiles.length > 0 && (
-          <div className={`grid ${gridClass} gap-6`}>
+          <div className={`grid ${colsClass[cols] ?? colsClass[3]} gap-6`}>
             {section.tiles.map((tile) => (
-              <div key={tile._key} className="rounded-md bg-bg-base border border-border-subtle p-6">
-                <p className="text-xl font-bold text-text-primary">{tile.title}</p>
+              <div
+                key={tile._key}
+                className="flex flex-col gap-4 p-6 rounded-md bg-bg-base border border-border-subtle shadow-sm hover:shadow-md hover-lift"
+              >
+                {tile.icon?.asset?.url && (
+                  <div
+                    className="icon-container icon-container-xl squircle flex-shrink-0"
+                    style={{ background: "var(--gradient-brand)" }}
+                  >
+                    <img
+                      src={tile.icon.asset.url}
+                      alt=""
+                      width={28}
+                      height={28}
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-xl font-bold text-text-primary">{tile.title}</h3>
+                  {Array.isArray(tile.body) && tile.body.length > 0 && (
+                    <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-base prose-p:font-normal prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-text-secondary prose-li:leading-relaxed">
+                      <KruzePortableText value={tile.body} />
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>

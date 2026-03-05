@@ -1,26 +1,35 @@
 import type { FlexSectionBlock } from "@kruze-poc/sanity-schemas/src/types";
+import { KruzePortableText } from "@kruze-poc/ui/portable-text";
 
 interface FlexSectionProps {
   section: FlexSectionBlock;
 }
 
 export function FlexSection({ section }: FlexSectionProps) {
+  const sectionClass = [
+    section.paddingStyle ?? "py-20 px-6",
+    section.backgroundStyle ?? "bg-bg-base",
+  ].join(" ");
+
   return (
-    <section className="py-16 px-6 bg-bg-base">
+    <section className={sectionClass}>
       <div className="max-w-6xl mx-auto">
-        <div className="rounded-md border border-dashed border-border-default p-8">
-          <p className="text-xs text-text-muted mb-4">flexSectionBlock — escape hatch</p>
-          {section.backgroundStyle && (
-            <p className="text-sm text-text-secondary">Background: <code>{section.backgroundStyle}</code></p>
-          )}
-          {section.rows && section.rows.length > 0 && (
-            <p className="text-sm text-text-secondary mt-1">
-              {section.rows.length} row{section.rows.length !== 1 ? "s" : ""}
-              {" · "}
-              {section.rows.reduce((acc, row) => acc + (row.columns?.length ?? 0), 0)} columns total
-            </p>
-          )}
-        </div>
+        {(section.rows ?? []).map((row) => (
+          <div
+            key={row._key}
+            className={["flex flex-col md:flex-row gap-8", row.paddingStyle]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            {(row.columns ?? []).map((col) => (
+              <div key={col._key} className={[col.columnWidth ?? "flex-1", "min-w-0"].join(" ")}>
+                {col.content && col.content.length > 0 && (
+                  <KruzePortableText value={col.content} />
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   );

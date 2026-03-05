@@ -1,6 +1,7 @@
 import { client } from "@/lib/sanity";
 import { recentBlogsByCategoryQuery } from "@kruze-poc/groq-queries";
 import type { RecentBlogsSection as RecentBlogsSectionType } from "@kruze-poc/sanity-schemas/src/types";
+import { ArrowRight } from "lucide-react";
 
 interface BlogCard {
   _id: string;
@@ -63,14 +64,16 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
               <a
                 key={post._id}
                 href={`/blog/${post.slug.current}`}
-                className="group flex flex-col rounded-md bg-bg-subtle border border-border-subtle shadow-sm hover:shadow-md hover-lift overflow-hidden"
+                className="group flex flex-col rounded-md bg-bg-subtle border border-border-subtle shadow-sm hover:shadow-md hover-lift overflow-hidden focus-ring"
               >
                 {post.heroImage?.asset?.url && (
                   <div className="aspect-video overflow-hidden bg-neutral-100">
                     <img
                       src={post.heroImage.asset.url}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-slow"
+                      width={640}
+                      height={360}
+                      className="w-full h-full object-cover group-hover:scale-105 duration-300 transition-transform"
                     />
                   </div>
                 )}
@@ -78,7 +81,7 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
                   <p className="text-xs font-bold text-text-muted uppercase tracking-wider">
                     {formatDate(post.date)}
                   </p>
-                  <h3 className="text-xl font-bold text-text-primary leading-snug group-hover:text-brand-500 transition-fast">
+                  <h3 className="text-xl font-bold text-text-primary leading-snug group-hover:text-brand-500 duration-300 transition-transform">
                     {post.title}
                   </h3>
                   {post.description && (
@@ -86,11 +89,17 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
                       {post.description}
                     </p>
                   )}
-                  {post.author && (
-                    <p className="mt-auto pt-3 border-t border-border-subtle text-xs font-bold text-text-muted">
-                      {post.author.fullName}
+                  <div className="mt-auto pt-3 border-t border-border-subtle flex items-center justify-between gap-4">
+                    <p className="text-xs font-bold text-text-muted truncate">
+                      {post.author?.fullName ?? ""}
                     </p>
-                  )}
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-brand-500 group-hover:text-brand-600 duration-300 transition-transform shrink-0">
+                      Read more
+                      <span className="group-hover:translate-x-1 duration-300 transition-transform inline-flex">
+                        <ArrowRight width={12} height={12} strokeWidth={1.5} aria-hidden="true" />
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </a>
             ))}

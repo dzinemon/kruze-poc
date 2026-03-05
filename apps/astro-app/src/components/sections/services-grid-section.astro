@@ -1,5 +1,6 @@
 ---
 import type { ServicesGridBlock } from "@kruze-poc/sanity-schemas/src/types";
+import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
 
 interface Props {
   section: ServicesGridBlock;
@@ -7,24 +8,77 @@ interface Props {
 
 const { section } = Astro.props;
 const cols = section.columns ?? 3;
-const gridClass = cols === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+
+const colsClass: Record<number, string> = {
+  3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+};
+const gridCols = colsClass[cols] ?? colsClass[3];
+
+interface PortableBlock {
+  _type: string;
+  _key: string;
+  style?: string;
+  children?: { text: string }[];
+}
+
+const contentBlocks = (section.content ?? []).filter(
+  (b: any) => b._type === "block"
+) as PortableBlock[];
 ---
 
-<section class="py-16 px-6 bg-bg-subtle">
+<section class="bg-bg-subtle py-20 px-6">
   <div class="max-w-6xl mx-auto">
-    <p class="text-xs text-text-muted mb-8">servicesGridBlock</p>
+    {contentBlocks.length > 0 && (
+      <div class="text-center mb-12 flex flex-col gap-3">
+        {contentBlocks.map((b) => {
+          const text = (b.children ?? []).map((c) => c.text).join("");
+          return b.style === "h2" ? (
+            <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+              {text}
+            </h2>
+          ) : (
+            <p class="text-lg font-normal text-text-secondary leading-relaxed max-w-2xl mx-auto">
+              {text}
+            </p>
+          );
+        })}
+      </div>
+    )}
     {section.tiles && section.tiles.length > 0 && (
-      <div class={`grid ${gridClass} gap-6`}>
-        {section.tiles.map((tile) => (
-          <div class="rounded-md bg-bg-base border border-border-subtle p-6">
-            <p class="text-xl font-bold text-text-primary">{tile.title}</p>
-            {tile.linkUrl && (
-              <a href={tile.linkUrl} class="text-sm text-brand-500 mt-2 inline-block">
-                Learn more →
-              </a>
-            )}
-          </div>
-        ))}
+      <div class={`grid ${gridCols} gap-6`}>
+        {section.tiles.map((tile) => {
+          const bodyHtml = Array.isArray(tile.body) && tile.body.length > 0
+            ? renderPortableTextHtml(tile.body)
+            : "";
+          return (
+            <div class="flex flex-col gap-4 p-6 rounded-md bg-bg-base border border-border-subtle shadow-sm hover:shadow-md hover-lift">
+              {tile.icon?.asset?.url && (
+                <div
+                  class="icon-container icon-container-xl squircle flex-shrink-0"
+                  style="background: var(--gradient-brand);"
+                >
+                  <img
+                    src={tile.icon.asset.url}
+                    alt=""
+                    width={28}
+                    height={28}
+                    class="object-contain"
+                  />
+                </div>
+              )}
+              <div class="flex flex-col gap-2">
+                <h3 class="text-xl font-bold text-text-primary">{tile.title}</h3>
+                {bodyHtml && (
+                  <div
+                    class="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-base prose-p:font-normal prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-text-secondary prose-li:leading-relaxed"
+                    set:html={bodyHtml}
+                  />
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     )}
   </div>

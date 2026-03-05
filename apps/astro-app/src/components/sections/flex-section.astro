@@ -1,31 +1,47 @@
 ---
 import type { FlexSectionBlock } from "@kruze-poc/sanity-schemas/src/types";
+import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
 
 interface Props {
   section: FlexSectionBlock;
 }
 
 const { section } = Astro.props;
-const totalColumns = (section.rows ?? []).reduce(
-  (acc, row) => acc + (row.columns?.length ?? 0),
-  0
-);
+
+const sectionClass = [
+  section.paddingStyle ?? "py-20 px-6",
+  section.backgroundStyle ?? "bg-bg-base",
+].join(" ");
+
+const rows = (section.rows ?? []).map((row) => ({
+  key: row._key,
+  rowClass: ["flex flex-col md:flex-row gap-8", row.paddingStyle]
+    .filter(Boolean)
+    .join(" "),
+  columns: (row.columns ?? []).map((col) => ({
+    key: col._key,
+    colClass: [col.columnWidth ?? "flex-1", "min-w-0"].join(" "),
+    html: renderPortableTextHtml(col.content ?? []),
+    hasContent: col.content && col.content.length > 0,
+  })),
+}));
 ---
 
-<section class="py-16 px-6 bg-bg-base">
+<section class={sectionClass}>
   <div class="max-w-6xl mx-auto">
-    <div class="rounded-md border border-dashed border-border-default p-8">
-      <p class="text-xs text-text-muted mb-4">flexSectionBlock — escape hatch</p>
-      {section.backgroundStyle && (
-        <p class="text-sm text-text-secondary">Background: <code>{section.backgroundStyle}</code></p>
-      )}
-      {section.rows && section.rows.length > 0 && (
-        <p class="text-sm text-text-secondary mt-1">
-          {section.rows.length} row{section.rows.length !== 1 ? "s" : ""}
-          {" · "}
-          {totalColumns} columns total
-        </p>
-      )}
-    </div>
+    {rows.map((row) => (
+      <div class={row.rowClass}>
+        {row.columns.map((col) => (
+          <div class={col.colClass}>
+            {col.hasContent && (
+              <div
+                class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-base prose-p:font-normal prose-p:text-text-secondary prose-p:leading-relaxed prose-p:mb-4 prose-headings:mt-6 prose-headings:mb-3 prose-strong:text-text-primary prose-em:text-text-primary prose-code:text-brand-600 prose-code:bg-bg-subtle prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-blockquote:border-brand-500 prose-blockquote:text-text-secondary prose-blockquote:pl-4 prose-ul:text-text-secondary prose-ol:text-text-secondary prose-li:leading-relaxed prose-li:mb-2"
+                set:html={col.html}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    ))}
   </div>
 </section>

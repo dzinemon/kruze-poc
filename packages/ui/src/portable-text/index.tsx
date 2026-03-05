@@ -106,7 +106,7 @@ interface KruzePortableTextProps {
 
 export function KruzePortableText({ value }: KruzePortableTextProps) {
   return (
-    <div className="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-body prose-a:text-primary hover:prose-a:text-primary-dark prose-blockquote:border-info">
+    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-base prose-p:font-normal prose-p:text-text-secondary prose-p:leading-relaxed prose-p:mb-4 prose-headings:mt-6 prose-headings:mb-3 prose-strong:text-text-primary prose-em:text-text-primary prose-code:text-brand-600 prose-code:bg-bg-subtle prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-blockquote:border-brand-500 prose-blockquote:text-text-secondary prose-blockquote:pl-4 prose-ul:text-text-secondary prose-ol:text-text-secondary prose-li:leading-relaxed prose-li:mb-2">
       <PortableText value={value} components={components} />
     </div>
   );

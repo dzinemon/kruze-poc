@@ -1,4 +1,6 @@
 import type { FeatureGridSection as FeatureGridSectionType } from "@kruze-poc/sanity-schemas/src/types";
+import { ArrowRight } from "lucide-react";
+import { KruzePortableText } from "@kruze-poc/ui/portable-text";
 
 const colsClass: Record<number, string> = {
   2: "grid-cols-1 md:grid-cols-2",
@@ -58,25 +60,18 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                 <div className="flex flex-col gap-2">
                   <h3 className="text-xl font-bold text-text-primary">{tile.title}</h3>
                   {Array.isArray(tile.body) && tile.body.length > 0 && (
-                    <p className="text-base font-normal text-text-secondary leading-relaxed">
-                      {tile.body
-                        .filter((b: any) => b._type === "block")
-                        .map((b: any) =>
-                          (b.children ?? []).map((c: any) => c.text ?? "").join("")
-                        )
-                        .join(" ")}
-                    </p>
+                    <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-base prose-p:font-normal prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-text-secondary prose-li:leading-relaxed">
+                      <KruzePortableText value={tile.body} />
+                    </div>
                   )}
                 </div>
                 {tile.link?.url && tile.link?.text && (
                   <a
                     href={tile.link.url}
-                    className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-brand-500 hover:text-brand-600 transition-fast"
+                    className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-brand-500 hover:text-brand-600 transition-fast focus-ring"
                   >
                     {tile.link.text}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                    </svg>
+                    <ArrowRight width={14} height={14} strokeWidth={1.5} />
                   </a>
                 )}
               </div>
