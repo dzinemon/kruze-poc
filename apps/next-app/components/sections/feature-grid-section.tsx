@@ -23,13 +23,13 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                 const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
                 if (b.style === "h2") {
                   return (
-                    <h2 key={b._key} className="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+                    <h2 key={b._key} className="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
                       {text}
                     </h2>
                   );
                 }
                 return (
-                  <p key={b._key} className="text-lg font-normal text-text-secondary leading-relaxed max-w-2xl mx-auto">
+                  <p key={b._key} className="text-lg font-normal text-secondary leading-relaxed max-w-2xl mx-auto">
                     {text}
                   </p>
                 );
@@ -58,9 +58,9 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                   </div>
                 )}
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-bold text-text-primary">{tile.title}</h3>
+                  <h3 className="text-xl font-bold text-primary">{tile.title}</h3>
                   {Array.isArray(tile.body) && tile.body.length > 0 && (
-                    <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-base prose-p:font-normal prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-text-secondary prose-li:leading-relaxed">
+                    <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-primary prose-p:text-base prose-p:font-normal prose-p:text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-secondary prose-li:leading-relaxed">
                       <KruzePortableText value={tile.body} />
                     </div>
                   )}

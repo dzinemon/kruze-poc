@@ -8,7 +8,7 @@ const { title, articles } = Astro.props;
 ---
 
 <div class="rounded-md bg-bg-subtle border border-border-subtle p-5">
-  <h3 class="text-xs font-black tracking-wide uppercase text-text-muted mb-3">{title}</h3>
+  <h3 class="text-xs font-black tracking-wide uppercase text-muted mb-3">{title}</h3>
   <ul class="space-y-3">
     {
       articles.map((article, index) => (

@@ -1,30 +1,30 @@
 export function SidebarCalculator() {
   return (
     <div className="rounded-md bg-bg-subtle border border-border-subtle p-5">
-      <h3 className="text-lg font-bold text-text-primary mb-4">
+      <h3 className="text-lg font-bold text-primary mb-4">
         How Much Tax Return Costs
       </h3>
       <form className="space-y-4">
         <div>
-          <label htmlFor="revenue" className="block text-sm font-bold text-text-secondary mb-1.5">
+          <label htmlFor="revenue" className="block text-sm font-bold text-secondary mb-1.5">
             Annual Revenue
           </label>
           <input
             type="text"
             id="revenue"
             placeholder="e.g. $500,000"
-            className="w-full py-[9px] px-4 text-sm leading-5 text-text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            className="w-full py-[9px] px-4 text-sm leading-5 text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
         <div>
-          <label htmlFor="employees" className="block text-sm font-bold text-text-secondary mb-1.5">
+          <label htmlFor="employees" className="block text-sm font-bold text-secondary mb-1.5">
             Number of Employees
           </label>
           <input
             type="text"
             id="employees"
             placeholder="e.g. 10"
-            className="w-full py-[9px] px-4 text-sm leading-5 text-text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            className="w-full py-[9px] px-4 text-sm leading-5 text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
         <button

@@ -43,7 +43,7 @@ export function CtaStripSection({ section }: { section: CtaStripSectionType }) {
             return (
               <h2
                 key={i}
-                className={`text-4xl lg:text-5xl font-bold tracking-tight ${onDark ? "text-white" : "text-text-primary"}`}
+                className={`text-4xl lg:text-5xl font-bold tracking-tight ${onDark ? "text-white" : "text-primary"}`}
               >
                 {content}
               </h2>
@@ -52,7 +52,7 @@ export function CtaStripSection({ section }: { section: CtaStripSectionType }) {
           return (
             <p
               key={i}
-              className={`text-lg font-normal leading-relaxed ${onDark ? "text-white/80" : "text-text-secondary"}`}
+              className={`text-lg font-normal leading-relaxed ${onDark ? "text-white/80" : "text-secondary"}`}
             >
               {content}
             </p>

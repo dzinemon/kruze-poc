@@ -15,15 +15,15 @@ export function StatsRowSection({ section }: StatsRowSectionProps) {
   return (
     <section className="py-16 px-6 bg-bg-base">
       <div className="max-w-6xl mx-auto">
-        <p className="text-xs text-text-muted mb-8">statsRowBlock — {section.layout ?? "3-col"}</p>
+        <p className="text-xs text-muted mb-8">statsRowBlock — {section.layout ?? "3-col"}</p>
         {section.stats && section.stats.length > 0 && (
           <div className={`grid ${gridClass} gap-8 text-center`}>
             {section.stats.map((stat) => (
               <div key={stat._key}>
                 <p className="text-5xl font-black text-gradient-brand">{stat.value}</p>
-                <p className="text-base font-bold text-text-primary mt-1">{stat.label}</p>
+                <p className="text-base font-bold text-primary mt-1">{stat.label}</p>
                 {stat.footnote && (
-                  <p className="text-sm text-text-muted mt-1">{stat.footnote}</p>
+                  <p className="text-sm text-muted mt-1">{stat.footnote}</p>
                 )}
               </div>
             ))}

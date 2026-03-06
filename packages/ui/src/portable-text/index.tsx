@@ -102,7 +102,7 @@ const components: PortableTextComponents = {
                     {(headerRow.cells || []).map((cell: any) => (
                       <th
                         key={cell._key}
-                        className="px-4 py-3 text-left font-bold bg-neutral-100 dark:bg-bg-emphasis text-text-primary"
+                        className="px-4 py-3 text-left font-bold bg-neutral-100 dark:bg-bg-emphasis text-primary"
                       >
                         <CellContent content={cell.content} />
                       </th>
@@ -114,14 +114,14 @@ const components: PortableTextComponents = {
                 {bodyRows.map((row: any) => (
                   <tr key={row._key} className="bg-white dark:bg-bg-subtle">
                     {hasRowTitles && (
-                      <th className="px-4 py-3 text-left font-normal text-text-primary whitespace-nowrap">
+                      <th className="px-4 py-3 text-left font-normal text-primary whitespace-nowrap">
                         {row.title || ""}
                       </th>
                     )}
                     {(row.cells || []).map((cell: any) => (
                       <td
                         key={cell._key}
-                        className="px-4 py-3 text-text-primary"
+                        className="px-4 py-3 text-primary"
                       >
                         <CellContent content={cell.content} />
                       </td>
@@ -143,7 +143,7 @@ interface KruzePortableTextProps {
 
 export function KruzePortableText({ value }: KruzePortableTextProps) {
   return (
-    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-base prose-p:font-normal prose-p:text-text-secondary prose-p:leading-relaxed prose-p:mb-4 prose-headings:mt-6 prose-headings:mb-3 prose-strong:text-text-primary prose-em:text-text-primary prose-code:text-brand-600 prose-code:bg-bg-subtle prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-blockquote:border-brand-500 prose-blockquote:text-text-secondary prose-blockquote:pl-4 prose-ul:text-text-secondary prose-ol:text-text-secondary prose-li:leading-relaxed prose-li:mb-2">
+    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-primary prose-p:text-base prose-p:font-normal prose-p:text-secondary prose-p:leading-relaxed prose-p:mb-4 prose-headings:mt-6 prose-headings:mb-3 prose-strong:text-primary prose-em:text-primary prose-code:text-brand-600 prose-code:bg-bg-subtle prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-blockquote:border-brand-500 prose-blockquote:text-secondary prose-blockquote:pl-4 prose-ul:text-secondary prose-ol:text-secondary prose-li:leading-relaxed prose-li:mb-2">
       <PortableText value={value} components={components} />
     </div>
   );

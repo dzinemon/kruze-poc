@@ -29,7 +29,7 @@ export async function RelatedPostsSection({ currentSlug, categoryIds, tagIds }: 
       <div className="max-w-7xl mx-auto space-y-12">
         {byCategory && byCategory.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Also Read</h2>
+            <h2 className="text-2xl font-bold text-primary mb-6">Also Read</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {byCategory.map((post) => (
                 <BlogCard key={post._id} post={post} />
@@ -40,7 +40,7 @@ export async function RelatedPostsSection({ currentSlug, categoryIds, tagIds }: 
 
         {byTags.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold text-text-primary mb-6">Related Articles</h2>
+            <h2 className="text-2xl font-bold text-primary mb-6">Related Articles</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {byTags.map((post) => (
                 <BlogCard key={post._id} post={post} />

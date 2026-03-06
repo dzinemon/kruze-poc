@@ -49,11 +49,11 @@ const jsonLd = {
         {contentBlocks.map((b) => {
           const text = (b.children ?? []).map((c) => c.text).join("");
           return b.style === "h2" ? (
-            <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+            <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
               {text}
             </h2>
           ) : (
-            <p class="text-lg font-normal text-text-secondary leading-relaxed">{text}</p>
+            <p class="text-lg font-normal text-secondary leading-relaxed">{text}</p>
           );
         })}
       </div>
@@ -70,13 +70,13 @@ const jsonLd = {
             <h3 class="m-0">
               <button
                 id={triggerId}
-                class="faq-trigger w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-text-primary hover:text-brand-500 focus-ring"
+                class="faq-trigger w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring"
                 aria-expanded="false"
                 aria-controls={panelId}
               >
                 <span class="text-base">{faq.question}</span>
                 <svg
-                  class="faq-chevron flex-shrink-0 text-text-muted"
+                  class="faq-chevron flex-shrink-0 text-muted"
                   width="20"
                   height="20"
                   viewBox="0 0 24 24"
@@ -104,7 +104,7 @@ const jsonLd = {
             >
               <div class="px-6 pb-5 pt-0">
                 <div class="border-t border-border-subtle pt-4">
-                  <p class="text-base font-normal text-text-secondary leading-relaxed">
+                  <p class="text-base font-normal text-secondary leading-relaxed">
                     {extractText(faq.answer)}
                   </p>
                 </div>

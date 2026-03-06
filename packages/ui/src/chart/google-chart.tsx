@@ -67,10 +67,10 @@ function getDefaultOptions(isMobile: boolean) {
     },
     chartArea: {
       backgroundColor: "transparent",
-      top: 20,
-      right: 30,
-      bottom: 80,
-      left: isMobile ? 70 : 60,
+      top: isMobile ? 20 : 40,
+      right: 0,
+      bottom: isMobile ? 60 : 80,
+      left: isMobile ? 40 : 60,
     },
   };
 }
@@ -240,14 +240,42 @@ export function GoogleChart({
 
   return (
     <div className="flex flex-col gap-4">
-      {title && <h3 className="text-xl font-bold text-text-primary">{title}</h3>}
+      <style>{`
+        .wm-kruze {
+          position: relative;
+        }
+        .wm-kruze::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-image: url(/img/wm/logo-kruze.png);
+          background-repeat: no-repeat;
+          background-size: 120px;
+          background-position: center;
+          opacity: 0;
+          pointer-events: none;
+        }
+        @media (min-width: 768px) {
+          .wm-kruze::before {
+            background-size: 196px;
+          }
+        }
+        .wm-kruze.chart-loaded::before {
+          transition: opacity 500ms 750ms ease-in;
+          opacity: 0.15;
+        }
+      `}</style>
+      {title && <h3 className="text-xl font-bold text-primary">{title}</h3>}
       <div
         ref={containerRef}
         style={{
           width: "100%",
           aspectRatio,
         }}
-        className="bg-bg-base"
+        className={`bg-bg-base wm-kruze${hasLoaded ? " chart-loaded" : ""}`}
       />
       {error && (
         <div className="rounded-sm bg-danger-light border border-danger/30 text-danger-dark px-4 py-3 text-sm">

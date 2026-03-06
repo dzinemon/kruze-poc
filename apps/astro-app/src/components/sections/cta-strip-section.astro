@@ -21,13 +21,13 @@ const bgClass = bg === "light" ? "bg-neutral-50" : bg === "brand" ? "" : "bg-whi
       const text = (block.children ?? []).map((c: any) => c.text ?? "").join("");
       if (block.style === "h2") {
         return (
-          <h2 class={`text-4xl lg:text-5xl font-bold tracking-tight ${onDark ? "text-white" : "text-text-primary"}`}>
+          <h2 class={`text-4xl lg:text-5xl font-bold tracking-tight ${onDark ? "text-white" : "text-primary"}`}>
             {text}
           </h2>
         );
       }
       return (
-        <p class={`text-lg font-normal leading-relaxed ${onDark ? "text-white/80" : "text-text-secondary"}`}>
+        <p class={`text-lg font-normal leading-relaxed ${onDark ? "text-white/80" : "text-secondary"}`}>
           {text}
         </p>
       );

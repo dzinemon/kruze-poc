@@ -10,7 +10,7 @@ const { section } = Astro.props;
 
 <section class="py-12 px-6 bg-bg-base">
   <div class="max-w-6xl mx-auto">
-    <p class="text-xs text-text-muted mb-6">pressLogosBlock — {section.variant ?? "press"}</p>
+    <p class="text-xs text-muted mb-6">pressLogosBlock — {section.variant ?? "press"}</p>
     {section.logos && section.logos.length > 0 && (
       <div class="flex flex-wrap items-center justify-center gap-8">
         {section.logos.map((logo) => (
@@ -22,7 +22,7 @@ const { section } = Astro.props;
                 class="h-8 object-contain grayscale hover:grayscale-0 transition-all"
               />
             ) : (
-              <span class="text-sm text-text-secondary font-bold">{logo.name}</span>
+              <span class="text-sm text-secondary font-bold">{logo.name}</span>
             )}
           </div>
         ))}

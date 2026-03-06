@@ -21,11 +21,11 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             <span className="size-1.5 rounded-full bg-brand-500" />
             {eyebrow}
           </span>
-          <h2 className="text-4xl font-bold tracking-tight text-text-primary">
+          <h2 className="text-4xl font-bold tracking-tight text-primary">
             {headingStart}
             <span className="text-gradient-brand">{gradientWord}</span>
           </h2>
-          <p className="text-base font-normal text-text-secondary leading-relaxed">
+          <p className="text-base font-normal text-secondary leading-relaxed">
             {isNewsletter
               ? "Get startup finance tips, tax deadlines, and CFO insights delivered to your inbox."
               : "Talk to a Kruze CFO about your startup's accounting, taxes, and financial strategy."}
@@ -39,7 +39,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             {/* First name + Last name */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="firstName" className="text-sm font-bold text-text-primary">
+                <label htmlFor="firstName" className="text-sm font-bold text-primary">
                   First name
                 </label>
                 <input
@@ -47,11 +47,11 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                   type="text"
                   autoComplete="given-name"
                   placeholder="Jane"
-                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="lastName" className="text-sm font-bold text-text-primary">
+                <label htmlFor="lastName" className="text-sm font-bold text-primary">
                   Last name
                 </label>
                 <input
@@ -59,14 +59,14 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                   type="text"
                   autoComplete="family-name"
                   placeholder="Smith"
-                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
                 />
               </div>
             </div>
 
             {/* Company name */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="company" className="text-sm font-bold text-text-primary">
+              <label htmlFor="company" className="text-sm font-bold text-primary">
                 Company name
               </label>
               <input
@@ -74,13 +74,13 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                 type="text"
                 autoComplete="organization"
                 placeholder="Acme Inc."
-                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
               />
             </div>
 
             {/* Email */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="email" className="text-sm font-bold text-text-primary">
+              <label htmlFor="email" className="text-sm font-bold text-primary">
                 Email address
               </label>
               <input
@@ -88,35 +88,35 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                 type="email"
                 autoComplete="email"
                 placeholder="jane@acme.com"
-                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
               />
             </div>
 
             {/* Phone */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="phone" className="text-sm font-bold text-text-primary">
-                Phone <span className="font-normal text-text-muted">(optional)</span>
+              <label htmlFor="phone" className="text-sm font-bold text-primary">
+                Phone <span className="font-normal text-muted">(optional)</span>
               </label>
               <input
                 id="phone"
                 type="tel"
                 autoComplete="tel"
                 placeholder="+1 (415) 000-0000"
-                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
               />
             </div>
 
             {/* Message */}
             {!isNewsletter && (
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="message" className="text-sm font-bold text-text-primary">
-                  Message <span className="font-normal text-text-muted">(optional)</span>
+                <label htmlFor="message" className="text-sm font-bold text-primary">
+                  Message <span className="font-normal text-muted">(optional)</span>
                 </label>
                 <textarea
                   id="message"
                   rows={4}
                   placeholder="Tell us about your startup and what you need help with…"
-                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
+                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
                 />
               </div>
             )}
@@ -127,7 +127,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                 type="checkbox"
                 className="mt-0.5 size-4 rounded-xs border-border-default accent-brand-500 focus-ring cursor-pointer"
               />
-              <span className="text-sm font-normal text-text-secondary leading-relaxed">
+              <span className="text-sm font-normal text-secondary leading-relaxed">
                 I agree to receive marketing emails from Kruze Consulting. You can unsubscribe at any time.
               </span>
             </label>
@@ -141,7 +141,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             </button>
 
             {/* Privacy note */}
-            <p className="text-xs text-text-muted text-center">
+            <p className="text-xs text-muted text-center">
               By submitting, you agree to our{" "}
               <span className="text-brand-500 underline cursor-pointer">Privacy Policy</span>.
               We never share your data.

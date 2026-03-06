@@ -53,7 +53,7 @@ export function BlogCard({ post }: BlogCardProps) {
       {/* Content */}
       <div className="p-5 flex flex-col flex-1 gap-3">
         {category && (
-          <span className="self-start px-2 py-0.5 rounded-full bg-brand-100 dark:bg-brand-900/40 text-xs font-black text-brand-700 dark:text-brand-300">
+          <span className="self-start px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-900/40 text-xs font-black text-brand-700 dark:text-brand-300">
             {category.title}
           </span>
         )}

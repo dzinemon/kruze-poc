@@ -8,7 +8,7 @@ interface SidebarArticleListProps {
 export function SidebarArticleList({ title, articles }: SidebarArticleListProps) {
   return (
     <div className="rounded-md bg-bg-subtle border border-border-subtle p-5">
-      <h3 className="text-xs font-black tracking-wide uppercase text-text-muted mb-3">{title}</h3>
+      <h3 className="text-xs font-black tracking-wide uppercase text-muted mb-3">{title}</h3>
       <ul className="space-y-3">
         {articles.map((article, index) => (
           <li key={index} className={index > 0 ? "border-t border-border-subtle pt-3" : ""}>

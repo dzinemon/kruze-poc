@@ -11,22 +11,22 @@ export function BlogBreadcrumbs({ title }: BlogBreadcrumbsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <ol className="flex items-center gap-1 text-sm flex-wrap">
           <li>
-            <Link href="/" className="text-text-muted hover:text-brand-500 transition-fast focus-ring rounded-sm">
+            <Link href="/" className="text-muted hover:text-brand-500 transition-fast focus-ring rounded-sm">
               Home
             </Link>
           </li>
           <li aria-hidden="true">
-            <ChevronRight size={14} strokeWidth={1.5} className="text-text-muted" />
+            <ChevronRight size={14} strokeWidth={1.5} className="text-muted" />
           </li>
           <li>
-            <Link href="/blog" className="text-text-muted hover:text-brand-500 transition-fast focus-ring rounded-sm">
+            <Link href="/blog" className="text-muted hover:text-brand-500 transition-fast focus-ring rounded-sm">
               Blog
             </Link>
           </li>
           <li aria-hidden="true">
-            <ChevronRight size={14} strokeWidth={1.5} className="text-text-muted" />
+            <ChevronRight size={14} strokeWidth={1.5} className="text-muted" />
           </li>
-          <li aria-current="page" className="max-w-xs truncate text-text-secondary font-bold">
+          <li aria-current="page" className="text-secondary font-bold">
             {title}
           </li>
         </ol>

@@ -10,20 +10,20 @@ const { section } = Astro.props;
 
 <section class="py-16 px-6 bg-bg-subtle">
   <div class="max-w-6xl mx-auto">
-    <p class="text-xs text-text-muted mb-8">newsBlock</p>
+    <p class="text-xs text-muted mb-8">newsBlock</p>
     {section.items && section.items.length > 0 && (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {section.items.map((item) => (
           <div class="rounded-md bg-bg-base border border-border-subtle p-6">
-            <p class="text-sm text-text-muted">
+            <p class="text-sm text-muted">
               {item.publication}{item.date ? ` · ${item.date}` : ""}
             </p>
             {item.url ? (
-              <a href={item.url} class="text-base font-bold text-text-primary hover:text-brand-500 mt-2 block">
+              <a href={item.url} class="text-base font-bold text-primary hover:text-brand-500 mt-2 block">
                 {item.title}
               </a>
             ) : (
-              <p class="text-base font-bold text-text-primary mt-2">{item.title}</p>
+              <p class="text-base font-bold text-primary mt-2">{item.title}</p>
             )}
           </div>
         ))}

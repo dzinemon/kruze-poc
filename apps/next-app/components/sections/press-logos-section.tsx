@@ -8,7 +8,7 @@ export function PressLogosSection({ section }: PressLogosSectionProps) {
   return (
     <section className="py-12 px-6 bg-bg-base">
       <div className="max-w-6xl mx-auto">
-        <p className="text-xs text-text-muted mb-6">pressLogosBlock — {section.variant ?? "press"}</p>
+        <p className="text-xs text-muted mb-6">pressLogosBlock — {section.variant ?? "press"}</p>
         {section.logos && section.logos.length > 0 && (
           <div className="flex flex-wrap items-center justify-center gap-8">
             {section.logos.map((logo) => (
@@ -20,7 +20,7 @@ export function PressLogosSection({ section }: PressLogosSectionProps) {
                     className="h-8 object-contain grayscale hover:grayscale-0 transition-all"
                   />
                 ) : (
-                  <span className="text-sm text-text-secondary font-bold">{logo.name}</span>
+                  <span className="text-sm text-secondary font-bold">{logo.name}</span>
                 )}
               </div>
             ))}

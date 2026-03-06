@@ -60,14 +60,14 @@ export function FaqSection({ section }: FaqSectionProps) {
                 return (
                   <h2
                     key={b._key}
-                    className="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary"
+                    className="text-4xl lg:text-5xl font-bold tracking-tight text-primary"
                   >
                     {text}
                   </h2>
                 );
               }
               return (
-                <p key={b._key} className="text-lg font-normal text-text-secondary leading-relaxed">
+                <p key={b._key} className="text-lg font-normal text-secondary leading-relaxed">
                   {text}
                 </p>
               );
@@ -91,7 +91,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                 <h3 className="m-0">
                   <button
                     id={triggerId}
-                    className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-text-primary hover:text-brand-500 focus-ring"
+                    className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring"
                     style={{ transition: "color var(--transition-fast)" }}
                     onClick={() => toggle(i)}
                     aria-expanded={isOpen}
@@ -102,7 +102,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                       width={20}
                       height={20}
                       strokeWidth={1.5}
-                      className="flex-shrink-0 text-text-muted"
+                      className="flex-shrink-0 text-muted"
                       aria-hidden="true"
                       style={{
                         transition: "transform var(--transition-base)",
@@ -127,7 +127,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                 >
                   <div className="px-6 pb-5 pt-0">
                     <div className="border-t border-border-subtle pt-4">
-                      <p className="text-base font-normal text-text-secondary leading-relaxed">
+                      <p className="text-base font-normal text-secondary leading-relaxed">
                         {extractText(faq.answer)}
                       </p>
                     </div>

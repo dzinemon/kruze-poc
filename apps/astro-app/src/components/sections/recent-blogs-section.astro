@@ -47,13 +47,13 @@ function formatDate(dateStr: string): string {
             const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
             if (b.style === "h2") {
               return (
-                <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+                <h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
                   {text}
                 </h2>
               );
             }
             return (
-              <p class="text-lg font-normal text-text-secondary leading-relaxed max-w-2xl mx-auto">
+              <p class="text-lg font-normal text-secondary leading-relaxed max-w-2xl mx-auto">
                 {text}
               </p>
             );
@@ -79,19 +79,19 @@ function formatDate(dateStr: string): string {
               </div>
             )}
             <div class="p-5 flex flex-col gap-2 flex-1">
-              <p class="text-xs font-bold text-text-muted uppercase tracking-wider">
+              <p class="text-xs font-bold text-muted uppercase tracking-wider">
                 {formatDate(post.date)}
               </p>
-              <h3 class="text-xl font-bold text-text-primary leading-snug group-hover:text-brand-500 duration-300 transition-transform">
+              <h3 class="text-xl font-bold text-primary leading-snug group-hover:text-brand-500 duration-300 transition-transform">
                 {post.title}
               </h3>
               {post.description && (
-                <p class="text-sm font-normal text-text-secondary leading-relaxed line-clamp-3">
+                <p class="text-sm font-normal text-secondary leading-relaxed line-clamp-3">
                   {post.description}
                 </p>
               )}
               <div class="mt-auto pt-3 border-t border-border-subtle flex items-center justify-between gap-4">
-                <p class="text-xs font-bold text-text-muted truncate">
+                <p class="text-xs font-bold text-muted truncate">
                   {post.author?.fullName ?? ""}
                 </p>
                 <span class="inline-flex items-center gap-1 text-xs font-bold text-brand-500 group-hover:text-brand-600 duration-300 transition-transform shrink-0">
@@ -106,7 +106,7 @@ function formatDate(dateStr: string): string {
         ))}
       </div>
     ) : (
-      <p class="text-center text-text-muted text-sm">No posts found.</p>
+      <p class="text-center text-muted text-sm">No posts found.</p>
     )}
   </div>
 </section>

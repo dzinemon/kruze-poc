@@ -22,10 +22,10 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
         <span class="size-1.5 rounded-full bg-brand-500"></span>
         {eyebrow}
       </span>
-      <h2 class="text-4xl font-bold tracking-tight text-text-primary">
+      <h2 class="text-4xl font-bold tracking-tight text-primary">
         {headingStart}<span class="text-gradient-brand">{gradientWord}</span>
       </h2>
-      <p class="text-base font-normal text-text-secondary leading-relaxed">
+      <p class="text-base font-normal text-secondary leading-relaxed">
         {isNewsletter
           ? "Get startup finance tips, tax deadlines, and CFO insights delivered to your inbox."
           : "Talk to a Kruze CFO about your startup's accounting, taxes, and financial strategy."}
@@ -39,76 +39,76 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
         <!-- First name + Last name -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="flex flex-col gap-1.5">
-            <label for="firstName" class="text-sm font-bold text-text-primary">First name</label>
+            <label for="firstName" class="text-sm font-bold text-primary">First name</label>
             <input
               id="firstName"
               type="text"
               autocomplete="given-name"
               placeholder="Jane"
-              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
             />
           </div>
           <div class="flex flex-col gap-1.5">
-            <label for="lastName" class="text-sm font-bold text-text-primary">Last name</label>
+            <label for="lastName" class="text-sm font-bold text-primary">Last name</label>
             <input
               id="lastName"
               type="text"
               autocomplete="family-name"
               placeholder="Smith"
-              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
             />
           </div>
         </div>
 
         <!-- Company name -->
         <div class="flex flex-col gap-1.5">
-          <label for="company" class="text-sm font-bold text-text-primary">Company name</label>
+          <label for="company" class="text-sm font-bold text-primary">Company name</label>
           <input
             id="company"
             type="text"
             autocomplete="organization"
             placeholder="Acme Inc."
-            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
 
         <!-- Email -->
         <div class="flex flex-col gap-1.5">
-          <label for="email" class="text-sm font-bold text-text-primary">Email address</label>
+          <label for="email" class="text-sm font-bold text-primary">Email address</label>
           <input
             id="email"
             type="email"
             autocomplete="email"
             placeholder="jane@acme.com"
-            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
 
         <!-- Phone -->
         <div class="flex flex-col gap-1.5">
-          <label for="phone" class="text-sm font-bold text-text-primary">
-            Phone <span class="font-normal text-text-muted">(optional)</span>
+          <label for="phone" class="text-sm font-bold text-primary">
+            Phone <span class="font-normal text-muted">(optional)</span>
           </label>
           <input
             id="phone"
             type="tel"
             autocomplete="tel"
             placeholder="+1 (415) 000-0000"
-            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
 
         <!-- Message (consultation only) -->
         {!isNewsletter && (
           <div class="flex flex-col gap-1.5">
-            <label for="message" class="text-sm font-bold text-text-primary">
-              Message <span class="font-normal text-text-muted">(optional)</span>
+            <label for="message" class="text-sm font-bold text-primary">
+              Message <span class="font-normal text-muted">(optional)</span>
             </label>
             <textarea
               id="message"
               rows={4}
               placeholder="Tell us about your startup and what you need help with…"
-              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
             ></textarea>
           </div>
         )}
@@ -119,7 +119,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
             type="checkbox"
             class="mt-0.5 size-4 rounded-xs border-border-default accent-brand-500 focus-ring cursor-pointer"
           />
-          <span class="text-sm font-normal text-text-secondary leading-relaxed">
+          <span class="text-sm font-normal text-secondary leading-relaxed">
             I agree to receive marketing emails from Kruze Consulting. You can unsubscribe at any time.
           </span>
         </label>
@@ -133,7 +133,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
         </button>
 
         <!-- Privacy note -->
-        <p class="text-xs text-text-muted text-center">
+        <p class="text-xs text-muted text-center">
           By submitting, you agree to our
           <span class="text-brand-500 underline cursor-pointer">Privacy Policy</span>.
           We never share your data.

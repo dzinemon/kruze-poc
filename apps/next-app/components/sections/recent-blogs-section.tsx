@@ -45,13 +45,13 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
                 const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
                 if (b.style === "h2") {
                   return (
-                    <h2 key={i} className="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+                    <h2 key={i} className="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
                       {text}
                     </h2>
                   );
                 }
                 return (
-                  <p key={i} className="text-lg font-normal text-text-secondary leading-relaxed max-w-2xl mx-auto">
+                  <p key={i} className="text-lg font-normal text-secondary leading-relaxed max-w-2xl mx-auto">
                     {text}
                   </p>
                 );
@@ -78,19 +78,19 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
                   </div>
                 )}
                 <div className="p-5 flex flex-col gap-2 flex-1">
-                  <p className="text-xs font-bold text-text-muted uppercase tracking-wider">
+                  <p className="text-xs font-bold text-muted uppercase tracking-wider">
                     {formatDate(post.date)}
                   </p>
-                  <h3 className="text-xl font-bold text-text-primary leading-snug group-hover:text-brand-500 duration-300 transition-transform">
+                  <h3 className="text-xl font-bold text-primary leading-snug group-hover:text-brand-500 duration-300 transition-transform">
                     {post.title}
                   </h3>
                   {post.description && (
-                    <p className="text-sm font-normal text-text-secondary leading-relaxed line-clamp-3">
+                    <p className="text-sm font-normal text-secondary leading-relaxed line-clamp-3">
                       {post.description}
                     </p>
                   )}
                   <div className="mt-auto pt-3 border-t border-border-subtle flex items-center justify-between gap-4">
-                    <p className="text-xs font-bold text-text-muted truncate">
+                    <p className="text-xs font-bold text-muted truncate">
                       {post.author?.fullName ?? ""}
                     </p>
                     <span className="inline-flex items-center gap-1 text-xs font-bold text-brand-500 group-hover:text-brand-600 duration-300 transition-transform shrink-0">
@@ -105,7 +105,7 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
             ))}
           </div>
         ) : (
-          <p className="text-center text-text-muted text-sm">No posts found.</p>
+          <p className="text-center text-muted text-sm">No posts found.</p>
         )}
       </div>
     </section>

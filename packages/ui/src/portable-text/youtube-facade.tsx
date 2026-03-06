@@ -52,7 +52,7 @@ export function YouTubeFacade({ videoId, caption }: YouTubeFacadeProps) {
           />
         </div>
         {caption && (
-          <p className="mt-2 text-center text-sm text-text-secondary">
+          <p className="mt-2 text-center text-sm text-secondary">
             {caption}
           </p>
         )}
@@ -91,7 +91,7 @@ export function YouTubeFacade({ videoId, caption }: YouTubeFacadeProps) {
         </div>
       </button>
       {caption && (
-        <p className="mt-2 text-center text-sm text-text-secondary">{caption}</p>
+        <p className="mt-2 text-center text-sm text-secondary">{caption}</p>
       )}
     </div>
   );
