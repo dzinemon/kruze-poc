@@ -5,3 +5,25 @@
 @config "../tailwind.config.ts";
 
 @source "../../packages/ui/src/**/*.{ts,tsx}";
+
+/* Portable Text rich table — rounded corners via overflow-x:auto clipping */
+.kruze-table {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-default);
+}
+
+.kruze-table table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+.kruze-table th,
+.kruze-table td {
+  border: 1px solid var(--color-border-default);
+}
+
+.kruze-table thead tr:first-child > * { border-top: none; }
+.kruze-table tbody tr:last-child > * { border-bottom: none; }
+.kruze-table tr > *:first-child { border-left: none; }
+.kruze-table tr > *:last-child { border-right: none; }

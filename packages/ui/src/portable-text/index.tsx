@@ -6,6 +6,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import { GoogleChart } from "../chart";
 import { CtaBlock } from "./cta-block";
 import { AlertBlock } from "./alert-block";
+import { YouTubeFacade } from "./youtube-facade";
 import { responsiveImageData, lqipStyle } from "../image/sanity-image-url";
 
 const components: PortableTextComponents = {
@@ -58,7 +59,7 @@ const components: PortableTextComponents = {
         <GoogleChart
           jsonConfig={value.jsonConfig}
           title={value.title}
-          height={value.height}
+          aspectRatio={value.aspectRatio ?? "4/3"}
         />
       </div>
     ),
@@ -76,17 +77,63 @@ const components: PortableTextComponents = {
     ),
 
     youtubeBlock: ({ value }) => (
-      <div className="my-8 aspect-video">
-        <iframe
-          src={`https://www.youtube-nocookie.com/embed/${value.videoId}`}
-          title={value.caption || "YouTube video"}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full rounded-md"
-          loading="lazy"
-        />
-      </div>
+      <YouTubeFacade videoId={value.videoId} caption={value.caption} />
     ),
+
+    richTableBlock: ({ value }) => {
+      const hasColTitles = value.hasColumnTitles !== false;
+
+      const CellContent = ({ content }: { content: any[] }) => (
+        <PortableText value={content || []} components={components} />
+      );
+
+      const bodyRows = hasColTitles ? value.rows?.slice(1) ?? [] : value.rows ?? [];
+      const headerRow = hasColTitles ? value.rows?.[0] : null;
+      const hasRowTitles = value.hasRowTitles !== false && bodyRows.some((row: any) => row.title);
+
+      return (
+        <div className="my-8 not-prose">
+          <div className="kruze-table">
+            <table className="text-sm">
+              {headerRow && (
+                <thead>
+                  <tr>
+                    {hasRowTitles && <th className="px-4 py-3 bg-neutral-100 dark:bg-bg-emphasis" />}
+                    {(headerRow.cells || []).map((cell: any) => (
+                      <th
+                        key={cell._key}
+                        className="px-4 py-3 text-left font-bold bg-neutral-100 dark:bg-bg-emphasis text-text-primary"
+                      >
+                        <CellContent content={cell.content} />
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+              )}
+              <tbody>
+                {bodyRows.map((row: any) => (
+                  <tr key={row._key} className="bg-white dark:bg-bg-subtle">
+                    {hasRowTitles && (
+                      <th className="px-4 py-3 text-left font-normal text-text-primary whitespace-nowrap">
+                        {row.title || ""}
+                      </th>
+                    )}
+                    {(row.cells || []).map((cell: any) => (
+                      <td
+                        key={cell._key}
+                        className="px-4 py-3 text-text-primary"
+                      >
+                        <CellContent content={cell.content} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    },
   },
 };
 

@@ -63,7 +63,7 @@ export interface Testimonial {
 export interface ChartBlock {
   _type: "chartBlock";
   title?: string;
-  height?: number;
+  aspectRatio?: string; // e.g., "4/3" (default), "16/9", "1/1"
   jsonConfig: string; // Raw JSON: { "type": "ColumnChart", "data": [...], "options": {...} }
 }
 
@@ -86,6 +86,27 @@ export interface YouTubeBlock {
   caption?: string;
 }
 
+export interface RichTableCell {
+  _key: string;
+  _type: "richTableCell";
+  content?: any[];
+}
+
+export interface RichTableRow {
+  _key: string;
+  _type: "richTableRow";
+  title?: string;
+  cells: RichTableCell[];
+}
+
+export interface RichTableBlock {
+  _key: string;
+  _type: "richTableBlock";
+  rows: RichTableRow[];
+  hasColumnTitles?: boolean;
+  hasRowTitles?: boolean;
+}
+
 export interface BlogPost {
   _id: string;
   title: string;
@@ -99,11 +120,6 @@ export interface BlogPost {
   topicCategories?: Category[];
   topicTags?: Tag[];
   tableOfContents?: boolean;
-  heroCta?: {
-    text?: string;
-    url?: string;
-    modalId?: string;
-  };
   body?: any[]; // Portable Text blocks
   readTime?: number; // estimated minutes, computed from body via GROQ
   seo?: {

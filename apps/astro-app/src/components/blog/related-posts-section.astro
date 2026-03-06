@@ -1,0 +1,56 @@
+---
+import { sanityClient } from "../../lib/sanity";
+import { relatedPostsQuery, relatedByTagsQuery } from "@kruze-poc/groq-queries";
+import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
+import BlogCard from "../blog-card.astro";
+
+interface Props {
+  currentSlug: string;
+  categoryIds: string[];
+  tagIds: string[];
+}
+
+const { currentSlug, categoryIds, tagIds } = Astro.props;
+
+const [byCategory, byTagsRaw] = await Promise.all([
+  categoryIds.length > 0
+    ? sanityClient.fetch<BlogPost[]>(relatedPostsQuery, { slug: currentSlug, categoryIds })
+    : Promise.resolve([] as BlogPost[]),
+  tagIds.length > 0
+    ? sanityClient.fetch<BlogPost[]>(relatedByTagsQuery, { slug: currentSlug, tagIds })
+    : Promise.resolve([] as BlogPost[]),
+]);
+
+const categoryPostIds = new Set(byCategory.map((p) => p._id));
+const byTags = byTagsRaw.filter((p) => !categoryPostIds.has(p._id));
+
+const hasContent = byCategory.length > 0 || byTags.length > 0;
+---
+
+{hasContent && (
+  <section class="bg-neutral-50 dark:bg-[var(--color-bg-subtle)] py-16 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto space-y-12">
+      {byCategory.length > 0 && (
+        <div>
+          <h2 class="text-2xl font-bold text-text-primary mb-6">Also Read</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {byCategory.map((post) => (
+              <BlogCard post={post} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {byTags.length > 0 && (
+        <div>
+          <h2 class="text-2xl font-bold text-text-primary mb-6">Related Articles</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {byTags.map((post) => (
+              <BlogCard post={post} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+)}

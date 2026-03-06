@@ -1,35 +1,35 @@
 export function SidebarCalculator() {
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-      <h3 className="text-lg font-black text-body mb-4">
+    <div className="rounded-md bg-bg-subtle border border-border-subtle p-5">
+      <h3 className="text-lg font-bold text-text-primary mb-4">
         How Much Tax Return Costs
       </h3>
       <form className="space-y-4">
         <div>
-          <label htmlFor="revenue" className="block text-sm font-bold text-secondary mb-2">
+          <label htmlFor="revenue" className="block text-sm font-bold text-text-secondary mb-1.5">
             Annual Revenue
           </label>
           <input
             type="text"
             id="revenue"
             placeholder="e.g. $500,000"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full py-[9px] px-4 text-sm leading-5 text-text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
         <div>
-          <label htmlFor="employees" className="block text-sm font-bold text-secondary mb-2">
+          <label htmlFor="employees" className="block text-sm font-bold text-text-secondary mb-1.5">
             Number of Employees
           </label>
           <input
             type="text"
             id="employees"
             placeholder="e.g. 10"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full py-[9px] px-4 text-sm leading-5 text-text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
         <button
           type="button"
-          className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-btn transition-colors"
+          className="w-full py-2.5 px-5 text-sm font-bold text-white rounded-sm bg-brand-500 hover:bg-brand-600 shadow-sm hover:shadow-brand transition-fast focus-ring"
         >
           Calculate
         </button>

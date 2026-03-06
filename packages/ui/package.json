@@ -9,6 +9,7 @@
     ".": "./src/index.ts",
     "./portable-text": "./src/portable-text/index.tsx",
     "./portable-text/to-html": "./src/portable-text/to-html.ts",
+    "./portable-text/youtube-facade": "./src/portable-text/youtube-facade.tsx",
     "./chart": "./src/chart/index.ts",
     "./blocks/*": "./src/blocks/*.tsx",
     "./image": "./src/image/index.ts"
@@ -23,6 +24,7 @@
     "@sanity/image-url": "^2.0.3"
   },
   "peerDependencies": {
+    "lucide-react": "^0.576.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -30,6 +32,7 @@
     "@types/node": "^25.3.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "lucide-react": "^0.576.0",
     "typescript": "^5.7.3"
   }
 }

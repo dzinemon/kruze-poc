@@ -12,20 +12,83 @@ interface GoogleChartConfig {
 export interface GoogleChartProps {
   jsonConfig: string; // Raw JSON string: { type, data, options }
   title?: string;
-  height?: number;
+  aspectRatio?: string; // e.g. "4/3", "16/9", "1/1" — defaults to "4/3"
+}
+
+/**
+ * Default chart options matching production patterns
+ * Applied as base layer before CMS overrides
+ */
+function getDefaultOptions(isMobile: boolean) {
+  return {
+    backgroundColor: "transparent",
+    lineWidth: isMobile ? 3 : 4,
+    colors: [
+      "#2C5B7A",
+      "#D47440",
+      "#32662C",
+      "#4697CA",
+      "#8F338A",
+      "#62A040",
+      "#4285f4",
+      "#ff6565",
+      "#E8A838",
+      "#3A9E8F",
+    ],
+    legend: {
+      position: "bottom",
+      alignment: "center",
+      maxLines: 3,
+      textStyle: { fontSize: isMobile ? 13 : 14 },
+    },
+    animation: {
+      startup: true,
+      duration: 1000,
+      easing: "out",
+    },
+    vAxis: {
+      textStyle: {
+        fontSize: isMobile ? 12 : 14,
+        color: "#024D7C",
+        bold: true,
+      },
+      gridlines: { color: "#E9E9E9" },
+      titleTextStyle: { fontSize: isMobile ? 12 : 14, bold: true },
+    },
+    hAxis: {
+      viewWindowMode: "pretty",
+      textStyle: {
+        fontSize: isMobile ? 12 : 14,
+        color: "#434344",
+        bold: true,
+      },
+      gridlines: { color: "#E9E9E9" },
+      format: "####",
+    },
+    chartArea: {
+      backgroundColor: "transparent",
+      top: 20,
+      right: 30,
+      bottom: 80,
+      left: isMobile ? 70 : 60,
+    },
+  };
 }
 
 /**
  * GoogleChart component
  * Lazily loads Google Charts library and renders a chart from JSON config
  * Uses IntersectionObserver to defer script loading until chart is near viewport
+ * Applies default options (brand colors, animations, responsive sizing) with CMS override layer
+ * Responsive aspect ratio (default 4:3) scales with container width
  */
 export function GoogleChart({
   jsonConfig,
   title,
-  height = 400,
+  aspectRatio = "4/3",
 }: GoogleChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastIsMobileRef = useRef<boolean | null>(null);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,6 +115,23 @@ export function GoogleChart({
       observer.disconnect();
     };
   }, [jsonConfig, hasLoaded]);
+
+  // Re-render chart on window resize if isMobile breakpoint changes
+  useEffect(() => {
+    const handleResize = () => {
+      const nowMobile = window.innerWidth < 768;
+      if (
+        hasLoaded &&
+        lastIsMobileRef.current !== null &&
+        nowMobile !== lastIsMobileRef.current
+      ) {
+        renderChart();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [hasLoaded]);
 
   const renderChart = async () => {
     if (!containerRef.current) return;
@@ -87,9 +167,69 @@ export function GoogleChart({
         return;
       }
 
+      // Determine responsive breakpoint
+      const isMobile = window.innerWidth < 768;
+      lastIsMobileRef.current = isMobile;
+
+      // Deep merge: defaults + CMS overrides
+      const cmsOptions = (config.options ?? {}) as Record<string, any>;
+      const defaults = getDefaultOptions(isMobile);
+
+      const mergedOptions = {
+        ...defaults,
+        ...cmsOptions,
+        // colors: CMS completely replaces defaults (not merged)
+        colors: cmsOptions.colors ?? defaults.colors,
+        // Nested objects: one level deep merge
+        legend: {
+          ...defaults.legend,
+          ...(cmsOptions.legend ?? {}),
+          textStyle: {
+            ...defaults.legend.textStyle,
+            ...(cmsOptions.legend?.textStyle ?? {}),
+          },
+        },
+        animation: {
+          ...defaults.animation,
+          ...(cmsOptions.animation ?? {}),
+        },
+        vAxis: {
+          ...defaults.vAxis,
+          ...(cmsOptions.vAxis ?? {}),
+          textStyle: {
+            ...defaults.vAxis.textStyle,
+            ...(cmsOptions.vAxis?.textStyle ?? {}),
+          },
+          gridlines: {
+            ...defaults.vAxis.gridlines,
+            ...(cmsOptions.vAxis?.gridlines ?? {}),
+          },
+          titleTextStyle: {
+            ...defaults.vAxis.titleTextStyle,
+            ...(cmsOptions.vAxis?.titleTextStyle ?? {}),
+          },
+        },
+        hAxis: {
+          ...defaults.hAxis,
+          ...(cmsOptions.hAxis ?? {}),
+          textStyle: {
+            ...defaults.hAxis.textStyle,
+            ...(cmsOptions.hAxis?.textStyle ?? {}),
+          },
+          gridlines: {
+            ...defaults.hAxis.gridlines,
+            ...(cmsOptions.hAxis?.gridlines ?? {}),
+          },
+        },
+        chartArea: {
+          ...defaults.chartArea,
+          ...(cmsOptions.chartArea ?? {}),
+        },
+      };
+
       // Instantiate and draw chart
       const chart = new ChartClass(containerRef.current);
-      chart.draw(dataTable, config.options || {});
+      chart.draw(dataTable, mergedOptions);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to render chart";
@@ -105,7 +245,7 @@ export function GoogleChart({
         ref={containerRef}
         style={{
           width: "100%",
-          height: `${height}px`,
+          aspectRatio,
         }}
         className="bg-bg-base"
       />

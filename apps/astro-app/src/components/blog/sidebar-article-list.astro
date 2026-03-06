@@ -7,15 +7,15 @@ interface Props {
 const { title, articles } = Astro.props;
 ---
 
-<div class="bg-white border border-gray-200 rounded-lg p-6">
-  <h3 class="text-lg font-black text-body mb-4">{title}</h3>
+<div class="rounded-md bg-bg-subtle border border-border-subtle p-5">
+  <h3 class="text-xs font-black tracking-wide uppercase text-text-muted mb-3">{title}</h3>
   <ul class="space-y-3">
     {
-      articles.map((article) => (
-        <li>
+      articles.map((article, index) => (
+        <li class={index > 0 ? "border-t border-border-subtle pt-3" : ""}>
           <a
             href={article.href}
-            class="text-sm text-primary hover:text-primary-dark hover:underline"
+            class="text-sm text-brand-500 hover:text-brand-600 transition-fast focus-ring rounded-sm"
           >
             {article.title}
           </a>

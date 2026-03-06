@@ -1,12 +1,15 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { client, imageBuilder, sanityFetch } from "@/lib/sanity";
 import { blogPostQuery } from "@kruze-poc/groq-queries";
 import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
 import { PortableTextHybrid } from "@/components/portable-text-hybrid";
 import { BlogSidebar } from "@/components/blog/blog-sidebar";
-import Image from "next/image";
+import { BlogBreadcrumbs } from "@/components/blog/blog-breadcrumbs";
+import { BlogAuthorMeta } from "@/components/blog/blog-author-meta";
+import { RelatedPostsSection } from "@/components/blog/related-posts-section";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -38,102 +41,65 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
 
   const heroImageUrl = post.heroImage?.asset
-    ? imageBuilder.image(post.heroImage).width(1920).height(1080).url()
+    ? imageBuilder.image(post.heroImage).width(1200).height(675).url()
     : null;
 
   const authorImageUrl = post.author?.image?.asset
-    ? imageBuilder.image(post.author.image).width(80).height(80).url()
+    ? imageBuilder.image(post.author.image).width(96).height(96).url()
     : null;
+
+  const categoryIds = post.topicCategories?.map((c) => c._id) ?? [];
+  const tagIds = post.topicTags?.map((t) => t._id) ?? [];
 
   return (
     <article>
-      {heroImageUrl && (
-        <div className="relative w-full h-64 md:h-96 overflow-hidden bg-primary">
-          <Image
-            src={heroImageUrl}
-            alt={post.heroImage?.alt || post.title}
-            fill
-            className="object-cover opacity-40"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 flex items-center justify-center px-4">
-            <h1 className="text-3xl md:text-5xl font-black text-white text-center max-w-4xl uppercase">
+      <BlogBreadcrumbs title={post.title} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 xl:gap-12">
+
+          {/* Main content */}
+          <div className="min-w-0">
+            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary mb-6">
               {post.title}
             </h1>
-          </div>
-        </div>
-      )}
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <nav className="text-sm text-muted mb-6">
-          <Link href="/" className="hover:text-primary">
-            Home
-          </Link>
-          <span className="mx-2">/</span>
-          <Link href="/blog" className="hover:text-primary">
-            Blog
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-secondary">{post.title}</span>
-        </nav>
+            <BlogAuthorMeta
+              author={post.author}
+              authorImageUrl={authorImageUrl}
+              date={post.date}
+              modifiedDate={post.modifiedDate}
+            />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
-          <div>
-            {post.author && (
-              <div className="flex items-center gap-4 mb-6">
-                {authorImageUrl ? (
-                  <Image
-                    src={authorImageUrl}
-                    alt={post.author.fullName}
-                    width={60}
-                    height={60}
-                    className="rounded-full"
-                  />
-                ) : (
-                  <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white font-black text-xl">
-                    {post.author.fullName
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </div>
-                )}
-                <div>
-                  <div className="font-black text-body">{post.author.fullName}</div>
-                  {post.author.position && (
-                    <div className="text-sm text-secondary">{post.author.position}</div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {post.date && (
-              <div className="text-sm text-muted mb-8">
-                Published{" "}
-                <time dateTime={post.date}>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </time>
+            {heroImageUrl && (
+              <div className="relative rounded-md overflow-hidden mb-8 aspect-video">
+                <Image
+                  src={heroImageUrl}
+                  alt={post.heroImage?.alt || post.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 65vw"
+                />
               </div>
             )}
 
             {post.headlineText && (
-              <p className="text-xl text-secondary mb-8">{post.headlineText}</p>
+              <p className="text-lg font-normal text-text-secondary leading-relaxed mb-8">
+                {post.headlineText}
+              </p>
             )}
 
             {post.body && <PortableTextHybrid value={post.body} />}
 
             {post.topicCategories && post.topicCategories.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-gray-200">
-                <span className="font-bold text-secondary mr-2">Categories:</span>
+              <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-border-subtle">
+                <span className="text-sm font-bold text-text-secondary mr-2">Categories:</span>
                 {post.topicCategories.map((cat) => (
                   <Link
                     key={cat._id}
                     href="#"
-                    className="px-3 py-1 text-xs font-bold bg-gray-100 text-secondary rounded-full hover:bg-primary hover:text-white transition-colors"
+                    className="px-3 py-1 text-xs font-black bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 rounded-full border border-brand-200 dark:border-brand-800 hover:bg-brand-100 transition-fast"
                   >
                     {cat.title}
                   </Link>
@@ -142,11 +108,19 @@ export default async function BlogPostPage({ params }: PageProps) {
             )}
           </div>
 
+          {/* Sidebar */}
           <div className="lg:sticky lg:top-8 self-start">
             <BlogSidebar />
           </div>
+
         </div>
       </div>
+
+      <RelatedPostsSection
+        currentSlug={post.slug.current}
+        categoryIds={categoryIds}
+        tagIds={tagIds}
+      />
     </article>
   );
 }

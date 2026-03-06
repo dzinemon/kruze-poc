@@ -49,6 +49,57 @@ const components: Partial<PortableTextHtmlComponents> = {
 
     youtubeBlock: ({ value }) =>
       `<div class="my-8 aspect-video"><iframe src="https://www.youtube-nocookie.com/embed/${value.videoId}" title="${value.caption || "YouTube video"}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full rounded-md" loading="lazy"></iframe></div>`,
+
+    richTableBlock: ({ value }) => {
+      if (!value.rows || value.rows.length === 0) {
+        return `<div class="my-8"></div>`;
+      }
+
+      const hasColTitles = value.hasColumnTitles !== false;
+
+      const renderCell = (cell: any): string =>
+        cell.content ? toHTML(cell.content, { components }) : "";
+
+      const bodyRowsForCheck = hasColTitles ? value.rows.slice(1) : value.rows;
+      const hasRowTitles = value.hasRowTitles !== false && bodyRowsForCheck.some((row: any) => row.title);
+
+      let thead = "";
+      let bodyRows = value.rows;
+
+      if (hasColTitles && value.rows.length > 0) {
+        const headerRow = value.rows[0];
+        bodyRows = value.rows.slice(1);
+        const cells = headerRow.cells || [];
+
+        const ths = cells
+          .map((cell: any) =>
+            `<th class="px-4 py-3 text-left font-bold bg-neutral-100 text-text-primary">${renderCell(cell)}</th>`
+          )
+          .join("");
+        const rowTh = hasRowTitles
+          ? `<th class="px-4 py-3 bg-neutral-100"></th>`
+          : "";
+
+        thead = `<thead><tr>${rowTh}${ths}</tr></thead>`;
+      }
+
+      const tbodyRows = bodyRows
+        .map((row: any) => {
+          const cells = row.cells || [];
+          const rowTitle = hasRowTitles
+            ? `<th class="px-4 py-3 font-normal text-left text-text-primary whitespace-nowrap">${row.title || ""}</th>`
+            : "";
+          const tds = cells
+            .map((cell: any) =>
+              `<td class="px-4 py-3 text-text-primary">${renderCell(cell)}</td>`
+            )
+            .join("");
+          return `<tr class="bg-white">${rowTitle}${tds}</tr>`;
+        })
+        .join("");
+
+      return `<div class="my-8 not-prose"><div class="kruze-table"><table class="text-sm">${thead}<tbody>${tbodyRows}</tbody></table></div></div>`;
+    },
   },
 
   marks: {

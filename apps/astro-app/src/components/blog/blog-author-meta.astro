@@ -1,0 +1,77 @@
+---
+import type { Author } from "@kruze-poc/sanity-schemas/src/types";
+
+interface Props {
+  author?: Author;
+  authorImageUrl?: string | null;
+  date?: string;
+  modifiedDate?: string;
+}
+
+const { author, authorImageUrl, date, modifiedDate } = Astro.props;
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+const authorSubtitle = [author?.certification, author?.position].filter(Boolean).join(", ");
+const authorInitials = author ? author.fullName.split(" ").map((n) => n[0]).join("") : "";
+---
+
+{(author || date) && (
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 mb-6 border-b border-border-subtle">
+    {author && (
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full overflow-hidden shrink-0 bg-brand-100 dark:bg-brand-900/40 flex items-center justify-center">
+          {authorImageUrl ? (
+            <img
+              src={authorImageUrl}
+              alt={author.fullName}
+              width="48"
+              height="48"
+              class="object-cover w-full h-full"
+            />
+          ) : (
+            <span class="text-sm font-bold text-brand-600 dark:text-brand-400">
+              {authorInitials}
+            </span>
+          )}
+        </div>
+        <div>
+          <p class="text-sm font-bold text-text-primary">{author.fullName}</p>
+          {authorSubtitle && (
+            <p class="text-xs text-text-muted">{authorSubtitle}</p>
+          )}
+        </div>
+      </div>
+    )}
+
+    <div class="flex flex-col gap-1 sm:text-right">
+      {date && (
+        <p class="flex items-center gap-1.5 sm:justify-end text-xs text-text-muted">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            aria-hidden="true">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/>
+            <line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>
+          </svg>
+          <span>Published: <time datetime={date} class="text-text-secondary font-bold">{formatDate(date)}</time></span>
+        </p>
+      )}
+      {modifiedDate && (
+        <p class="flex items-center gap-1.5 sm:justify-end text-xs text-text-muted">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>Last updated: <time datetime={modifiedDate} class="text-text-secondary font-bold">{formatDate(modifiedDate)}</time></span>
+        </p>
+      )}
+    </div>
+  </div>
+)}

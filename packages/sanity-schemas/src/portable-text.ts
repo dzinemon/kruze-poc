@@ -69,10 +69,11 @@ export const portableText = defineType({
           description: "Display title above the chart",
         }),
         defineField({
-          name: "height",
-          title: "Height (px)",
-          type: "number",
-          initialValue: 400,
+          name: "aspectRatio",
+          title: "Aspect Ratio",
+          type: "string",
+          description: "e.g., 4/3 (default), 16/9, 1/1",
+          initialValue: "4/3",
         }),
         defineField({
           name: "jsonConfig",
@@ -202,6 +203,11 @@ export const portableText = defineType({
           return { title: `YouTube: ${title}`, subtitle: "Video embed" };
         },
       },
+    }),
+
+    // Table block (using sanity-plugin-rich-table)
+    defineArrayMember({
+      type: "richTableBlock",
     }),
   ],
 });

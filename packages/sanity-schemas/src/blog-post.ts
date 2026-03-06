@@ -80,16 +80,6 @@ export const blogPost = defineType({
       initialValue: false,
     }),
     defineField({
-      name: "heroCta",
-      title: "Hero Call to Action",
-      type: "object",
-      fields: [
-        defineField({ name: "text", title: "Button Text", type: "string" }),
-        defineField({ name: "url", title: "URL (optional)", type: "string" }),
-        defineField({ name: "modalId", title: "Modal Target ID", type: "string" }),
-      ],
-    }),
-    defineField({
       name: "body",
       title: "Content",
       type: "portableText",

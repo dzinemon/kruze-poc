@@ -1,6 +1,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
+import { richTablePlugin } from "sanity-plugin-rich-table";
 import { RocketIcon } from "@sanity/icons";
 import { schemaTypes } from "./schemas";
 import { resolve } from "./presentation/resolve";
@@ -24,6 +25,7 @@ export default defineConfig({
       },
       resolve,
     }),
+    richTablePlugin(),
   ],
 
   schema: {
