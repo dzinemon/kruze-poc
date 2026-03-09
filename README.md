@@ -19,6 +19,110 @@ A focused comparison of **Next.js 15** and **Astro 5** rendering identical conte
 - **Block page builder** — hero, text, chart, testimonials, FAQ sections
 - **Framework metrics** — Lighthouse scores, bundle sizes, build times, DX
 
+## Tech Stack
+
+### Core Frameworks
+
+| Technology | Version | Usage |
+|---|---|---|
+| Next.js | 16.0.0 | App Router, React Server Components, `generateStaticParams` for SSG |
+| Astro | 5.17.3 | Static HTML output + React islands for interactivity |
+| React | 19.0.0 | Full rendering in Next.js; islands only (charts, YouTube) in Astro |
+| TypeScript | 5.7.3 | Strict mode, no `any`, shared types from workspace packages |
+
+### CMS & Content
+
+| Technology | Version | Usage |
+|---|---|---|
+| Sanity Studio | 5.11.0 | Headless CMS — content editing at localhost:3333 |
+| @sanity/client | 7.15.0 | GROQ data fetching in both apps |
+| next-sanity | 12.1.0 | Draft mode, live preview, visual editing in Next.js |
+| GROQ | — | Query language; shared queries in `packages/groq-queries` |
+
+### Portable Text Rendering
+
+| Technology | Version | Usage |
+|---|---|---|
+| @portabletext/react | 6.0.2 | React renderer — used in Next.js hybrid component |
+| @portabletext/to-html | 5.0.1 | HTML string renderer — used in Astro for zero-JS static output |
+
+Both apps use a **hybrid approach**: consecutive text blocks render as static HTML (SEO-friendly), while chart and YouTube blocks become interactive islands.
+
+### Styling & Design Tokens
+
+| Technology | Version | Usage |
+|---|---|---|
+| Tailwind CSS | 4.2.1 | Primary styling — v4 `@theme` with CSS-native tokens, no JS config |
+| @tailwindcss/typography | 0.5.19 | `prose` classes for Portable Text body content |
+| tokens.css (root) | — | Single source of truth: 200+ CSS custom properties (colors, spacing, shadows, gradients, semantic tokens) |
+| Dark mode | — | Class-based (`<html class="dark">`), semantic tokens auto-switch |
+
+### Fonts
+
+| Technology | Details |
+|---|---|
+| Lato | 4 weights: 300 (light), 400 (normal), 700 (bold), 900 (black) |
+| Next.js loading | Self-hosted woff2 files via `@font-face` in tokens.css |
+| Astro loading | Astro experimental fonts provider (Google Fonts, auto-optimized) |
+
+### Icons
+
+| Technology | Version | Usage |
+|---|---|---|
+| lucide-react | 0.576.0 | Icon library in Next.js and shared `packages/ui` components |
+| Inline SVGs | — | Hand-coded SVGs in Astro `.astro` components (no icon library dep) |
+
+All icons use `stroke-width="1.5"`, `currentColor`, and the design system icon size scale.
+
+### Images
+
+| Technology | Version | Usage |
+|---|---|---|
+| @sanity/image-url | 2.0.3 | Builds responsive URLs with srcset from Sanity CDN assets |
+| LQIP blur | — | Low-quality image placeholder via inline CSS `background-image` |
+
+No `next/image` or `astro:image` — both apps use plain `<img>` with Sanity-generated srcset and lazy loading.
+
+### Charts
+
+| Technology | Details |
+|---|---|
+| Google Charts | CDN-loaded (`gstatic.com`), lazy via IntersectionObserver |
+| Chart config | JSON string stored in Sanity `chartBlock` — type, data, options |
+| Rendering | React `"use client"` component in Next.js; `client:load` island in Astro |
+
+### Animations
+
+| Technology | Details |
+|---|---|
+| CSS transitions | Design tokens: `--transition-fast` (150ms), `--transition-base` (200ms), `--transition-spring` (400ms) |
+| framer-motion | 12.34.3 — in dependencies but not actively used |
+
+### Monorepo Tooling
+
+| Technology | Version | Usage |
+|---|---|---|
+| pnpm | 10.30.2 | Package manager with workspaces |
+| Turborepo | 2.8.10 | Build orchestration, parallel dev servers, task caching |
+
+### Shared Workspace Packages
+
+| Package | Purpose |
+|---|---|
+| `packages/sanity-schemas` | Sanity schema definitions + shared TypeScript types |
+| `packages/groq-queries` | GROQ queries used identically by both apps |
+| `packages/ui` | Shared React components: Portable Text renderer, GoogleChart, block components, image utilities |
+| `packages/tailwind-config` | Shared Tailwind preset (minimal — tokens live in root `tokens.css`) |
+
+### Deployment
+
+| App | Platform | Details |
+|---|---|---|
+| Next.js | Vercel | `output: "standalone"`, automatic preview deploys per branch |
+| Astro | Cloudflare Pages | `@astrojs/cloudflare` adapter, Wrangler CLI, branch previews |
+| Astro (alt) | Node.js / Docker | `@astrojs/node` adapter via `BUILD_TARGET=docker` |
+| Sanity Studio | Sanity CDN | `sanity deploy` to hosted dashboard |
+
 ## Monorepo Structure
 
 ```
@@ -119,13 +223,3 @@ To update an existing deployment, run the same command — it overwrites the pre
 
 > **Note:** You must be logged in to the Sanity CLI (`pnpm sanity login`) and have deploy permissions on the project.
 
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| CMS | Sanity v3 |
-| Framework A | Next.js 15 (App Router) |
-| Framework B | Astro 5 |
-| Monorepo | Turborepo + pnpm workspaces |
-| Styling | Tailwind CSS v4 |
-| Language | TypeScript (strict) |
