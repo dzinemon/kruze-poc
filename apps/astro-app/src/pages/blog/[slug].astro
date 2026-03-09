@@ -7,6 +7,7 @@ import BlogSidebar from "../../components/blog/blog-sidebar.astro";
 import BlogBreadcrumbs from "../../components/blog/blog-breadcrumbs.astro";
 import BlogAuthorMeta from "../../components/blog/blog-author-meta.astro";
 import RelatedPostsSection from "../../components/blog/related-posts-section.astro";
+import SanityImage from "../../components/sanity-image.astro";
 import { sanityClient, imageBuilder } from "../../lib/sanity";
 import { blogPostQuery } from "@kruze-poc/groq-queries";
 import type { BlogPost } from "@kruze-poc/sanity-schemas/src/types";
@@ -21,10 +22,6 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const post = await sanityClient.fetch<BlogPost>(blogPostQuery, { slug });
 if (!post) return Astro.redirect("/404");
-
-const heroImageUrl = post.heroImage?.asset
-  ? imageBuilder.image(post.heroImage).width(1200).height(675).url()
-  : null;
 
 const authorImageUrl = post.author?.image?.asset
   ? imageBuilder.image(post.author.image).width(96).height(96).url()
@@ -54,14 +51,14 @@ const tagIds = post.topicTags?.map((t) => t._id) ?? [];
             modifiedDate={post.modifiedDate}
           />
 
-          {heroImageUrl && (
+          {post.heroImage?.asset && (
             <div class="relative rounded-md overflow-hidden mb-8 aspect-video">
-              <img
-                src={heroImageUrl}
+              <SanityImage
+                image={post.heroImage}
                 alt={post.heroImage?.alt || post.title}
                 class="absolute inset-0 w-full h-full object-cover"
                 loading="eager"
-                decoding="async"
+                sizes="(max-width: 1024px) 100vw, 65vw"
               />
             </div>
           )}
