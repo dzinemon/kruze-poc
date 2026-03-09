@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "../../../tokens.css";
+@custom-variant dark (&:where(.dark, .dark *));
 @plugin "@tailwindcss/typography";
 
 @config "../tailwind.config.ts";
@@ -27,3 +28,15 @@
 .kruze-table tbody tr:last-child > * { border-bottom: none; }
 .kruze-table tr > *:first-child { border-left: none; }
 .kruze-table tr > *:last-child { border-right: none; }
+
+.kruze-table thead th {
+  background-color: var(--color-bg-muted);
+}
+
+.kruze-table tbody tr {
+  background-color: var(--color-bg-base);
+}
+
+.kruze-table tbody tr:nth-child(even) {
+  background-color: var(--color-bg-subtle);
+}

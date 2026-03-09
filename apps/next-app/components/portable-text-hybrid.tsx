@@ -76,7 +76,7 @@ export function PortableTextHybrid({ value }: PortableTextHybridProps) {
   }
 
   return (
-    <div className="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-body prose-a:text-primary hover:prose-a:text-primary-dark prose-blockquote:border-info">
+    <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-brand-500 dark:prose-a:text-brand-400 prose-blockquote:border-l-brand-500">
       {segments.map((segment, index) => {
         if (segment.type === "html") {
           return (

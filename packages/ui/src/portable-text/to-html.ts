@@ -73,11 +73,11 @@ const components: Partial<PortableTextHtmlComponents> = {
 
         const ths = cells
           .map((cell: any) =>
-            `<th class="px-4 py-3 text-left font-bold bg-neutral-100 text-primary">${renderCell(cell)}</th>`
+            `<th class="px-4 py-3 text-left font-bold text-primary">${renderCell(cell)}</th>`
           )
           .join("");
         const rowTh = hasRowTitles
-          ? `<th class="px-4 py-3 bg-neutral-100"></th>`
+          ? `<th class="px-4 py-3"></th>`
           : "";
 
         thead = `<thead><tr>${rowTh}${ths}</tr></thead>`;
@@ -94,7 +94,7 @@ const components: Partial<PortableTextHtmlComponents> = {
               `<td class="px-4 py-3 text-primary">${renderCell(cell)}</td>`
             )
             .join("");
-          return `<tr class="bg-white">${rowTitle}${tds}</tr>`;
+          return `<tr>${rowTitle}${tds}</tr>`;
         })
         .join("");
 
