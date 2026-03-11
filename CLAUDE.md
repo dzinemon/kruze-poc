@@ -117,9 +117,9 @@ Always use semantic tokens in components — they auto-switch in dark mode.
 
 | Token class | Variable | Usage |
 |-------------|----------|-------|
-| `text-text-primary` | `--color-text-primary` | Headings, body text |
-| `text-text-secondary` | `--color-text-secondary` | Secondary labels, captions |
-| `text-text-muted` | `--color-text-muted` | Placeholder, helper text |
+| `text-primary` | `--color-text-primary` | Headings, body text |
+| `text-secondary` | `--color-text-secondary` | Secondary labels, captions |
+| `text-muted` | `--color-text-muted` | Placeholder, helper text |
 | `bg-bg-base` | `--color-bg-base` | Page root background |
 | `bg-bg-subtle` | `--color-bg-subtle` | Card and panel surfaces |
 | `border-border-default` | `--color-border-default` | Input borders, card borders |
@@ -129,6 +129,18 @@ Always use semantic tokens in components — they auto-switch in dark mode.
 | `shadow-md` | `--shadow-md` | Hover shadow |
 
 Rules: no arbitrary values when a token exists. No inline styles for colors/spacing. See `design-system.md` for the full component pattern library.
+
+## SEO
+
+Full rules in `.claude/rules/seo.md`. Key contract:
+
+| Section type | Next.js | Astro |
+|---|---|---|
+| Text, headings, images, FAQ answers | RSC — static HTML | Static Astro template |
+| FAQ accordion (open/close state) | `"use client"` | Static HTML + `<script>` |
+| Charts, calculators, contact forms | `"use client"` | `client:visible` |
+
+Heading hierarchy: H1 once per page (hero only) → H2 section titles → H3 card/FAQ/feature titles. Accordion questions use `<h3><button>` pattern. Collapsed content stays in DOM via `max-height: 0` — never conditionally rendered. Add JSON-LD for FAQ sections and blog post pages.
 
 ## TypeScript
 

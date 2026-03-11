@@ -1,4 +1,5 @@
 import { defineConfig } from "sanity";
+import { assist } from '@sanity/assist'
 import { structureTool } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
 import { richTablePlugin } from "sanity-plugin-rich-table";
@@ -25,7 +26,8 @@ export default defineConfig({
       },
       resolve,
     }),
-    richTablePlugin(),
+    richTablePlugin({}),
+    assist()
   ],
 
   schema: {
