@@ -11,6 +11,7 @@ interface Props {
   alt?: string;
   class?: string;
   loading?: "lazy" | "eager";
+  fetchpriority?: "high" | "low" | "auto";
   sizes?: string;
   fixedWidth?: number;
   fixedHeight?: number;
@@ -22,6 +23,7 @@ const {
   alt,
   class: className,
   loading = "lazy",
+  fetchpriority,
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   fixedWidth,
   fixedHeight,
@@ -46,6 +48,7 @@ const resolvedAlt = alt ?? image.alt ?? "";
   height={imgData.height}
   alt={resolvedAlt}
   loading={loading}
+  fetchpriority={fetchpriority}
   decoding="async"
   class={className}
   style={lqip}
