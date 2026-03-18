@@ -3,5 +3,8 @@ export { blockPage } from "./block-page";
 export { author } from "./author";
 export { testimonial } from "./testimonial";
 export { portableText } from "./portable-text";
+export { inlineText } from "./inline-text";
+export { sectionText } from "./section-text";
+export { ctaItem } from "./cta-item";
 export { category } from "./category";
 export { tag } from "./tag";

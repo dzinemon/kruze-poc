@@ -11,6 +11,9 @@ import { responsiveImageData, lqipStyle } from "../image/sanity-image-url";
 
 const components: PortableTextComponents = {
   types: {
+    hr: () => (
+      <hr className="my-8 border-t border-border-default" />
+    ),
     image: ({ value }) => {
       if (value.asset?._id) {
         const img = responsiveImageData(value);
@@ -64,7 +67,7 @@ const components: PortableTextComponents = {
       </div>
     ),
 
-    ctaBlock: ({ value }) => (
+    ctaItem: ({ value }) => (
       <div className="not-prose">
         <CtaBlock {...value} />
       </div>

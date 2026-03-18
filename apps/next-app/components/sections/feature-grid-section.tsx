@@ -65,12 +65,12 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                     </div>
                   )}
                 </div>
-                {tile.link?.url && tile.link?.text && (
+                {tile.ctas?.[0]?.url && tile.ctas[0].text && (
                   <a
-                    href={tile.link.url}
+                    href={tile.ctas[0].url}
                     className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-brand-500 hover:text-brand-600 transition-fast focus-ring"
                   >
-                    {tile.link.text}
+                    {tile.ctas[0].text}
                     <ArrowRight width={14} height={14} strokeWidth={1.5} />
                   </a>
                 )}

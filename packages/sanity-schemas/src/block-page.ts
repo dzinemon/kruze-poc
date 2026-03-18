@@ -51,71 +51,21 @@ export const blockPage = defineType({
             defineField({
               name: "eyebrow",
               title: "Eyebrow Badge",
-              type: "array",
+              type: "inlineText",
               validation: (rule) => rule.max(1),
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [{ title: "Normal", value: "normal" }],
-                  lists: [],
-                  marks: {
-                    decorators: [
-                      { title: "Bold", value: "strong" },
-                      { title: "Italic", value: "em" },
-                      { title: "Underline", value: "underline" },
-                    ],
-                  },
-                }),
-              ],
             }),
             defineField({
               name: "headline",
               title: "Headline & Subheadline",
-              description: "Use 'Heading' style for H1, 'Normal' for the subheadline paragraph. Bold marks on headings render as gradient highlights.",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [
-                    { title: "Heading", value: "h1" },
-                    { title: "Normal", value: "normal" },
-                  ],
-                  lists: [],
-                  marks: {
-                    decorators: [
-                      { title: "Bold (gradient in headings)", value: "strong" },
-                      { title: "Italic", value: "em" },
-                      { title: "Underline", value: "underline" },
-                    ],
-                  },
-                }),
-              ],
+              description: "Use heading styles for titles, 'Normal' for the subheadline paragraph. Bold marks on headings render as gradient highlights.",
+              type: "sectionText",
             }),
             defineField({
               name: "ctas",
               title: "CTAs",
               type: "array",
               validation: (rule) => rule.max(2),
-              of: [
-                defineArrayMember({
-                  type: "object",
-                  name: "cta",
-                  fields: [
-                    defineField({ name: "text", title: "Label", type: "string", validation: (rule) => rule.required() }),
-                    defineField({ name: "url", title: "URL", type: "string" }),
-                    defineField({
-                      name: "style",
-                      title: "Style",
-                      type: "string",
-                      options: { list: ["primary", "secondary"], layout: "radio" },
-                      initialValue: "primary",
-                    }),
-                  ],
-                  preview: {
-                    select: { title: "text", subtitle: "style" },
-                  },
-                }),
-              ],
+              of: [defineArrayMember({ type: "ctaItem" })],
             }),
             defineField({
               name: "showTrustBar",
@@ -168,24 +118,7 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Heading & Intro",
-              description: "Use 'Heading 2' style for heading, 'Normal' for intro text.",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [
-                    { title: "Heading 2", value: "h2" },
-                    { title: "Normal", value: "normal" },
-                  ],
-                  lists: [],
-                  marks: {
-                    decorators: [
-                      { title: "Bold", value: "strong" },
-                      { title: "Italic", value: "em" },
-                    ],
-                  },
-                }),
-              ],
+              type: "sectionText",
             }),
             defineField({
               name: "faqs",
@@ -221,24 +154,7 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Heading & Intro",
-              description: "Use 'Heading 2' style for heading, 'Normal' for intro text.",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [
-                    { title: "Heading 2", value: "h2" },
-                    { title: "Normal", value: "normal" },
-                  ],
-                  lists: [],
-                  marks: {
-                    decorators: [
-                      { title: "Bold", value: "strong" },
-                      { title: "Italic", value: "em" },
-                    ],
-                  },
-                }),
-              ],
+              type: "sectionText",
             }),
             defineField({
               name: "columns",
@@ -258,15 +174,13 @@ export const blockPage = defineType({
                   fields: [
                     defineField({ name: "icon", title: "Icon / Image", type: "image" }),
                     defineField({ name: "title", title: "Title", type: "string", validation: (rule) => rule.required() }),
-                    defineField({ name: "body", title: "Description", type: "portableText" }),
+                    defineField({ name: "body", title: "Description", type: "inlineText" }),
                     defineField({
-                      name: "link",
-                      title: "CTA Link",
-                      type: "object",
-                      fields: [
-                        defineField({ name: "text", title: "Label", type: "string" }),
-                        defineField({ name: "url", title: "URL", type: "string" }),
-                      ],
+                      name: "ctas",
+                      title: "CTA",
+                      type: "array",
+                      validation: (rule) => rule.max(1),
+                      of: [defineArrayMember({ type: "ctaItem" })],
                     }),
                   ],
                   preview: { select: { title: "title" } },
@@ -298,59 +212,14 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Content",
-              description: "Use 'Heading 2' style for heading, 'Normal' for body text.",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [
-                    { title: "Heading 2", value: "h2" },
-                    { title: "Normal", value: "normal" },
-                  ],
-                  lists: [],
-                  marks: {
-                    decorators: [
-                      { title: "Bold", value: "strong" },
-                      { title: "Italic", value: "em" },
-                      { title: "Underline", value: "underline" },
-                    ],
-                    annotations: [
-                      {
-                        name: "link",
-                        type: "object",
-                        title: "Link",
-                        fields: [
-                          defineField({ name: "href", type: "string", title: "URL" }),
-                        ],
-                      },
-                    ],
-                  },
-                }),
-              ],
+              type: "sectionText",
             }),
             defineField({
               name: "ctas",
               title: "CTA Buttons",
               type: "array",
               validation: (rule) => rule.max(1),
-              of: [
-                defineArrayMember({
-                  type: "object",
-                  name: "ctaButton",
-                  fields: [
-                    defineField({ name: "text", title: "Label", type: "string", validation: (rule) => rule.required() }),
-                    defineField({ name: "url", title: "URL", type: "string" }),
-                    defineField({
-                      name: "style",
-                      title: "Style",
-                      type: "string",
-                      options: { list: ["primary", "secondary"], layout: "radio" },
-                      initialValue: "primary",
-                    }),
-                  ],
-                  preview: { select: { title: "text", subtitle: "style" } },
-                }),
-              ],
+              of: [defineArrayMember({ type: "ctaItem" })],
             }),
             defineField({
               name: "background",
@@ -381,35 +250,7 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Heading & Intro",
-              description: "Use 'Heading 2' style for heading, 'Normal' for intro text.",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [
-                    { title: "Heading 2", value: "h2" },
-                    { title: "Normal", value: "normal" },
-                  ],
-                  lists: [],
-                  marks: {
-                    decorators: [
-                      { title: "Bold", value: "strong" },
-                      { title: "Italic", value: "em" },
-                      { title: "Underline", value: "underline" },
-                    ],
-                    annotations: [
-                      {
-                        name: "link",
-                        type: "object",
-                        title: "Link",
-                        fields: [
-                          defineField({ name: "href", type: "string", title: "URL" }),
-                        ],
-                      },
-                    ],
-                  },
-                }),
-              ],
+              type: "sectionText",
             }),
             defineField({
               name: "category",
@@ -447,15 +288,7 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Heading & Intro",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [{ title: "Heading 2", value: "h2" }, { title: "Normal", value: "normal" }],
-                  lists: [],
-                  marks: { decorators: [{ title: "Bold", value: "strong" }, { title: "Italic", value: "em" }] },
-                }),
-              ],
+              type: "sectionText",
             }),
             defineField({
               name: "columns",
@@ -475,7 +308,14 @@ export const blockPage = defineType({
                   fields: [
                     defineField({ name: "icon", title: "Icon / Image", type: "image" }),
                     defineField({ name: "title", title: "Title", type: "string", validation: (rule) => rule.required() }),
-                    defineField({ name: "body", title: "Description", type: "portableText" })
+                    defineField({ name: "body", title: "Description", type: "inlineText" }),
+                    defineField({
+                      name: "ctas",
+                      title: "CTA",
+                      type: "array",
+                      validation: (rule) => rule.max(1),
+                      of: [defineArrayMember({ type: "ctaItem" })],
+                    }),
                   ],
                   preview: { select: { title: "title" } },
                 }),
@@ -501,18 +341,14 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Content",
+              type: "sectionText",
+            }),
+            defineField({
+              name: "ctas",
+              title: "CTAs",
               type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [{ title: "Heading 2", value: "h2" }, { title: "Heading 3", value: "h3" }, { title: "Normal", value: "normal" }],
-                  lists: [{ title: "Bullet", value: "bullet" }],
-                  marks: {
-                    decorators: [{ title: "Bold", value: "strong" }, { title: "Italic", value: "em" }],
-                    annotations: [{ name: "link", type: "object", title: "Link", fields: [defineField({ name: "href", type: "string", title: "URL" })] }],
-                  },
-                }),
-              ],
+              validation: (rule) => rule.max(2),
+              of: [defineArrayMember({ type: "ctaItem" })],
             }),
             defineField({
               name: "imagePosition",
@@ -577,18 +413,7 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Content",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [{ title: "Normal", value: "normal" }],
-                  lists: [],
-                  marks: {
-                    decorators: [{ title: "Bold", value: "strong" }, { title: "Italic", value: "em" }],
-                    annotations: [{ name: "link", type: "object", title: "Link", fields: [defineField({ name: "href", type: "string", title: "URL" })] }],
-                  },
-                }),
-              ],
+              type: "inlineText",
             }),
             defineField({
               name: "alertType",
@@ -646,15 +471,7 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Heading",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [{ title: "Normal", value: "normal" }],
-                  lists: [],
-                  marks: { decorators: [{ title: "Bold", value: "strong" }] },
-                }),
-              ],
+              type: "inlineText",
             }),
             defineField({
               name: "logos",
@@ -698,15 +515,7 @@ export const blockPage = defineType({
             defineField({
               name: "content",
               title: "Heading & Intro",
-              type: "array",
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  styles: [{ title: "Heading 2", value: "h2" }, { title: "Normal", value: "normal" }],
-                  lists: [],
-                  marks: { decorators: [{ title: "Bold", value: "strong" }] },
-                }),
-              ],
+              type: "sectionText",
             }),
             defineField({
               name: "items",
@@ -809,22 +618,7 @@ export const blockPage = defineType({
                             defineField({
                               name: "content",
                               title: "Content",
-                              type: "array",
-                              of: [
-                                defineArrayMember({
-                                  type: "block",
-                                  styles: [
-                                    { title: "Heading 2", value: "h2" },
-                                    { title: "Heading 3", value: "h3" },
-                                    { title: "Normal", value: "normal" },
-                                  ],
-                                  lists: [{ title: "Bullet", value: "bullet" }],
-                                  marks: {
-                                    decorators: [{ title: "Bold", value: "strong" }, { title: "Italic", value: "em" }],
-                                    annotations: [{ name: "link", type: "object", title: "Link", fields: [defineField({ name: "href", type: "string", title: "URL" })] }],
-                                  },
-                                }),
-                              ],
+                              type: "sectionText",
                             }),
                           ],
                           preview: { select: { title: "columnWidth" } },

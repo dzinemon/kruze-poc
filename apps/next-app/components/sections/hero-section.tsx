@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { ArrowRight } from "lucide-react";
-import type { HeroSection as HeroSectionType, HeroCta } from "@kruze-poc/sanity-schemas/src/types";
+import type { HeroSection as HeroSectionType, CtaItem } from "@kruze-poc/sanity-schemas/src/types";
 
 // ── Inline portable text renderer ────────────────────────────────────────────
 // Handles the limited mark set used in hero fields (strong, em, underline).
@@ -82,7 +82,7 @@ function HeadlineBlocks({ blocks, layout }: { blocks?: any[]; layout: "centered"
 
 // ── CTAs ──────────────────────────────────────────────────────────────────────
 
-function CtaButtons({ ctas }: { ctas?: HeroCta[] }) {
+function CtaButtons({ ctas }: { ctas?: CtaItem[] }) {
   if (!ctas?.length) return null;
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">

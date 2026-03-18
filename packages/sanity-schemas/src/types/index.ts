@@ -67,8 +67,9 @@ export interface ChartBlock {
   jsonConfig: string; // Raw JSON: { "type": "ColumnChart", "data": [...], "options": {...} }
 }
 
-export interface CtaBlock {
-  _type: "ctaBlock";
+export interface CtaItem {
+  _type: "ctaItem";
+  _key: string;
   text: string;
   url?: string;
   style?: "primary" | "secondary" | "outline";
@@ -128,20 +129,13 @@ export interface BlogPost {
   };
 }
 
-export interface HeroCta {
-  _key: string;
-  text: string;
-  url?: string;
-  style?: "primary" | "secondary";
-}
-
 export interface HeroSection {
   _type: "heroSection";
   _key: string;
   layout?: "centered" | "split";
   eyebrow?: any[]; // inline portable text: bold, em, underline
   headline?: any[]; // portable text: h1 blocks (strong → gradient) + normal blocks (subheadline)
-  ctas?: HeroCta[];
+  ctas?: CtaItem[];
   showTrustBar?: boolean;
   backgroundImage?: SanityImage;
 }
@@ -170,7 +164,7 @@ export interface FeatureTile {
   icon?: SanityImage;
   title: string;
   body?: any[];
-  link?: { text?: string; url?: string };
+  ctas?: CtaItem[];
 }
 
 export interface FeatureGridSection {
@@ -182,18 +176,11 @@ export interface FeatureGridSection {
   background?: "white" | "light";
 }
 
-export interface CtaButton {
-  _key: string;
-  text: string;
-  url?: string;
-  style?: "primary" | "secondary";
-}
-
 export interface CtaStripSection {
   _type: "ctaStripSection";
   _key: string;
   content?: any[];
-  ctas?: CtaButton[];
+  ctas?: CtaItem[];
   background?: "white" | "brand" | "light";
 }
 
@@ -211,6 +198,7 @@ export interface ServiceTile {
   icon?: SanityImage;
   title: string;
   body?: any[];
+  ctas?: CtaItem[];
 }
 
 export interface ServicesGridBlock {
@@ -227,6 +215,7 @@ export interface MediaAndTextBlock {
   image?: SanityImage;
   caption?: string;
   content?: any[];
+  ctas?: CtaItem[];
   imagePosition?: "left" | "right";
 }
 

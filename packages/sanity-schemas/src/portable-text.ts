@@ -103,44 +103,8 @@ export const portableText = defineType({
       },
     }),
 
-    // Custom block: CTA
-    defineArrayMember({
-      name: "ctaBlock",
-      title: "Call to Action",
-      type: "object",
-      fields: [
-        defineField({
-          name: "text",
-          title: "Button Text",
-          type: "string",
-          validation: (rule) => rule.required(),
-        }),
-        defineField({
-          name: "url",
-          title: "URL",
-          type: "string",
-        }),
-        defineField({
-          name: "style",
-          title: "Style",
-          type: "string",
-          options: {
-            list: [
-              { title: "Primary", value: "primary" },
-              { title: "Secondary", value: "secondary" },
-              { title: "Outline", value: "outline" },
-            ],
-          },
-          initialValue: "primary",
-        }),
-      ],
-      preview: {
-        select: { title: "text" },
-        prepare({ title }) {
-          return { title: title || "CTA", subtitle: "Call to Action" };
-        },
-      },
-    }),
+    // Custom block: CTA (uses shared ctaItem type)
+    defineArrayMember({ type: "ctaItem" }),
 
     // Custom block: Alert / Callout
     defineArrayMember({
@@ -208,6 +172,27 @@ export const portableText = defineType({
     // Table block (using sanity-plugin-rich-table)
     defineArrayMember({
       type: "richTableBlock",
+    }),
+
+    // Horizontal rule
+    defineArrayMember({
+      name: "hr",
+      title: "Horizontal Rule",
+      type: "object",
+      fields: [
+        defineField({
+          name: "style",
+          title: "Style",
+          type: "string",
+          initialValue: "default",
+          hidden: true,
+        }),
+      ],
+      preview: {
+        prepare() {
+          return { title: "———", subtitle: "Horizontal Rule" };
+        },
+      },
     }),
   ],
 });

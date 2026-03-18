@@ -36,6 +36,8 @@ export default async function RootLayout({
             __html: `(function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');})();`,
           }}
         />
+        <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
       </head>
       <body className="font-sans bg-bg-base text-primary min-h-screen flex flex-col">
         <header className="border-b border-border-subtle">

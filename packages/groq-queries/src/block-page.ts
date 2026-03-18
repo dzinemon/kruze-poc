@@ -35,7 +35,8 @@ export const blockPageQuery = groq`
         content[] { ..., markDefs[] { ... } },
         columns, background,
         tiles[] {
-          _key, title, body, link,
+          _key, title, body,
+          ctas[] { _key, text, url, style },
           icon { asset-> { _id, url }, hotspot, crop }
         }
       },
@@ -55,6 +56,7 @@ export const blockPageQuery = groq`
         columns,
         tiles[] {
           _key, title, body,
+          ctas[] { _key, text, url, style },
           icon { asset-> { _id, url }, hotspot, crop }
         }
       },
@@ -62,6 +64,7 @@ export const blockPageQuery = groq`
         image ${imageWithMeta},
         caption,
         content[] { ..., markDefs[] { ... } },
+        ctas[] { _key, text, url, style },
         imagePosition
       },
       _type == "statsRowBlock" => {

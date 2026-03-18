@@ -6,6 +6,7 @@ import { responsiveImageData } from "../image/sanity-image-url";
 
 const components: Partial<PortableTextHtmlComponents> = {
   types: {
+    hr: () => `<hr class="my-8 border-t border-border-default" />`,
     image: ({ value }) => {
       const caption = value.caption
         ? `<figcaption class="mt-2 text-sm text-muted text-center">${value.caption}</figcaption>`
@@ -23,7 +24,7 @@ const components: Partial<PortableTextHtmlComponents> = {
     chartBlock: ({ value }) =>
       `<div class="my-8 not-prose" data-chart-block='${JSON.stringify(value)}'><p class="text-sm text-muted italic text-center py-8">[Chart: ${value.title ?? "Interactive chart"}]</p></div>`,
 
-    ctaBlock: ({ value }) => {
+    ctaItem: ({ value }) => {
       const styles: Record<string, string> = {
         primary:
           "bg-primary text-white hover:bg-primary-dark",

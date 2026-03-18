@@ -4,6 +4,9 @@ import {
   author,
   testimonial,
   portableText,
+  inlineText,
+  sectionText,
+  ctaItem,
   category,
   tag,
 } from "@kruze-poc/sanity-schemas";
@@ -22,6 +25,9 @@ export const schemaTypes = [
   author,
   testimonial,
   portableTextWithPaste,
+  inlineText,
+  sectionText,
+  ctaItem,
   category,
   tag,
 ];
