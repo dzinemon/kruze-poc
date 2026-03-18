@@ -93,15 +93,13 @@ export default defineConfig({
     ? node({ mode: "standalone" })
     : cloudflare({ platformProxy: { enabled: true } }),
   output: "server",
-  experimental: {
-    fonts: [
-      {
-        provider: fontProviders.google(),
-        name: "Lato",
-        cssVariable: "--font-lato",
-        subsets: ["latin"],
-        weights: ["300", "400", "700", "900"],
-      },
-    ],
-  },
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: "Lato",
+      cssVariable: "--font-lato",
+      subsets: ["latin"],
+      weights: ["300", "400", "700", "900"],
+    },
+  ],
 });
