@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "../../../tokens.css";
 @custom-variant dark (&:where(.dark, .dark *));
+@theme inline {
+    --font-sans: var(--font-lato);
+}
 @plugin "@tailwindcss/typography";
 
 @config "../tailwind.config.ts";

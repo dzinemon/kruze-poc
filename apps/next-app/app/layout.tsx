@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
+import { Lato } from "next/font/google";
 import Link from "next/link";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
 import { SanityLive } from "@/lib/sanity";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
+
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-lato",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Kruze POC — Next.js",
@@ -19,7 +28,7 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={lato.variable} suppressHydrationWarning>
       <head>
         {/* Inline theme init — runs before first paint to prevent FOUC */}
         <script

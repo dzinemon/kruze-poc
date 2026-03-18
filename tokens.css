@@ -13,56 +13,12 @@
  */
 
 /* ─────────────────────────────────────────────────────────────
-   FONT FACE — Lato (self-hosted)
-   Files should already exist in /fonts/lato-*.woff2
+   FONT — Lato
+   Each app loads Lato via its framework's font system:
+   - Next.js: next/font/google (auto self-hosted, preloaded)
+   - Astro:   experimental fonts API (auto self-hosted, preloaded)
+   Both set --font-lato CSS variable → mapped to --font-sans below.
 ───────────────────────────────────────────────────────────── */
-@font-face {
-  font-family: "Lato";
-  src: url("/fonts/lato-light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Lato";
-  src: url("/fonts/lato-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Lato";
-  src: url("/fonts/lato-bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Lato";
-  src: url("/fonts/lato-black.woff2") format("woff2");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Lato";
-  src: url("/fonts/lato-light-italic.woff2") format("woff2");
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Lato";
-  src: url("/fonts/lato-italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
 
 /* ─────────────────────────────────────────────────────────────
    TAILWIND 4 THEME TOKENS
