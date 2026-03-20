@@ -6,7 +6,8 @@
   "main": "./src/preset.ts",
   "types": "./src/preset.ts",
   "exports": {
-    ".": "./src/preset.ts"
+    ".": "./src/preset.ts",
+    "./tokens.css": "./src/tokens.css"
   },
   "scripts": {
     "type-check": "tsc --noEmit"

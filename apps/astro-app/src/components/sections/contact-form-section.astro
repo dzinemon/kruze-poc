@@ -33,7 +33,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
     </div>
 
     <!-- Form card -->
-    <div class="rounded-lg bg-bg-subtle border border-border-subtle shadow-sm p-8">
+    <div class="rounded-lg bg-subtle border border-divider shadow-sm p-8">
       <form novalidate class="flex flex-col gap-3">
 
         <!-- First name + Last name -->
@@ -45,7 +45,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
               type="text"
               autocomplete="given-name"
               placeholder="Jane"
-              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
             />
           </div>
           <div class="flex flex-col gap-1.5">
@@ -55,7 +55,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
               type="text"
               autocomplete="family-name"
               placeholder="Smith"
-              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
             />
           </div>
         </div>
@@ -68,7 +68,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
             type="text"
             autocomplete="organization"
             placeholder="Acme Inc."
-            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
 
@@ -80,21 +80,21 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
             type="email"
             autocomplete="email"
             placeholder="jane@acme.com"
-            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
 
         <!-- Phone -->
         <div class="flex flex-col gap-1.5">
           <label for="phone" class="text-sm font-bold text-primary">
-            Phone <span class="font-normal text-muted">(optional)</span>
+            Phone <span class="font-normal text-dim">(optional)</span>
           </label>
           <input
             id="phone"
             type="tel"
             autocomplete="tel"
             placeholder="+1 (415) 000-0000"
-            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
 
@@ -102,13 +102,13 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
         {!isNewsletter && (
           <div class="flex flex-col gap-1.5">
             <label for="message" class="text-sm font-bold text-primary">
-              Message <span class="font-normal text-muted">(optional)</span>
+              Message <span class="font-normal text-dim">(optional)</span>
             </label>
             <textarea
               id="message"
               rows={4}
               placeholder="Tell us about your startup and what you need help with…"
-              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
+              class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
             ></textarea>
           </div>
         )}
@@ -117,7 +117,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
         <label class="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
-            class="mt-0.5 size-4 rounded-xs border-border-default accent-brand-500 focus-ring cursor-pointer"
+            class="mt-0.5 size-4 rounded-xs border-rule accent-brand-500 focus-ring cursor-pointer"
           />
           <span class="text-sm font-normal text-secondary leading-relaxed">
             I agree to receive marketing emails from Kruze Consulting. You can unsubscribe at any time.
@@ -133,7 +133,7 @@ const submitLabel = isNewsletter ? "Subscribe" : "Request Consultation";
         </button>
 
         <!-- Privacy note -->
-        <p class="text-xs text-muted text-center">
+        <p class="text-xs text-dim text-center">
           By submitting, you agree to our
           <span class="text-brand-500 underline cursor-pointer">Privacy Policy</span>.
           We never share your data.

@@ -22,7 +22,7 @@ export function BlogCard({ post }: BlogCardProps) {
     .join(", ");
 
   return (
-    <article className="group relative rounded-md overflow-hidden bg-white dark:bg-[var(--color-bg-subtle)] border border-neutral-200 dark:border-white/10 shadow-sm hover-lift flex flex-col">
+    <article className="group relative rounded-md overflow-hidden bg-white dark:bg-[var(--color-subtle)] border border-neutral-200 dark:border-white/10 shadow-sm hover-lift flex flex-col">
       <Link
         href={`/blog/${post.slug.current}`}
         className="absolute inset-0 z-10 focus-ring rounded-md"

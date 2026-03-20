@@ -8,9 +8,9 @@ interface Props {
 const { section } = Astro.props;
 ---
 
-<section class="py-12 px-6 bg-bg-base">
+<section class="py-12 px-6 bg-base">
   <div class="max-w-6xl mx-auto">
-    <p class="text-xs text-muted mb-6">pressLogosBlock — {section.variant ?? "press"}</p>
+    <p class="text-xs text-dim mb-6">pressLogosBlock — {section.variant ?? "press"}</p>
     {section.logos && section.logos.length > 0 && (
       <div class="flex flex-wrap items-center justify-center gap-8">
         {section.logos.map((logo) => (

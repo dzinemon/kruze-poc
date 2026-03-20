@@ -13,6 +13,8 @@ export const portableText = defineType({
         { title: "H2", value: "h2" },
         { title: "H3", value: "h3" },
         { title: "H4", value: "h4" },
+        { title: "H5", value: "h5" },
+        { title: "H6", value: "h6" },
         { title: "Quote", value: "blockquote" },
       ],
       marks: {
@@ -56,48 +58,26 @@ export const portableText = defineType({
       ],
     }),
 
-    // Custom block: Chart (Google Charts with JSON config)
+    // Chart reference (picks an existing chart document from the library)
     defineArrayMember({
-      name: "chartBlock",
-      title: "Chart",
+      name: "chartReference",
+      title: "Chart (from library)",
       type: "object",
       fields: [
         defineField({
-          name: "title",
-          title: "Chart Title (optional)",
-          type: "string",
-          description: "Display title above the chart",
-        }),
-        defineField({
-          name: "aspectRatio",
-          title: "Aspect Ratio",
-          type: "string",
-          description: "e.g., 4/3 (default), 16/9, 1/1",
-          initialValue: "4/3",
-        }),
-        defineField({
-          name: "jsonConfig",
-          title: "Chart JSON Config",
-          type: "text",
-          description: 'Paste JSON: { "type": "ColumnChart", "data": [["Year", "Sales"], ["2024", 1000]], "options": {...} }',
-          validation: (rule) =>
-            rule.required().custom((val) => {
-              if (!val) return "JSON config is required";
-              try {
-                JSON.parse(val);
-                return true;
-              } catch (e) {
-                return "Must be valid JSON";
-              }
-            }),
+          name: "chart",
+          title: "Chart",
+          type: "reference",
+          to: [{ type: "chart" }],
+          validation: (rule) => rule.required(),
         }),
       ],
       preview: {
-        select: { title: "title" },
-        prepare({ title }) {
+        select: { title: "chart.title", chartType: "chart.chartType" },
+        prepare({ title, chartType }) {
           return {
-            title: title || "Chart",
-            subtitle: "Google Chart (JSON config)",
+            title: title || "Chart Reference",
+            subtitle: `Chart: ${chartType ?? "unknown type"}`,
           };
         },
       },
@@ -169,9 +149,9 @@ export const portableText = defineType({
       },
     }),
 
-    // Table block (using sanity-plugin-rich-table)
+    // Advanced table block (custom, supports colspan/rowspan/merge)
     defineArrayMember({
-      type: "richTableBlock",
+      type: "advancedTableBlock",
     }),
 
     // Horizontal rule

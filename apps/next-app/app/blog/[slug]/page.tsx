@@ -61,7 +61,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* Main content */}
           <div className="min-w-0">
             <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-primary mb-6">
-              {post.title}
+              {post.headlineText}
             </h1>
 
             <BlogAuthorMeta
@@ -84,16 +84,10 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             )}
 
-            {post.headlineText && (
-              <p className="text-lg font-normal text-secondary leading-relaxed mb-8">
-                {post.headlineText}
-              </p>
-            )}
-
             {post.body && <PortableTextHybrid value={post.body} />}
 
             {post.topicCategories && post.topicCategories.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-border-subtle">
+              <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t border-divider">
                 <span className="text-sm font-bold text-secondary mr-2">Categories:</span>
                 {post.topicCategories.map((cat) => (
                   <Link

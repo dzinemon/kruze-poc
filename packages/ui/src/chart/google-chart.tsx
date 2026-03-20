@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { loadGoogleCharts } from "./google-charts-loader";
 
 interface GoogleChartConfig {
@@ -175,7 +175,7 @@ export function GoogleChart({
       const cmsOptions = (config.options ?? {}) as Record<string, any>;
       const defaults = getDefaultOptions(isMobile);
 
-      const mergedOptions = {
+      const mergedOptions: Record<string, any> = {
         ...defaults,
         ...cmsOptions,
         // colors: CMS completely replaces defaults (not merged)
@@ -227,6 +227,24 @@ export function GoogleChart({
         },
       };
 
+      // Apply number formatting to tooltips/labels if configured
+      const nf = mergedOptions.numberFormat as
+        | { prefix?: string; suffix?: string; pattern?: string }
+        | undefined;
+      if (nf && (nf.prefix || nf.suffix || nf.pattern)) {
+        const formatter = new google.visualization.NumberFormat({
+          prefix: nf.prefix ?? "",
+          suffix: nf.suffix ?? "",
+          pattern: nf.pattern,
+        });
+        for (let col = 0; col < dataTable.getNumberOfColumns(); col++) {
+          if (dataTable.getColumnType(col) === "number") {
+            formatter.format(dataTable, col);
+          }
+        }
+      }
+      delete mergedOptions.numberFormat;
+
       // Instantiate and draw chart
       const chart = new ChartClass(containerRef.current);
       chart.draw(dataTable, mergedOptions);
@@ -275,7 +293,7 @@ export function GoogleChart({
           width: "100%",
           aspectRatio,
         }}
-        className={`bg-bg-base wm-kruze${hasLoaded ? " chart-loaded" : ""}`}
+        className={`bg-base wm-kruze${hasLoaded ? " chart-loaded" : ""}`}
       />
       {error && (
         <div className="rounded-sm bg-danger-light border border-danger/30 text-danger-dark px-4 py-3 text-sm">

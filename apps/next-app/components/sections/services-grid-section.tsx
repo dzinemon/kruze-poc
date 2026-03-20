@@ -14,7 +14,7 @@ export function ServicesGridSection({ section }: ServicesGridSectionProps) {
   const cols = section.columns ?? 3;
 
   return (
-    <section className="bg-bg-subtle py-20 px-6">
+    <section className="bg-subtle py-20 px-6">
       <div className="max-w-6xl mx-auto">
         {section.content && section.content.length > 0 && (
           <div className="text-center mb-12 flex flex-col gap-3">
@@ -42,7 +42,7 @@ export function ServicesGridSection({ section }: ServicesGridSectionProps) {
             {section.tiles.map((tile) => (
               <div
                 key={tile._key}
-                className="flex flex-col gap-4 p-6 rounded-md bg-bg-base border border-border-subtle shadow-sm hover:shadow-md hover-lift"
+                className="flex flex-col gap-4 p-6 rounded-md bg-base border border-divider shadow-sm hover:shadow-md hover-lift"
               >
                 {tile.icon?.asset?.url && (
                   <div
@@ -61,7 +61,7 @@ export function ServicesGridSection({ section }: ServicesGridSectionProps) {
                 <div className="flex flex-col gap-2">
                   <h3 className="text-xl font-bold text-primary">{tile.title}</h3>
                   {Array.isArray(tile.body) && tile.body.length > 0 && (
-                    <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-primary prose-p:text-base prose-p:font-normal prose-p:text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-secondary prose-li:leading-relaxed">
+                    <div className="section-content">
                       <KruzePortableText value={tile.body} />
                     </div>
                   )}

@@ -8,14 +8,14 @@ interface Props {
 const { section } = Astro.props;
 ---
 
-<section class="py-16 px-6 bg-bg-subtle">
+<section class="py-16 px-6 bg-subtle">
   <div class="max-w-6xl mx-auto">
-    <p class="text-xs text-muted mb-8">newsBlock</p>
+    <p class="text-xs text-dim mb-8">newsBlock</p>
     {section.items && section.items.length > 0 && (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {section.items.map((item) => (
-          <div class="rounded-md bg-bg-base border border-border-subtle p-6">
-            <p class="text-sm text-muted">
+          <div class="rounded-md bg-base border border-divider p-6">
+            <p class="text-sm text-dim">
               {item.publication}{item.date ? ` · ${item.date}` : ""}
             </p>
             {item.url ? (

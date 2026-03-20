@@ -39,7 +39,15 @@ export const blogPostQuery = groq`
     topicTags[]-> { _id, title, slug },
     body[] {
       ...,
-      _type == "image" => ${imageWithMeta}
+      _type == "image" => ${imageWithMeta},
+      _type == "chartReference" => {
+        ...,
+        chart-> {
+          _id, title, chartType, data, colors, seriesType,
+          isStacked, vAxisTitle, hAxisTitle, vAxisFormat, hAxisFormat,
+          legendPosition, aspectRatio, numberFormat, advancedOptions
+        }
+      }
     },
     seo
   }

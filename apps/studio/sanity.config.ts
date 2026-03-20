@@ -1,12 +1,13 @@
 import { defineConfig } from "sanity";
 import { assist } from '@sanity/assist'
 import { structureTool } from "sanity/structure";
+import type { StructureBuilder } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
-import { richTablePlugin } from "sanity-plugin-rich-table";
 import { RocketIcon } from "@sanity/icons";
 import { schemaTypes } from "./schemas";
 import { resolve } from "./presentation/resolve";
 import { DeployWidget } from "./plugins/deployWidget/DeployWidget";
+import { ChartPreview } from "./components/ChartPreview";
 
 export default defineConfig({
   name: "kruze-poc",
@@ -16,7 +17,30 @@ export default defineConfig({
   dataset: import.meta.env.SANITY_STUDIO_DATASET,
 
   plugins: [
-    structureTool(),
+    structureTool({
+      structure: (S: StructureBuilder) =>
+        S.list()
+          .title("Content")
+          .items([
+            S.listItem()
+              .title("Charts")
+              .schemaType("chart")
+              .child(
+                S.documentTypeList("chart").child((documentId) =>
+                  S.document()
+                    .documentId(documentId)
+                    .schemaType("chart")
+                    .views([
+                      S.view.form(),
+                      S.view.component(ChartPreview).title("Preview"),
+                    ]),
+                ),
+              ),
+            ...S.documentTypeListItems().filter(
+              (item) => item.getId() !== "chart",
+            ),
+          ]),
+    }),
     presentationTool({
       previewUrl: {
         initial: import.meta.env.SANITY_STUDIO_PREVIEW_URL ?? "http://localhost:3000",
@@ -26,7 +50,6 @@ export default defineConfig({
       },
       resolve,
     }),
-    richTablePlugin({}),
     assist()
   ],
 

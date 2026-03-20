@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@kruze-poc/sanity-schemas": "workspace:*",
+    "@kruze-poc/ui": "workspace:*",
     "@sanity/assist": "^6.0.1",
     "@sanity/icons": "^3.7.4",
     "@sanity/ui": "^3.1.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sanity": "^5.13.0",
-    "sanity-plugin-rich-table": "^1.1.0",
     "styled-components": "^6.3.11"
   },
   "devDependencies": {

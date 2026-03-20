@@ -39,8 +39,8 @@ export default async function RootLayout({
         <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
         <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
       </head>
-      <body className="font-sans bg-bg-base text-primary min-h-screen flex flex-col">
-        <header className="border-b border-border-subtle">
+      <body className="font-sans bg-base text-primary min-h-screen flex flex-col">
+        <header className="border-b border-divider">
           <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="text-xl font-black text-primary">
               Kruze POC
@@ -65,7 +65,7 @@ export default async function RootLayout({
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-border-subtle mt-auto">
+        <footer className="border-t border-divider mt-auto">
           <div className="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-secondary">
             Kruze POC — Next.js 15 + Sanity CMS
           </div>

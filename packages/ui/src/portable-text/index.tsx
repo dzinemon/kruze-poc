@@ -3,16 +3,19 @@ import {
   type PortableTextComponents,
 } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import { GoogleChart } from "../chart";
+import { GoogleChart, buildChartJsonConfig } from "../chart";
 import { CtaBlock } from "./cta-block";
 import { AlertBlock } from "./alert-block";
 import { YouTubeFacade } from "./youtube-facade";
 import { responsiveImageData, lqipStyle } from "../image/sanity-image-url";
 
 const components: PortableTextComponents = {
+  block: {
+    hr: () => <hr className="my-4 border-t border-rule" />,
+  },
   types: {
     hr: () => (
-      <hr className="my-8 border-t border-border-default" />
+      <hr className="my-8 border-t border-rule" />
     ),
     image: ({ value }) => {
       if (value.asset?._id) {
@@ -33,7 +36,7 @@ const components: PortableTextComponents = {
               style={blurStyle}
             />
             {value.caption && (
-              <figcaption className="mt-2 text-sm text-muted text-center">
+              <figcaption className="mt-2 text-sm text-dim text-center">
                 {value.caption}
               </figcaption>
             )}
@@ -49,7 +52,7 @@ const components: PortableTextComponents = {
             loading="lazy"
           />
           {value.caption && (
-            <figcaption className="mt-2 text-sm text-muted text-center">
+            <figcaption className="mt-2 text-sm text-dim text-center">
               {value.caption}
             </figcaption>
           )}
@@ -57,24 +60,28 @@ const components: PortableTextComponents = {
       );
     },
 
-    chartBlock: ({ value }) => (
-      <div className="my-8 not-prose">
-        <GoogleChart
-          jsonConfig={value.jsonConfig}
-          title={value.title}
-          aspectRatio={value.aspectRatio ?? "4/3"}
-        />
-      </div>
-    ),
+    chartReference: ({ value }) => {
+      if (!value.chart) return null;
+      const jsonConfig = buildChartJsonConfig(value.chart);
+      return (
+        <div className="my-8">
+          <GoogleChart
+            jsonConfig={jsonConfig}
+            title={value.chart.title}
+            aspectRatio={value.chart.aspectRatio ?? "4/3"}
+          />
+        </div>
+      );
+    },
 
     ctaItem: ({ value }) => (
-      <div className="not-prose">
+      <div className="">
         <CtaBlock {...value} />
       </div>
     ),
 
     alertBlock: ({ value }) => (
-      <div className="not-prose">
+      <div className="">
         <AlertBlock type={value.alertType} content={value.content} />
       </div>
     ),
@@ -95,17 +102,17 @@ const components: PortableTextComponents = {
       const hasRowTitles = value.hasRowTitles !== false && bodyRows.some((row: any) => row.title);
 
       return (
-        <div className="my-8 not-prose">
+        <div className="my-8">
           <div className="kruze-table">
             <table className="text-sm">
               {headerRow && (
                 <thead>
                   <tr>
-                    {hasRowTitles && <th className="px-4 py-3 bg-neutral-100 dark:bg-bg-emphasis" />}
+                    {hasRowTitles && <th className="px-4 py-3 bg-neutral-100 dark:bg-emphasis" />}
                     {(headerRow.cells || []).map((cell: any) => (
                       <th
                         key={cell._key}
-                        className="px-4 py-3 text-left font-bold bg-neutral-100 dark:bg-bg-emphasis text-primary"
+                        className="px-4 py-3 text-left font-bold bg-neutral-100 dark:bg-emphasis text-primary"
                       >
                         <CellContent content={cell.content} />
                       </th>
@@ -115,7 +122,7 @@ const components: PortableTextComponents = {
               )}
               <tbody>
                 {bodyRows.map((row: any) => (
-                  <tr key={row._key} className="bg-white dark:bg-bg-subtle">
+                  <tr key={row._key} className="bg-white dark:bg-subtle">
                     {hasRowTitles && (
                       <th className="px-4 py-3 text-left font-normal text-primary whitespace-nowrap">
                         {row.title || ""}
@@ -124,7 +131,59 @@ const components: PortableTextComponents = {
                     {(row.cells || []).map((cell: any) => (
                       <td
                         key={cell._key}
-                        className="px-4 py-3 text-primary"
+                        className="px-4 py-2 text-primary"
+                      >
+                        <CellContent content={cell.content} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      );
+    },
+
+    advancedTableBlock: ({ value }) => {
+      if (!value.rows || value.rows.length === 0) return <div className="my-8" />;
+
+      const headerRow = value.hasHeaderRow ? value.rows[0] : null;
+      const bodyRows = value.hasHeaderRow ? value.rows.slice(1) : value.rows;
+
+      const CellContent = ({ content }: { content: any[] }) => (
+        <PortableText value={content || []} components={components} />
+      );
+
+      return (
+        <div className="my-8">
+          <div className="kruze-table">
+            <table className="text-sm">
+              {headerRow && (
+                <thead>
+                  <tr>
+                    {(headerRow.cells || []).map((cell: any) => (
+                      <th
+                        key={cell._key}
+                        colSpan={cell.colspan > 1 ? cell.colspan : undefined}
+                        rowSpan={cell.rowspan > 1 ? cell.rowspan : undefined}
+                        className="px-4 py-3 text-left font-bold bg-neutral-100 dark:bg-emphasis text-primary"
+                      >
+                        <CellContent content={cell.content} />
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+              )}
+              <tbody>
+                {bodyRows.map((row: any) => (
+                  <tr key={row._key} className="bg-white dark:bg-subtle">
+                    {(row.cells || []).map((cell: any) => (
+                      <td
+                        key={cell._key}
+                        colSpan={cell.colspan > 1 ? cell.colspan : undefined}
+                        rowSpan={cell.rowspan > 1 ? cell.rowspan : undefined}
+                        className="px-4 py-2 text-primary"
                       >
                         <CellContent content={cell.content} />
                       </td>
@@ -146,7 +205,7 @@ interface KruzePortableTextProps {
 
 export function KruzePortableText({ value }: KruzePortableTextProps) {
   return (
-    <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-primary prose-p:text-base prose-p:font-normal prose-p:text-secondary prose-p:leading-relaxed prose-p:mb-4 prose-headings:mt-6 prose-headings:mb-3 prose-strong:text-primary prose-em:text-primary prose-code:text-brand-600 prose-code:bg-bg-subtle prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-sm prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-blockquote:border-brand-500 prose-blockquote:text-secondary prose-blockquote:pl-4 prose-ul:text-secondary prose-ol:text-secondary prose-li:leading-relaxed prose-li:mb-2">
+    <div className="article-content">
       <PortableText value={value} components={components} />
     </div>
   );

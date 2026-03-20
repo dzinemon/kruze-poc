@@ -33,8 +33,8 @@ const { title, description } = Astro.props;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
   </head>
-  <body class="font-sans bg-bg-base text-primary min-h-screen flex flex-col">
-    <header class="border-b border-border-subtle">
+  <body class="font-sans bg-base text-primary min-h-screen flex flex-col">
+    <header class="border-b border-divider">
       <nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <a href="/" class="text-xl font-black text-primary">Kruze POC</a>
         <div class="flex items-center gap-6">
@@ -42,7 +42,7 @@ const { title, description } = Astro.props;
           <a href="/landing" class="text-secondary hover:text-primary transition-colors">Pages</a>
           <button
             id="theme-toggle"
-            class="icon-container icon-container-md squircle bg-bg-muted hover:bg-bg-emphasis text-primary transition-fast focus-ring"
+            class="icon-container icon-container-md squircle bg-muted hover:bg-emphasis text-primary transition-fast focus-ring"
             aria-label="Toggle dark mode"
           >
             <!-- Sun icon (shown in dark mode) -->
@@ -62,7 +62,7 @@ const { title, description } = Astro.props;
       <slot />
     </main>
 
-    <footer class="border-t border-border-subtle mt-auto">
+    <footer class="border-t border-divider mt-auto">
       <div class="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-secondary">
         Kruze POC — Astro 5 + Sanity CMS
       </div>

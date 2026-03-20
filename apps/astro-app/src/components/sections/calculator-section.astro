@@ -18,12 +18,12 @@ const calculatorLabels: Record<string, string> = {
 const label = calculatorLabels[section.calculatorType] ?? section.calculatorType;
 ---
 
-<section class="py-16 px-6 bg-bg-subtle">
+<section class="py-16 px-6 bg-subtle">
   <div class="max-w-4xl mx-auto">
-    <p class="text-xs text-muted mb-4">calculatorBlock</p>
-    <div class="rounded-md border border-border-default p-8 text-center bg-bg-base">
+    <p class="text-xs text-dim mb-4">calculatorBlock</p>
+    <div class="rounded-md border border-rule p-8 text-center bg-base">
       <p class="text-xl font-bold text-primary">{label}</p>
-      <p class="text-sm text-muted mt-2">Calculator embed: <code>{section.calculatorType}</code></p>
+      <p class="text-sm text-dim mt-2">Calculator embed: <code>{section.calculatorType}</code></p>
     </div>
   </div>
 </section>

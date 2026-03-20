@@ -41,7 +41,7 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
             {section.tiles.map((tile) => (
               <div
                 key={tile._key}
-                className="flex flex-col gap-4 p-6 rounded-xl bg-bg-subtle border border-border-subtle hover-lift"
+                className="flex flex-col gap-4 p-6 rounded-xl bg-subtle border border-divider hover-lift"
               >
                 {tile.icon?.asset?.url && (
                   <div
@@ -60,7 +60,7 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                 <div className="flex flex-col gap-2">
                   <h3 className="text-xl font-bold text-primary">{tile.title}</h3>
                   {Array.isArray(tile.body) && tile.body.length > 0 && (
-                    <div className="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-primary prose-p:text-base prose-p:font-normal prose-p:text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-secondary prose-li:leading-relaxed">
+                    <div className="section-content">
                       <KruzePortableText value={tile.body} />
                     </div>
                   )}

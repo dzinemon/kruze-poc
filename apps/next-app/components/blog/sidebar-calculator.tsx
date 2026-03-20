@@ -1,6 +1,6 @@
 export function SidebarCalculator() {
   return (
-    <div className="rounded-md bg-bg-subtle border border-border-subtle p-5">
+    <div className="rounded-md bg-subtle border border-divider p-5">
       <h3 className="text-lg font-bold text-primary mb-4">
         How Much Tax Return Costs
       </h3>
@@ -13,7 +13,7 @@ export function SidebarCalculator() {
             type="text"
             id="revenue"
             placeholder="e.g. $500,000"
-            className="w-full py-[9px] px-4 text-sm leading-5 text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            className="w-full py-[9px] px-4 text-sm leading-5 text-primary bg-base border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
         <div>
@@ -24,7 +24,7 @@ export function SidebarCalculator() {
             type="text"
             id="employees"
             placeholder="e.g. 10"
-            className="w-full py-[9px] px-4 text-sm leading-5 text-primary bg-bg-base border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+            className="w-full py-[9px] px-4 text-sm leading-5 text-primary bg-base border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
           />
         </div>
         <button

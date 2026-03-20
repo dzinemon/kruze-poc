@@ -59,12 +59,45 @@ export interface Testimonial {
   companyImage?: SanityImage;
 }
 
-// Portable Text custom block types (used in blog post body)
-export interface ChartBlock {
-  _type: "chartBlock";
-  title?: string;
-  aspectRatio?: string; // e.g., "4/3" (default), "16/9", "1/1"
-  jsonConfig: string; // Raw JSON: { "type": "ColumnChart", "data": [...], "options": {...} }
+// Chart document (standalone, referenceable)
+// Must stay assignable to ChartDocumentData in @kruze-poc/ui/chart/build-chart-config.ts
+export interface ChartNumberFormat {
+  prefix?: string;
+  suffix?: string;
+  pattern?: string;
+}
+
+export interface ChartDocument {
+  _id: string;
+  _type: "chart";
+  title: string;
+  slug: SanitySlug;
+  chartType:
+    | "ComboChart"
+    | "ColumnChart"
+    | "LineChart"
+    | "PieChart"
+    | "BarChart"
+    | "AreaChart"
+    | "Table";
+  data: string; // JSON array for arrayToDataTable
+  colors?: string[];
+  seriesType?: "line" | "bars" | "area";
+  isStacked?: boolean;
+  vAxisTitle?: string;
+  hAxisTitle?: string;
+  vAxisFormat?: string;
+  hAxisFormat?: string;
+  legendPosition?: "bottom" | "top" | "right" | "none";
+  numberFormat?: ChartNumberFormat;
+  aspectRatio?: string;
+  advancedOptions?: string; // raw JSON object
+}
+
+export interface ChartReferenceBlock {
+  _type: "chartReference";
+  _key: string;
+  chart: ChartDocument;
 }
 
 export interface CtaItem {
@@ -106,6 +139,28 @@ export interface RichTableBlock {
   rows: RichTableRow[];
   hasColumnTitles?: boolean;
   hasRowTitles?: boolean;
+}
+
+export interface AdvancedTableCell {
+  _key: string;
+  _type: "advancedTableCell";
+  content?: any[];
+  colspan: number;
+  rowspan: number;
+}
+
+export interface AdvancedTableRow {
+  _key: string;
+  _type: "advancedTableRow";
+  cells: AdvancedTableCell[];
+}
+
+export interface AdvancedTableBlock {
+  _key: string;
+  _type: "advancedTableBlock";
+  hasHeaderRow: boolean;
+  columnCount: number;
+  rows: AdvancedTableRow[];
 }
 
 export interface BlogPost {

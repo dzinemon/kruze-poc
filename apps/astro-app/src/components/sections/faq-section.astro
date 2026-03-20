@@ -42,7 +42,7 @@ const jsonLd = {
 
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
-<section class="py-20 px-6 bg-white dark:bg-[var(--color-bg-base)]">
+<section class="py-20 px-6 bg-white dark:bg-[var(--color-base)]">
   <div class="max-w-3xl mx-auto">
     {contentBlocks.length > 0 && (
       <div class="mb-12 flex flex-col gap-4 text-center">
@@ -64,10 +64,10 @@ const jsonLd = {
         const panelId = `faq-panel-${i}`;
         const triggerId = `faq-trigger-${i}`;
         return (
-          <div class="faq-item rounded-md border border-border-default bg-bg-subtle shadow-xs overflow-hidden">
+          <div class="faq-item rounded-md border border-rule bg-subtle shadow-xs overflow-hidden">
             {/* h3 wrapping the button: ARIA Accordion Pattern — helps crawlers
                 understand question hierarchy and qualifies for FAQPage rich results */}
-            <h3 class="m-0">
+            <div class="m-0">
               <button
                 id={triggerId}
                 class="faq-trigger w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring"
@@ -76,7 +76,7 @@ const jsonLd = {
               >
                 <span class="text-base">{faq.question}</span>
                 <svg
-                  class="faq-chevron flex-shrink-0 text-muted"
+                  class="faq-chevron flex-shrink-0 text-dim"
                   width="20"
                   height="20"
                   viewBox="0 0 24 24"
@@ -90,7 +90,7 @@ const jsonLd = {
                   <path d="m6 9 6 6 6-6" />
                 </svg>
               </button>
-            </h3>
+            </div>
 
             {/* Content stays in DOM (not conditionally rendered) so crawlers
                 index it. max-height animation keeps it visually hidden when closed
@@ -103,7 +103,7 @@ const jsonLd = {
               style="max-height: 0;"
             >
               <div class="px-6 pb-5 pt-0">
-                <div class="border-t border-border-subtle pt-4">
+                <div class="border-t border-divider pt-4">
                   <p class="text-base font-normal text-secondary leading-relaxed">
                     {extractText(faq.answer)}
                   </p>

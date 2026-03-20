@@ -1,45 +1,10 @@
 @import "tailwindcss";
-@import "../../../tokens.css";
+@import "@kruze-poc/tailwind-config/tokens.css";
 @custom-variant dark (&:where(.dark, .dark *));
 @theme inline {
     --font-sans: var(--font-lato);
 }
-@plugin "@tailwindcss/typography";
 
 @config "../tailwind.config.ts";
 
 @source "../../packages/ui/src/**/*.{ts,tsx}";
-
-/* Portable Text rich table — rounded corners via overflow-x:auto clipping */
-.kruze-table {
-  overflow-x: auto;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-default);
-}
-
-.kruze-table table {
-  border-collapse: collapse;
-  min-width: 100%;
-}
-
-.kruze-table th,
-.kruze-table td {
-  border: 1px solid var(--color-border-default);
-}
-
-.kruze-table thead tr:first-child > * { border-top: none; }
-.kruze-table tbody tr:last-child > * { border-bottom: none; }
-.kruze-table tr > *:first-child { border-left: none; }
-.kruze-table tr > *:last-child { border-right: none; }
-
-.kruze-table thead th {
-  background-color: var(--color-bg-muted);
-}
-
-.kruze-table tbody tr {
-  background-color: var(--color-bg-base);
-}
-
-.kruze-table tbody tr:nth-child(even) {
-  background-color: var(--color-bg-subtle);
-}

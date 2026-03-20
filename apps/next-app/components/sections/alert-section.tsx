@@ -19,7 +19,7 @@ export function AlertSection({ section }: AlertSectionProps) {
     <section className="py-8 px-6">
       <div className="max-w-4xl mx-auto">
         <div className={`rounded-sm border p-4 ${style}`}>
-          <p className="text-xs text-muted mb-2">alertBlock — {type}</p>
+          <p className="text-xs text-dim mb-2">alertBlock — {type}</p>
           {!section.content && <p className="text-sm">No content</p>}
         </div>
       </div>

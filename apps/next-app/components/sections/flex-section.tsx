@@ -8,7 +8,7 @@ interface FlexSectionProps {
 export function FlexSection({ section }: FlexSectionProps) {
   const sectionClass = [
     section.paddingStyle ?? "py-20 px-6",
-    section.backgroundStyle ?? "bg-bg-base",
+    section.backgroundStyle ?? "bg-base",
   ].join(" ");
 
   return (

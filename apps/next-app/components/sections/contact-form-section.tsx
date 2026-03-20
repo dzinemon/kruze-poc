@@ -33,7 +33,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
         </div>
 
         {/* Form card */}
-        <div className="rounded-lg bg-bg-subtle border border-border-subtle shadow-sm p-8">
+        <div className="rounded-lg bg-subtle border border-divider shadow-sm p-8">
           <form noValidate className="flex flex-col gap-3">
 
             {/* First name + Last name */}
@@ -47,7 +47,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                   type="text"
                   autoComplete="given-name"
                   placeholder="Jane"
-                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
                 />
               </div>
               <div className="flex flex-col gap-1.5">
@@ -59,7 +59,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                   type="text"
                   autoComplete="family-name"
                   placeholder="Smith"
-                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
                 />
               </div>
             </div>
@@ -74,7 +74,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                 type="text"
                 autoComplete="organization"
                 placeholder="Acme Inc."
-                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
               />
             </div>
 
@@ -88,21 +88,21 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                 type="email"
                 autoComplete="email"
                 placeholder="jane@acme.com"
-                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
               />
             </div>
 
             {/* Phone */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="phone" className="text-sm font-bold text-primary">
-                Phone <span className="font-normal text-muted">(optional)</span>
+                Phone <span className="font-normal text-dim">(optional)</span>
               </label>
               <input
                 id="phone"
                 type="tel"
                 autoComplete="tel"
                 placeholder="+1 (415) 000-0000"
-                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+                className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
               />
             </div>
 
@@ -110,13 +110,13 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             {!isNewsletter && (
               <div className="flex flex-col gap-1.5">
                 <label htmlFor="message" className="text-sm font-bold text-primary">
-                  Message <span className="font-normal text-muted">(optional)</span>
+                  Message <span className="font-normal text-dim">(optional)</span>
                 </label>
                 <textarea
                   id="message"
                   rows={4}
                   placeholder="Tell us about your startup and what you need help with…"
-                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
+                  className="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast resize-none"
                 />
               </div>
             )}
@@ -125,7 +125,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
-                className="mt-0.5 size-4 rounded-xs border-border-default accent-brand-500 focus-ring cursor-pointer"
+                className="mt-0.5 size-4 rounded-xs border-rule accent-brand-500 focus-ring cursor-pointer"
               />
               <span className="text-sm font-normal text-secondary leading-relaxed">
                 I agree to receive marketing emails from Kruze Consulting. You can unsubscribe at any time.
@@ -141,7 +141,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             </button>
 
             {/* Privacy note */}
-            <p className="text-xs text-muted text-center">
+            <p className="text-xs text-dim text-center">
               By submitting, you agree to our{" "}
               <span className="text-brand-500 underline cursor-pointer">Privacy Policy</span>.
               We never share your data.

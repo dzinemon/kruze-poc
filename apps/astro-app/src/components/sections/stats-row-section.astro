@@ -15,9 +15,9 @@ const layoutMap: Record<string, string> = {
 const gridClass = layoutMap[section.layout ?? "3-col"] ?? "grid-cols-1 sm:grid-cols-3";
 ---
 
-<section class="py-16 px-6 bg-bg-base">
+<section class="py-16 px-6 bg-base">
   <div class="max-w-6xl mx-auto">
-    <p class="text-xs text-muted mb-8">statsRowBlock — {section.layout ?? "3-col"}</p>
+    <p class="text-xs text-dim mb-8">statsRowBlock — {section.layout ?? "3-col"}</p>
     {section.stats && section.stats.length > 0 && (
       <div class={`grid ${gridClass} gap-8 text-center`}>
         {section.stats.map((stat) => (
@@ -25,7 +25,7 @@ const gridClass = layoutMap[section.layout ?? "3-col"] ?? "grid-cols-1 sm:grid-c
             <p class="text-5xl font-black text-gradient-brand">{stat.value}</p>
             <p class="text-base font-bold text-primary mt-1">{stat.label}</p>
             {stat.footnote && (
-              <p class="text-sm text-muted mt-1">{stat.footnote}</p>
+              <p class="text-sm text-dim mt-1">{stat.footnote}</p>
             )}
           </div>
         ))}

@@ -35,7 +35,7 @@ export function TestimonialsSection({ section }: TestimonialsSectionProps) {
                 <div>
                   <p className="font-bold text-body text-sm">{t.name}</p>
                   {t.role && (
-                    <p className="text-xs text-muted">
+                    <p className="text-xs text-dim">
                       {t.role}
                       {t.company && `, ${t.company}`}
                     </p>

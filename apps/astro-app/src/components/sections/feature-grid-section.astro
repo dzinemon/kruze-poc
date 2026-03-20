@@ -55,7 +55,7 @@ const contentBlocks = (section.content ?? []).filter(
             ? renderPortableTextHtml(tile.body)
             : "";
           return (
-            <div class="flex flex-col gap-4 p-6 rounded-xl bg-bg-subtle border border-border-subtle hover-lift">
+            <div class="flex flex-col gap-4 p-6 rounded-xl bg-subtle border border-divider hover-lift">
               {tile.icon?.asset?.url && (
                 <div
                   class="icon-container icon-container-xl squircle flex-shrink-0"
@@ -74,7 +74,7 @@ const contentBlocks = (section.content ?? []).filter(
                 <h3 class="text-xl font-bold text-primary">{tile.title}</h3>
                 {bodyHtml && (
                   <div
-                    class="prose prose-sm max-w-none prose-headings:font-bold prose-headings:text-primary prose-p:text-base prose-p:font-normal prose-p:text-secondary prose-p:leading-relaxed prose-a:text-brand-500 hover:prose-a:text-brand-600 prose-li:text-secondary prose-li:leading-relaxed"
+                    class="section-content"
                     set:html={bodyHtml}
                   />
                 )}

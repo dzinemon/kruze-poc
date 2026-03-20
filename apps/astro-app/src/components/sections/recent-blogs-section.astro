@@ -65,7 +65,7 @@ function formatDate(dateStr: string): string {
         {posts.map((post) => (
           <a
             href={`/blog/${post.slug.current}`}
-            class="group flex flex-col rounded-md bg-bg-subtle border border-border-subtle shadow-sm hover:shadow-md hover-lift overflow-hidden focus-ring"
+            class="group flex flex-col rounded-md bg-subtle border border-divider shadow-sm hover:shadow-md hover-lift overflow-hidden focus-ring"
           >
             {post.heroImage?.asset?.url && (
               <div class="aspect-video overflow-hidden bg-neutral-100">
@@ -79,7 +79,7 @@ function formatDate(dateStr: string): string {
               </div>
             )}
             <div class="p-5 flex flex-col gap-2 flex-1">
-              <p class="text-xs font-bold text-muted uppercase tracking-wider">
+              <p class="text-xs font-bold text-dim uppercase tracking-wider">
                 {formatDate(post.date)}
               </p>
               <h3 class="text-xl font-bold text-primary leading-snug group-hover:text-brand-500 duration-300 transition-transform">
@@ -90,8 +90,8 @@ function formatDate(dateStr: string): string {
                   {post.description}
                 </p>
               )}
-              <div class="mt-auto pt-3 border-t border-border-subtle flex items-center justify-between gap-4">
-                <p class="text-xs font-bold text-muted truncate">
+              <div class="mt-auto pt-3 border-t border-divider flex items-center justify-between gap-4">
+                <p class="text-xs font-bold text-dim truncate">
                   {post.author?.fullName ?? ""}
                 </p>
                 <span class="inline-flex items-center gap-1 text-xs font-bold text-brand-500 group-hover:text-brand-600 duration-300 transition-transform shrink-0">
@@ -106,7 +106,7 @@ function formatDate(dateStr: string): string {
         ))}
       </div>
     ) : (
-      <p class="text-center text-muted text-sm">No posts found.</p>
+      <p class="text-center text-dim text-sm">No posts found.</p>
     )}
   </div>
 </section>

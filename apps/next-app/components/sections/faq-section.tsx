@@ -45,7 +45,7 @@ export function FaqSection({ section }: FaqSectionProps) {
   };
 
   return (
-    <section className="py-20 px-6 bg-white dark:bg-[var(--color-bg-base)]">
+    <section className="py-20 px-6 bg-white dark:bg-[var(--color-base)]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -84,11 +84,11 @@ export function FaqSection({ section }: FaqSectionProps) {
             return (
               <div
                 key={i}
-                className="rounded-md border border-border-default bg-bg-subtle shadow-xs overflow-hidden"
+                className="rounded-md border border-rule bg-subtle shadow-xs overflow-hidden"
               >
                 {/* h3 wrapping the button: ARIA Accordion Pattern — helps crawlers
                     understand question hierarchy and qualifies for FAQPage rich results */}
-                <h3 className="m-0">
+                <div className="m-0">
                   <button
                     id={triggerId}
                     className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring"
@@ -102,7 +102,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                       width={20}
                       height={20}
                       strokeWidth={1.5}
-                      className="flex-shrink-0 text-muted"
+                      className="flex-shrink-0 text-dim"
                       aria-hidden="true"
                       style={{
                         transition: "transform var(--transition-base)",
@@ -110,7 +110,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                       }}
                     />
                   </button>
-                </h3>
+                </div>
 
                 {/* Content stays in DOM (not conditionally rendered) so crawlers
                     index it. max-height animation keeps it visually hidden when closed
@@ -126,7 +126,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                   }}
                 >
                   <div className="px-6 pb-5 pt-0">
-                    <div className="border-t border-border-subtle pt-4">
+                    <div className="border-t border-divider pt-4">
                       <p className="text-base font-normal text-secondary leading-relaxed">
                         {extractText(faq.answer)}
                       </p>

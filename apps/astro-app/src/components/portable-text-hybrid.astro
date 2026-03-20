@@ -1,5 +1,6 @@
 ---
 import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
+import { buildChartJsonConfig } from "@kruze-poc/ui/chart";
 import ChartIsland from "./react/chart-island";
 import YouTubeIsland from "./react/youtube-island";
 
@@ -14,7 +15,7 @@ const segments: Array<{ type: "html" | "chart" | "youtube"; content: any }> = []
 let currentHtmlBlocks: any[] = [];
 
 value.forEach((block: any) => {
-  if (block._type === "chartBlock") {
+  if (block._type === "chartReference") {
     // Flush any accumulated HTML blocks
     if (currentHtmlBlocks.length > 0) {
       segments.push({
@@ -23,8 +24,20 @@ value.forEach((block: any) => {
       });
       currentHtmlBlocks = [];
     }
-    // Add chart segment
-    segments.push({ type: "chart", content: block });
+    // Normalize chartReference to the same shape as chartBlock
+    if (block._type === "chartReference" && block.chart) {
+      const jsonConfig = buildChartJsonConfig(block.chart);
+      segments.push({
+        type: "chart",
+        content: {
+          jsonConfig,
+          title: block.chart.title,
+          aspectRatio: block.chart.aspectRatio ?? "4/3",
+        },
+      });
+    } else {
+      segments.push({ type: "chart", content: block });
+    }
   } else if (block._type === "youtubeBlock") {
     // Flush any accumulated HTML blocks
     if (currentHtmlBlocks.length > 0) {
@@ -52,7 +65,7 @@ if (currentHtmlBlocks.length > 0) {
 ---
 
 <div
-  class="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-brand-500 dark:prose-a:text-brand-400 prose-blockquote:border-l-brand-500"
+  class="article-content"
 >
   {
     segments.map((segment) => {
@@ -62,7 +75,7 @@ if (currentHtmlBlocks.length > 0) {
 
       if (segment.type === "chart") {
         return (
-          <div class="my-8 not-prose">
+          <div class="my-8">
             <ChartIsland
               client:load
               jsonConfig={segment.content.jsonConfig}
@@ -75,7 +88,7 @@ if (currentHtmlBlocks.length > 0) {
 
       if (segment.type === "youtube") {
         return (
-          <div class="not-prose">
+          <div>
             <YouTubeIsland
               client:visible
               videoId={segment.content.videoId}

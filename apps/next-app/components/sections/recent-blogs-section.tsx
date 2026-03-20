@@ -64,7 +64,7 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
               <a
                 key={post._id}
                 href={`/blog/${post.slug.current}`}
-                className="group flex flex-col rounded-md bg-bg-subtle border border-border-subtle shadow-sm hover:shadow-md hover-lift overflow-hidden focus-ring"
+                className="group flex flex-col rounded-md bg-subtle border border-divider shadow-sm hover:shadow-md hover-lift overflow-hidden focus-ring"
               >
                 {post.heroImage?.asset?.url && (
                   <div className="aspect-video overflow-hidden bg-neutral-100">
@@ -78,7 +78,7 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
                   </div>
                 )}
                 <div className="p-5 flex flex-col gap-2 flex-1">
-                  <p className="text-xs font-bold text-muted uppercase tracking-wider">
+                  <p className="text-xs font-bold text-dim uppercase tracking-wider">
                     {formatDate(post.date)}
                   </p>
                   <h3 className="text-xl font-bold text-primary leading-snug group-hover:text-brand-500 duration-300 transition-transform">
@@ -89,8 +89,8 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
                       {post.description}
                     </p>
                   )}
-                  <div className="mt-auto pt-3 border-t border-border-subtle flex items-center justify-between gap-4">
-                    <p className="text-xs font-bold text-muted truncate">
+                  <div className="mt-auto pt-3 border-t border-divider flex items-center justify-between gap-4">
+                    <p className="text-xs font-bold text-dim truncate">
                       {post.author?.fullName ?? ""}
                     </p>
                     <span className="inline-flex items-center gap-1 text-xs font-bold text-brand-500 group-hover:text-brand-600 duration-300 transition-transform shrink-0">
@@ -105,7 +105,7 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
             ))}
           </div>
         ) : (
-          <p className="text-center text-muted text-sm">No posts found.</p>
+          <p className="text-center text-dim text-sm">No posts found.</p>
         )}
       </div>
     </section>

@@ -6,10 +6,10 @@ interface CustomEmbedSectionProps {
 
 export function CustomEmbedSection({ section }: CustomEmbedSectionProps) {
   return (
-    <section className="py-16 px-6 bg-bg-base">
+    <section className="py-16 px-6 bg-base">
       <div className="max-w-6xl mx-auto">
-        <div className="rounded-md border border-dashed border-border-default p-8 text-center">
-          <p className="text-xs text-muted mb-2">customEmbedBlock</p>
+        <div className="rounded-md border border-dashed border-rule p-8 text-center">
+          <p className="text-xs text-dim mb-2">customEmbedBlock</p>
           <p className="text-base font-bold text-primary">
             Custom Embed: <code className="font-normal">{section.embedId}</code>
           </p>
