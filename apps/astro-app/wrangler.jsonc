@@ -3,5 +3,8 @@
   "name": "kruze-poc",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2025-04-01",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist"
+  }
 }
