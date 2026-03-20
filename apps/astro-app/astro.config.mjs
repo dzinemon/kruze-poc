@@ -91,7 +91,7 @@ export default defineConfig({
   // Defaults to Cloudflare adapter for normal dev and Cloudflare Pages deployment.
   adapter: process.env.BUILD_TARGET === "docker"
     ? node({ mode: "standalone" })
-    : cloudflare(),
+    : cloudflare({ prerenderEnvironment: 'node' }),
   output: "server",
   fonts: [
     {
