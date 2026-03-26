@@ -31,10 +31,28 @@ export function buildChartJsonConfig(chart: ChartDocumentData): string {
   // Parse the data table JSON array
   let data: Array<Array<string | number>>;
   try {
+    if (!chart.data) {
+      return JSON.stringify({
+        type: chart.chartType || "LineChart",
+        data: null,
+        error: "No chart data provided",
+      });
+    }
     data = JSON.parse(chart.data);
+    // Google Charts requires at least 2 columns (label + value)
+    if (!Array.isArray(data) || data.length < 2 || !Array.isArray(data[0]) || data[0].length < 2) {
+      return JSON.stringify({
+        type: chart.chartType || "LineChart",
+        data: null,
+        error: "Chart data must have at least a header row and one data row, each with at least 2 columns",
+      });
+    }
   } catch {
-    // Fallback: empty chart with error-indicating data
-    data = [["Error"], ["Invalid data JSON"]];
+    return JSON.stringify({
+      type: chart.chartType || "LineChart",
+      data: null,
+      error: "Invalid chart data JSON",
+    });
   }
 
   // Build options from structured fields
@@ -93,12 +111,19 @@ export function buildChartJsonConfig(chart: ChartDocumentData): string {
     }
   }
 
-  // Deep-merge advanced options override (shallow — advanced wins)
+  // Deep-merge advanced options override — nested objects merge, primitives overwrite
   if (chart.advancedOptions) {
     try {
       const advanced = JSON.parse(chart.advancedOptions);
       if (typeof advanced === "object" && !Array.isArray(advanced)) {
-        Object.assign(options, advanced);
+        for (const [key, val] of Object.entries(advanced)) {
+          if (typeof val === "object" && val !== null && !Array.isArray(val) &&
+              typeof options[key] === "object" && options[key] !== null) {
+            options[key] = { ...(options[key] as Record<string, unknown>), ...(val as Record<string, unknown>) };
+          } else {
+            options[key] = val;
+          }
+        }
       }
     } catch {
       // Ignore invalid JSON in advanced options

@@ -1,23 +1,22 @@
-import { Fragment } from "react";
-import { ArrowRight } from "lucide-react";
 import type { CtaStripSection as CtaStripSectionType } from "@kruze-poc/sanity-schemas/src/types";
+import { CtaContent } from "@kruze-poc/ui/cta-content";
+import { heading } from "@kruze-poc/ui/styles";
 
-interface RawSpan {
-  _type: string;
-  text?: string;
-  marks?: string[];
-}
+const darkColors = {
+  h2: `${heading.h2.replace("text-primary", "text-white")}`,
+  paragraph: "text-lg font-normal leading-relaxed text-white/80",
+  ctaPrimary:
+    "inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full shadow-md transition-fast focus-ring bg-white text-brand-800 hover:bg-neutral-100",
+  ctaSecondary:
+    "inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full ring-1 transition-fast focus-ring text-white ring-white/30 hover:bg-white/10",
+};
 
-function renderInline(children: RawSpan[], onDark: boolean): React.ReactNode {
-  if (!Array.isArray(children)) return null;
-  return children.map((child, i) => {
-    if (child._type === "break") return <br key={i} />;
-    let node: React.ReactNode = child.text ?? "";
-    if (child.marks?.includes("strong")) node = <strong key={i}>{node}</strong>;
-    if (child.marks?.includes("em")) node = <em key={i}>{node}</em>;
-    return <Fragment key={i}>{node}</Fragment>;
-  });
-}
+const lightColors = {
+  ctaPrimary:
+    "inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full shadow-md transition-fast focus-ring bg-brand-500 text-white hover:bg-brand-600 hover:shadow-brand",
+  ctaSecondary:
+    "inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full ring-1 transition-fast focus-ring text-brand-500 ring-brand-500 hover:bg-brand-50",
+};
 
 export function CtaStripSection({ section }: { section: CtaStripSectionType }) {
   const bg = section.background ?? "white";
@@ -35,61 +34,11 @@ export function CtaStripSection({ section }: { section: CtaStripSectionType }) {
       style={onDark ? { background: "var(--gradient-cta)" } : undefined}
     >
       <div className="max-w-3xl mx-auto text-center flex flex-col gap-6">
-        {Array.isArray(section.content) && section.content.map((block: any, i: number) => {
-          if (block._type !== "block") return null;
-          const isH2 = block.style === "h2";
-          const content = renderInline(block.children ?? [], onDark);
-          if (isH2) {
-            return (
-              <h2
-                key={i}
-                className={`text-4xl lg:text-5xl font-bold tracking-tight ${onDark ? "text-white" : "text-primary"}`}
-              >
-                {content}
-              </h2>
-            );
-          }
-          return (
-            <p
-              key={i}
-              className={`text-lg font-normal leading-relaxed ${onDark ? "text-white/80" : "text-secondary"}`}
-            >
-              {content}
-            </p>
-          );
-        })}
-        {section.ctas && section.ctas.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-3">
-            {section.ctas.map((cta) =>
-              cta.style === "secondary" ? (
-                <a
-                  key={cta._key}
-                  href={cta.url ?? "#"}
-                  className={`inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full ring-1 transition-fast focus-ring ${
-                    onDark
-                      ? "text-white ring-white/30 hover:bg-white/10"
-                      : "text-brand-500 ring-brand-500 hover:bg-brand-50"
-                  }`}
-                >
-                  {cta.text}
-                </a>
-              ) : (
-                <a
-                  key={cta._key}
-                  href={cta.url ?? "#"}
-                  className={`inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full shadow-md transition-fast focus-ring ${
-                    onDark
-                      ? "bg-white text-brand-800 hover:bg-neutral-100"
-                      : "bg-brand-500 text-white hover:bg-brand-600 hover:shadow-brand"
-                  }`}
-                >
-                  {cta.text}
-                  <ArrowRight size={18} strokeWidth={1.5} />
-                </a>
-              )
-            )}
-          </div>
-        )}
+        <CtaContent
+          textBlocks={section.content}
+          ctas={section.ctas}
+          colors={onDark ? darkColors : lightColors}
+        />
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { ArrowRight } from "lucide-react";
 import type { HeroSection as HeroSectionType, CtaItem } from "@kruze-poc/sanity-schemas/src/types";
+import { cta as ctaStyles } from "@kruze-poc/ui/styles";
 
 // ── Inline portable text renderer ────────────────────────────────────────────
 // Handles the limited mark set used in hero fields (strong, em, underline).
@@ -88,11 +89,11 @@ function CtaButtons({ ctas }: { ctas?: CtaItem[] }) {
     <div className="flex flex-wrap items-center justify-center gap-3">
       {ctas.map((cta) =>
         cta.style === "secondary" ? (
-          <a key={cta._key} href={cta.url ?? "#"} className="inline-flex items-center gap-2 px-5 py-3 text-base font-bold text-neutral-700 rounded-full ring-1 ring-neutral-300 hover:bg-neutral-50 focus-ring transition-all duration-200">
+          <a key={cta._key} href={cta.url ?? "#"} className={ctaStyles.secondary}>
             {cta.text}
           </a>
         ) : (
-          <a key={cta._key} href={cta.url ?? "#"} className="inline-flex items-center gap-2 px-5 py-3 text-base font-bold text-white rounded-full bg-brand-500 hover:bg-brand-600 shadow-md hover:shadow-brand focus-ring transition-all duration-200">
+          <a key={cta._key} href={cta.url ?? "#"} className={ctaStyles.primary}>
             {cta.text}
             <ArrowRight size={18} strokeWidth={1.5} />
           </a>

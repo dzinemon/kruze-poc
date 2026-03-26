@@ -5,8 +5,9 @@ import { loadGoogleCharts } from "./google-charts-loader";
 
 interface GoogleChartConfig {
   type: string;
-  data: Array<Array<string | number>>;
+  data: Array<Array<string | number>> | null;
   options?: Record<string, unknown>;
+  error?: string;
 }
 
 export interface GoogleChartProps {
@@ -146,9 +147,21 @@ export function GoogleChart({
         return;
       }
 
+      // Handle upstream validation errors (e.g. missing/invalid data in CMS)
+      if (config.error) {
+        setError(config.error);
+        return;
+      }
+
       // Validate required fields
       if (!config.type || !Array.isArray(config.data)) {
         setError("Chart config must have 'type' and 'data' array");
+        return;
+      }
+
+      // Google Charts needs at least 2 columns and 2 rows (header + data)
+      if (config.data.length < 2 || !Array.isArray(config.data[0]) || config.data[0].length < 2) {
+        setError("Not enough data to render chart — need at least 2 columns and 1 data row");
         return;
       }
 

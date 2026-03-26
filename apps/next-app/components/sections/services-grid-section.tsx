@@ -1,5 +1,6 @@
 import type { ServicesGridBlock } from "@kruze-poc/sanity-schemas/src/types";
 import { KruzePortableText } from "@kruze-poc/ui/portable-text";
+import { heading } from "@kruze-poc/ui/styles";
 
 const colsClass: Record<number, string> = {
   3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
@@ -24,7 +25,7 @@ export function ServicesGridSection({ section }: ServicesGridSectionProps) {
                 const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
                 if (b.style === "h2") {
                   return (
-                    <h2 key={b._key} className="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
+                    <h2 key={b._key} className={heading.h2}>
                       {text}
                     </h2>
                   );

@@ -2,6 +2,7 @@ import { client } from "@/lib/sanity";
 import { recentBlogsByCategoryQuery } from "@kruze-poc/groq-queries";
 import type { RecentBlogsSection as RecentBlogsSectionType } from "@kruze-poc/sanity-schemas/src/types";
 import { ArrowRight } from "lucide-react";
+import { heading } from "@kruze-poc/ui/styles";
 
 interface BlogCard {
   _id: string;
@@ -45,7 +46,7 @@ export async function RecentBlogsSection({ section }: { section: RecentBlogsSect
                 const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
                 if (b.style === "h2") {
                   return (
-                    <h2 key={i} className="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
+                    <h2 key={i} className={heading.h2}>
                       {text}
                     </h2>
                   );

@@ -1,6 +1,7 @@
 import type { FeatureGridSection as FeatureGridSectionType } from "@kruze-poc/sanity-schemas/src/types";
 import { ArrowRight } from "lucide-react";
 import { KruzePortableText } from "@kruze-poc/ui/portable-text";
+import { heading } from "@kruze-poc/ui/styles";
 
 const colsClass: Record<number, string> = {
   2: "grid-cols-1 md:grid-cols-2",
@@ -23,7 +24,7 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                 const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
                 if (b.style === "h2") {
                   return (
-                    <h2 key={b._key} className="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
+                    <h2 key={b._key} className={heading.h2}>
                       {text}
                     </h2>
                   );

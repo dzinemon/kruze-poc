@@ -41,7 +41,7 @@ export function YouTubeFacade({ videoId, caption }: YouTubeFacadeProps) {
 
   if (isPlaying) {
     return (
-      <div className="my-8">
+      <div className="pt-block my-8">
         <div className="aspect-video">
           <iframe
             src={iframeSrc}
@@ -61,7 +61,7 @@ export function YouTubeFacade({ videoId, caption }: YouTubeFacadeProps) {
   }
 
   return (
-    <div className="my-8">
+    <div className="pt-block my-8">
       <button
         type="button"
         onClick={handlePlay}

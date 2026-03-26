@@ -108,10 +108,18 @@ export interface CtaItem {
   style?: "primary" | "secondary" | "outline";
 }
 
+export interface CtaSectionBlock {
+  _type: "ctaSectionBlock";
+  _key: string;
+  variant: "boxed" | "flat" | "outlined";
+  text?: any[]; // sectionText portable text
+  ctas?: CtaItem[];
+}
+
 export interface PortableTextAlertBlock {
   _type: "alertBlock";
   alertType: "info" | "warning" | "success" | "danger";
-  content: string;
+  content: any[];
 }
 
 export interface YouTubeBlock {

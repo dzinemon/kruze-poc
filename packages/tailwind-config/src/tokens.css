@@ -70,6 +70,23 @@
   --color-interact-hover:  var(--color-brand-600);
   --color-interact-active: var(--color-brand-700);
 
+  /* Alert / Status */
+  --color-info-bg:      #eff6ff;
+  --color-info-border:  #2f74b2;
+  --color-info-text:    #1e3a5f;
+
+  --color-warning-bg:   #fefce8;
+  --color-warning-border: #ca8a04;
+  --color-warning-text: #713f12;
+
+  --color-success-bg:   #f0fdf4;
+  --color-success-border: #16a34a;
+  --color-success-text: #14532d;
+
+  --color-danger-bg:    #fef2f2;
+  --color-danger-border: #dc2626;
+  --color-danger-text:  #7f1d1d;
+
   /* ═══════════════════════════════════
      TYPOGRAPHY (only custom values — rest uses TW4 defaults)
   ═══════════════════════════════════ */
@@ -191,6 +208,23 @@
   --color-interact:        #3d91e8;
   --color-interact-hover:  #75baff;
   --color-interact-active: #b2d9ff;
+
+  /* Alert / Status — dark */
+  --color-info-bg:      #0c1929;
+  --color-info-border:  #3d91e8;
+  --color-info-text:    #93c5fd;
+
+  --color-warning-bg:   #1a1700;
+  --color-warning-border: #eab308;
+  --color-warning-text: #fde68a;
+
+  --color-success-bg:   #052e16;
+  --color-success-border: #22c55e;
+  --color-success-text: #86efac;
+
+  --color-danger-bg:    #2a0a0a;
+  --color-danger-border: #ef4444;
+  --color-danger-text:  #fca5a5;
 
   /* Shadows — near-black for dark mode depth */
   --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.25);
@@ -370,31 +404,42 @@
   }
 
   /* ── Article content — long-form body text ─── */
+  /* Custom portable-text blocks (.pt-block, .alert-block, etc.) own their
+     styling via Tailwind utility classes. We exclude them from article
+     typographic rules so the utilities aren't overridden by specificity. */
   .article-content {
     max-width: none;
   }
-  .article-content h2,
-  .article-content h3,
-  .article-content h4,
-  .article-content h5,
-  .article-content h6 {
+  .article-content h2:not(.pt-block *),
+  .article-content h3:not(.pt-block *),
+  .article-content h4:not(.pt-block *),
+  .article-content h5:not(.pt-block *),
+  .article-content h6:not(.pt-block *) {
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
     letter-spacing: var(--tracking-tight);
   }
-  .article-content h2 { font-size: var(--text-2xl); margin-top: 2em; margin-bottom: 0.75em; }
-  .article-content h3 { font-size: var(--text-xl); margin-top: 1.75em; margin-bottom: 0.5em; }
-  .article-content h4 { font-size: var(--text-lg); margin-top: 1.5em; margin-bottom: 0.5em; }
-  .article-content h5 { font-size: var(--text-base); margin-top: 1.25em; margin-bottom: 0.5em; }
-  .article-content h6 { font-size: var(--text-sm); margin-top: 1.25em; margin-bottom: 0.5em; }
-  .article-content p {
+  .article-content h2:not(.pt-block *) { font-size: var(--text-2xl); margin-top: 2em; margin-bottom: 0.75em; }
+  .article-content h3:not(.pt-block *) { font-size: var(--text-xl); margin-top: 1.75em; margin-bottom: 0.5em; }
+  .article-content h4:not(.pt-block *) { font-size: var(--text-lg); margin-top: 1.5em; margin-bottom: 0.5em; }
+  .article-content h5:not(.pt-block *) { font-size: var(--text-base); margin-top: 1.25em; margin-bottom: 0.5em; }
+  .article-content h6:not(.pt-block *) { font-size: var(--text-sm); margin-top: 1.25em; margin-bottom: 0.5em; }
+  .article-content p:not(.pt-block *) {
     font-size: var(--text-base);
     color: var(--color-secondary);
     line-height: var(--leading-relaxed);
     margin-bottom: 1em;
   }
-  .article-content a { color: var(--color-link); }
-  .article-content a:hover { color: var(--color-interact-hover); }
+  .article-content a:not(.pt-block *) {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-color: var(--color-brand-200);
+    text-underline-offset: 2px;
+  }
+  .article-content a:not(.pt-block *):hover {
+    color: var(--color-interact-hover);
+    text-decoration-color: var(--color-brand-500);
+  }
   .article-content blockquote {
     border-left: 3px solid var(--color-brand-500);
     padding-left: 1em;

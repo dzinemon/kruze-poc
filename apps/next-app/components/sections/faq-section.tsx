@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { FaqSection as FaqSectionType } from "@kruze-poc/sanity-schemas/src/types";
+import { heading } from "@kruze-poc/ui/styles";
 
 interface FaqSectionProps {
   section: FaqSectionType;
@@ -60,7 +61,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                 return (
                   <h2
                     key={b._key}
-                    className="text-4xl lg:text-5xl font-bold tracking-tight text-primary"
+                    className={heading.h2}
                   >
                     {text}
                   </h2>

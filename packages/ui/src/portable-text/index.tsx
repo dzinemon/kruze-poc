@@ -4,7 +4,7 @@ import {
 } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { GoogleChart, buildChartJsonConfig } from "../chart";
-import { CtaBlock } from "./cta-block";
+import { CtaSectionBlock } from "./cta-section-block";
 import { AlertBlock } from "./alert-block";
 import { YouTubeFacade } from "./youtube-facade";
 import { responsiveImageData, lqipStyle } from "../image/sanity-image-url";
@@ -64,7 +64,7 @@ const components: PortableTextComponents = {
       if (!value.chart) return null;
       const jsonConfig = buildChartJsonConfig(value.chart);
       return (
-        <div className="my-8">
+        <div className="pt-block my-8">
           <GoogleChart
             jsonConfig={jsonConfig}
             title={value.chart.title}
@@ -74,14 +74,16 @@ const components: PortableTextComponents = {
       );
     },
 
-    ctaItem: ({ value }) => (
-      <div className="">
-        <CtaBlock {...value} />
-      </div>
+    ctaSectionBlock: ({ value }) => (
+      <CtaSectionBlock
+        variant={value.variant}
+        text={value.text}
+        ctas={value.ctas}
+      />
     ),
 
     alertBlock: ({ value }) => (
-      <div className="">
+      <div className="pt-block">
         <AlertBlock type={value.alertType} content={value.content} />
       </div>
     ),
@@ -102,7 +104,7 @@ const components: PortableTextComponents = {
       const hasRowTitles = value.hasRowTitles !== false && bodyRows.some((row: any) => row.title);
 
       return (
-        <div className="my-8">
+        <div className="pt-block my-8">
           <div className="kruze-table">
             <table className="text-sm">
               {headerRow && (
@@ -146,7 +148,7 @@ const components: PortableTextComponents = {
     },
 
     advancedTableBlock: ({ value }) => {
-      if (!value.rows || value.rows.length === 0) return <div className="my-8" />;
+      if (!value.rows || value.rows.length === 0) return <div className="pt-block my-8" />;
 
       const headerRow = value.hasHeaderRow ? value.rows[0] : null;
       const bodyRows = value.hasHeaderRow ? value.rows.slice(1) : value.rows;
@@ -156,7 +158,7 @@ const components: PortableTextComponents = {
       );
 
       return (
-        <div className="my-8">
+        <div className="pt-block my-8">
           <div className="kruze-table">
             <table className="text-sm">
               {headerRow && (

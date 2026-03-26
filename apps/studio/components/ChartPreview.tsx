@@ -99,6 +99,14 @@ export function ChartPreview() {
       const jsonConfig = buildChartJsonConfig(doc);
       const config = JSON.parse(jsonConfig);
 
+      // Handle validation errors from buildChartJsonConfig
+      if (config.error || !Array.isArray(config.data)) {
+        if (chartRef.current) {
+          chartRef.current.innerHTML = `<p style="color: #666; padding: 16px;">${config.error || "Waiting for valid chart data…"}</p>`;
+        }
+        return;
+      }
+
       const google = await loadGoogle();
       const dataTable = google.visualization.arrayToDataTable(config.data);
 
