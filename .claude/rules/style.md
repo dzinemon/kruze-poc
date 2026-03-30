@@ -18,7 +18,7 @@
 
 ### **3\. Layout & UI Elements**
 
-* **Typography-First:** Hero headline uses Lato font-light (300) at 60px+ — premium editorial feel. Gradient text span (brand blue → cyan) on 1–2 words max.
+* **Typography-First:** Hero headline uses Lato font-bold (700) at 60px+ — premium editorial feel. Gradient text span (brand blue → cyan) on 1–2 words max.
 * **Soft Geometry:** High border radius throughout — pill buttons, rounded-md (12px) standard cards, rounded-2xl (24px) hero/floating dashboard cards.
 * **Layering:** Floating dashboard panels on brand-radial or glass-gradient backgrounds create a 3D depth effect suggesting the product is tangible.
 * **Shadows:** Always brand-blue tinted (never flat Bootstrap gray). Shadow creates the "glow" — not the background color.

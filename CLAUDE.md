@@ -109,7 +109,7 @@ import { DemoChart } from "@kruze-poc/ui/chart/demo-chart";
 
 ## Design System
 
-Full design rules are in `.claude/rules/design-system.md` and `.claude/rules/style.md`. Design tokens are defined in `tokens.css` at the repo root — this is the single source of truth.
+Full design rules are in `.claude/rules/design-system.md` and `.claude/rules/style.md`. Design tokens are defined in `packages/tailwind-config/src/tokens.css` — this is the single source of truth. Spacing, type scale, font weights, letter spacing, line heights, and standard easing use Tailwind v4 defaults — only custom overrides are in tokens.css.
 
 ### Semantic Token Quick Reference
 
@@ -117,16 +117,28 @@ Always use semantic tokens in components — they auto-switch in dark mode.
 
 | Token class | Variable | Usage |
 |-------------|----------|-------|
-| `text-primary` | `--color-text-primary` | Headings, body text |
-| `text-secondary` | `--color-text-secondary` | Secondary labels, captions |
-| `text-muted` | `--color-text-muted` | Placeholder, helper text |
-| `bg-bg-base` | `--color-bg-base` | Page root background |
-| `bg-bg-subtle` | `--color-bg-subtle` | Card and panel surfaces |
-| `border-border-default` | `--color-border-default` | Input borders, card borders |
+| `text-primary` | `--color-primary` | Headings, body text |
+| `text-secondary` | `--color-secondary` | Secondary labels, captions |
+| `text-dim` | `--color-dim` | Placeholder, helper text |
+| `bg-base` | `--color-base` | Page root background |
+| `bg-subtle` | `--color-subtle` | Card and panel surfaces |
+| `bg-muted` | `--color-muted` | Hover backgrounds, table headers |
+| `border-divider` | `--color-divider` | Dividers, section separators |
+| `border-rule` | `--color-rule` | Input borders, card borders |
 | `text-brand-500` | `--color-brand-500` | Links, CTAs, highlights (#2F74B2) |
-| `text-brand-800` | `--color-brand-800` | Depth, strong CTA backgrounds (#024D7C) |
 | `shadow-brand` | `--shadow-brand` | CTA button glow |
 | `shadow-md` | `--shadow-md` | Hover shadow |
+
+> **Typography plugin removed:** `@tailwindcss/typography` and `prose` classes are no longer used. Use `.article-content` for blog post bodies and `.section-content` for section-level rich text instead.
+
+### Key Typography & Element Rules
+
+- **Body text:** `text-base font-normal text-secondary leading-relaxed` — see Body Text & Paragraphs section in `design-system.md`
+- **Article links:** underlined (`decoration-brand-200`, `underline-offset-2`) for WCAG compliance — nav/CTA links are not underlined
+- **Labels/eyebrows:** `eyebrow` export from `packages/ui/src/styles.ts` — `text-xs font-black uppercase tracking-wide`
+- **Data/numbers:** always `tabular-nums` for column alignment — see Data Typography section in `design-system.md`
+- **Borders:** all 1px; outlined buttons use `ring-1` not `border`; focus uses `shadow-focus-ring` not border-width change
+- **Button sizes:** sm (32px), md (40px default), lg (48px hero only)
 
 Rules: no arbitrary values when a token exists. No inline styles for colors/spacing. See `design-system.md` for the full component pattern library.
 
