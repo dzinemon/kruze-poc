@@ -53,8 +53,7 @@ Both apps use a **hybrid approach**: consecutive text blocks render as static HT
 | Technology | Version | Usage |
 |---|---|---|
 | Tailwind CSS | 4.2.1 | Primary styling — v4 `@theme` with CSS-native tokens, no JS config |
-| @tailwindcss/typography | 0.5.19 | `prose` classes for Portable Text body content |
-| tokens.css (root) | — | Single source of truth: 200+ CSS custom properties (colors, spacing, shadows, gradients, semantic tokens) |
+| packages/tailwind-config | — | Shared design system: `tokens.css` (200+ CSS custom properties) + `prose.css` (self-contained typography presets, no plugin dependency) |
 | Dark mode | — | Class-based (`<html class="dark">`), semantic tokens auto-switch |
 
 ### Fonts
@@ -62,8 +61,8 @@ Both apps use a **hybrid approach**: consecutive text blocks render as static HT
 | Technology | Details |
 |---|---|
 | Lato | 4 weights: 300 (light), 400 (normal), 700 (bold), 900 (black) |
-| Next.js loading | Self-hosted woff2 files via `@font-face` in tokens.css |
-| Astro loading | Astro experimental fonts provider (Google Fonts, auto-optimized) |
+| Next.js loading | `next/font/google` — auto self-hosted, preloaded, CSS variable `--font-lato` |
+| Astro loading | Astro Fonts API (`fontProviders.google()`) — auto self-hosted, preloaded, CSS variable `--font-lato` |
 
 ### Icons
 
@@ -112,7 +111,7 @@ No `next/image` or `astro:image` — both apps use plain `<img>` with Sanity-gen
 | `packages/sanity-schemas` | Sanity schema definitions + shared TypeScript types |
 | `packages/groq-queries` | GROQ queries used identically by both apps |
 | `packages/ui` | Shared React components: Portable Text renderer, GoogleChart, block components, image utilities |
-| `packages/tailwind-config` | Shared Tailwind preset (minimal — tokens live in root `tokens.css`) |
+| `packages/tailwind-config` | Shared design system: `tokens.css` (design tokens, base styles, utilities) + `prose.css` (typography presets) |
 
 ### Deployment
 
@@ -180,13 +179,36 @@ pnpm dev:astro    # Astro at localhost:4321
 
 **Requirements:** Docker Desktop
 
-Docker bind-mounts the entire repo, so it reads the same per-app `.env.local` files as local dev. Create them as described above (same step as Option A), then:
+Docker bind-mounts the entire repo, so it reads the same per-app `.env.local` files as local dev. Create them as described above (same step as Option A).
+
+#### First-time setup
+
+You must run `pnpm install` locally once to generate/update `pnpm-lock.yaml` before building the Docker image. The image runs `pnpm install --frozen-lockfile` and will fail if the lockfile is missing or out of date.
 
 ```bash
+pnpm install          # generates/updates pnpm-lock.yaml
 docker compose up --build
 ```
 
-All three apps start with hot reload:
+#### Subsequent runs
+
+```bash
+docker compose up
+```
+
+Hot reload is enabled for all three apps — file changes on the host are picked up immediately.
+
+#### After adding or updating dependencies
+
+The Docker named volumes cache `node_modules`. When you change any `package.json`, you must rebuild and wipe the old volumes:
+
+```bash
+pnpm install                  # update pnpm-lock.yaml on the host
+docker compose down -v        # destroy stale node_modules volumes
+docker compose up --build     # rebuild image + reinitialise volumes
+```
+
+#### All three apps start with hot reload
 
 | App | URL |
 |-----|-----|
@@ -194,7 +216,7 @@ All three apps start with hot reload:
 | Astro | http://localhost:4321 |
 | Sanity Studio | http://localhost:3333 |
 
-Run a single app:
+#### Run a single app
 
 ```bash
 docker compose up next-app

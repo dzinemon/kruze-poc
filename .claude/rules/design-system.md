@@ -3,9 +3,9 @@
 **Version:** 3.0 (post-migration, Tailwind-only)
 **Stack:** Tailwind CSS v4, Lato, Lucide Icons
 **Theme:** Premium Fintech Minimalism — light mode first, dark mode supported
-**Token file:** `_features/design-system/tokens.css`
+**Token file:** `packages/tailwind-config/src/tokens.css`
 
-> Full color scales, shadow CSS values, gradient vars, z-index values, and raw spacing values are in `_features/design-system/tokens.css`. This document covers semantic decisions, component patterns, and rules.
+> Color scales, shadow CSS values, gradient vars, and custom overrides are in `packages/tailwind-config/src/tokens.css`. Spacing, type scale, font weights, letter spacing, line heights, and standard easing use Tailwind v4 defaults. This document covers semantic decisions, component patterns, and rules.
 
 ---
 
@@ -13,20 +13,25 @@
 
 1. [Design Philosophy](#design-philosophy)
 2. [Typography](#typography)
-3. [Color System](#color-system)
-4. [Spacing](#spacing)
-5. [Geometric System](#geometric-system)
-6. [Shadows](#shadows)
-7. [Gradients](#gradients)
-8. [Icons](#icons)
-9. [Transitions & Animations](#transitions--animations)
-10. [Z-index Scale](#z-index-scale)
-11. [Focus & Accessibility](#focus--accessibility)
-12. [Dark Mode](#dark-mode)
-13. [Layout System](#layout-system)
-14. [Navigation Pattern](#navigation-pattern)
-15. [Component Patterns](#component-patterns)
-16. [Tailwind v4 Usage](#tailwind-v4-usage)
+3. [Body Text & Paragraphs](#body-text--paragraphs)
+4. [Links](#links)
+5. [Labels & Eyebrows](#labels--eyebrows)
+6. [Blockquotes](#blockquotes)
+7. [Data Typography](#data-typography)
+8. [Color System](#color-system)
+9. [Spacing](#spacing)
+10. [Geometric System](#geometric-system)
+11. [Borders](#borders)
+12. [Shadows](#shadows)
+13. [Gradients](#gradients)
+14. [Icons](#icons)
+15. [Transitions & Animations](#transitions--animations)
+16. [Focus & Accessibility](#focus--accessibility)
+17. [Dark Mode](#dark-mode)
+18. [Layout System](#layout-system)
+19. [Navigation Pattern](#navigation-pattern)
+20. [Component Patterns](#component-patterns)
+21. [Tailwind v4 Usage](#tailwind-v4-usage)
 
 ---
 
@@ -137,12 +142,12 @@ One short phrase per section — hero keyword only, never full sentences. Requir
 
 ```html
 <!-- Correct — bold heading with gradient keyword (span inherits font-bold from h1) -->
-<h1 class="text-6xl lg:text-7xl font-bold tracking-tight text-text-primary">
+<h1 class="text-6xl lg:text-7xl font-bold tracking-tight text-primary">
   Your startup's <span class="text-gradient-brand">financial backbone</span>
 </h1>
 
 <!-- Correct — section heading with gradient keyword -->
-<h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-text-primary">
+<h2 class="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
   Built for <span class="text-gradient-brand">VC-backed</span> startups
 </h2>
 
@@ -155,9 +160,201 @@ One short phrase per section — hero keyword only, never full sentences. Requir
 
 ---
 
+## Body Text & Paragraphs
+
+Four body sizes. All use `font-normal` (400) and `text-secondary` unless context overrides.
+
+| Class | Size | Use |
+|---|---|---|
+| `text-lg` | 18px | Lead / intro paragraphs — section subtitles, hero descriptions. Pair with `font-light` (300) or `font-normal`. |
+| `text-base` | 16px | **Default body copy** — articles, descriptions, card text |
+| `text-sm` | 14px | Secondary descriptions, metadata, helper text, nav items |
+| `text-xs` | 12px | Captions, timestamps, fine print, legal footnotes |
+
+### Standard Patterns
+
+```html
+<!-- Default body paragraph -->
+<p class="text-base font-normal text-secondary leading-relaxed">...</p>
+
+<!-- Lead / intro paragraph (section subtitle) -->
+<p class="text-base lg:text-lg font-normal text-secondary leading-relaxed">...</p>
+
+<!-- Secondary / metadata -->
+<p class="text-sm font-normal text-dim">...</p>
+
+<!-- Caption / fine print -->
+<p class="text-xs font-normal text-dim">...</p>
+```
+
+### Content Contexts
+
+Two CSS contexts apply automatic paragraph styling — no per-element classes needed:
+
+| Context | Class | Use | Defined in |
+|---|---|---|---|
+| **Article content** | `.article-content` | Blog post bodies, long-form text | `tokens.css` |
+| **Section content** | `.section-content` | Rich text inside cards, grids, section blocks | `tokens.css` |
+
+Both set `text-base`, `text-secondary`, `leading-relaxed` on `<p>` elements. Article content adds vertical margins (`margin-bottom: 1em`). Section content is more compact (`margin-bottom: 0.75em`, last-child 0).
+
+### Inline Formatting
+
+| Element | Style |
+|---|---|
+| `<strong>` | `color: var(--color-primary)` — pops against secondary body text |
+| `<em>` | `color: var(--color-primary)`, italic |
+| `<code>` | `text-brand-600`, `bg-subtle`, `rounded-xs`, `text-[0.875em]` |
+
+---
+
+## Links
+
+### Navigation & CTA Links
+
+No underline. Color alone is sufficient because these links are visually distinct by context (buttons, nav items, standalone actions).
+
+```html
+<a class="text-brand-500 hover:text-brand-600 focus-ring transition-fast">...</a>
+```
+
+### Links in Body Text (article-content)
+
+**Underlined** to satisfy WCAG 1.4.1 — links within running text must be distinguishable by more than color alone.
+
+```css
+/* Applied automatically inside .article-content */
+text-decoration: underline;
+text-decoration-color: var(--color-brand-200);   /* subtle at rest */
+text-underline-offset: 2px;
+
+/* Hover */
+text-decoration-color: var(--color-brand-500);    /* stronger on hover */
+color: var(--color-interact-hover);
+```
+
+Links in `.section-content` follow the same color pattern (`text-link` → `text-interact-hover`) but do **not** have underlines — section content is typically short and links are contextually obvious.
+
+### Link Color Tokens
+
+| State | Light mode | Dark mode |
+|---|---|---|
+| Resting | `--color-link` = brand-500 (#2F74B2) | `--color-link` = #75baff |
+| Hover | `--color-interact-hover` = brand-600 | `--color-interact-hover` = #75baff |
+| Visited | Not styled — uses resting color | Same |
+
+---
+
+## Labels & Eyebrows
+
+Three label contexts. All use `font-bold` (700) or `font-black` (900), uppercase, and wider tracking.
+
+### Eyebrow Badge
+
+Pill-shaped label above hero headlines and section titles. Uses `font-black` (900) for maximum impact at small size.
+
+```html
+<span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black tracking-wide uppercase text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950 rounded-full border border-brand-200 dark:border-brand-800">
+  <span class="size-1.5 rounded-full bg-brand-500"></span>
+  Startup Accounting
+</span>
+```
+
+> Exported as `eyebrow` from `packages/ui/src/styles.ts`.
+
+### Form Label
+
+Sentence case, bold, paired with inputs. Sits directly above the input with `gap-1.5`.
+
+```html
+<label class="text-sm font-bold text-primary">Email address</label>
+```
+
+### Table Header Label
+
+Uppercase, compact, muted color. Used in `.kruze-table` thead and data table headers.
+
+```html
+<th class="text-xs font-bold uppercase tracking-wider text-secondary bg-muted px-4 py-3">Revenue</th>
+```
+
+---
+
+## Blockquotes
+
+### Article Blockquote
+
+Applied automatically inside `.article-content`. Left border accent, italic, secondary color.
+
+```css
+/* tokens.css — .article-content blockquote */
+border-left: 3px solid var(--color-brand-500);
+padding-left: 1em;
+color: var(--color-secondary);
+font-style: italic;
+margin: 1.5em 0;
+```
+
+```html
+<!-- Rendered output -->
+<blockquote>
+  <p>The best accounting firms don't just track numbers — they tell a story.</p>
+</blockquote>
+```
+
+### Pull Quote (optional)
+
+For emphasis within articles — larger, centered, not italic. Use sparingly (max 1 per article).
+
+```html
+<blockquote class="border-l-3 border-brand-500 pl-6 my-8">
+  <p class="text-xl font-bold text-primary leading-snug">
+    We saved $240K in R&D tax credits in our first year.
+  </p>
+  <cite class="block mt-2 text-sm font-normal text-secondary not-italic">— Sarah Chen, CEO at Acme</cite>
+</blockquote>
+```
+
+---
+
+## Data Typography
+
+For numbers, metrics, financial data, and tabular content. Uses `tabular-nums` for column alignment and wider tracking for a data-forward feel.
+
+### Patterns
+
+| Context | Classes | Example |
+|---|---|---|
+| Hero metric / stat callout | `text-5xl font-black tabular-nums text-gradient-brand` | `$2B+` |
+| Dashboard metric | `text-4xl font-black tabular-nums text-primary` | `$148,290` |
+| Table cell number | `text-sm font-normal tabular-nums text-right text-secondary` | `$3,420.00` |
+| Inline data (IDs, timestamps) | `text-sm font-normal tabular-nums tracking-wide text-dim` | `txn_8f2a · 2026-03-26` |
+| Percentage change (positive) | `text-sm font-bold text-green-600` | `↓ 8.3%` |
+| Percentage change (negative) | `text-sm font-bold text-red-600` | `↑ 12.1%` |
+
+### Rules
+
+- Always use `tabular-nums` on number columns and aligned metrics — ensures decimal/comma alignment
+- Use `tracking-wide` (0.025em) on inline data strings to create visual separation from body text
+- Hero metrics use `font-black` (900); table/inline data uses `font-normal` (400)
+- Right-align numbers in tables (`text-right`)
+
+```html
+<!-- Stat card metric -->
+<p class="text-5xl font-black tabular-nums text-gradient-brand">500+</p>
+
+<!-- Table number cell -->
+<td class="py-3 text-sm tabular-nums text-right text-secondary">$3,420.00</td>
+
+<!-- Inline data -->
+<span class="text-sm tabular-nums tracking-wide text-dim">txn_8f2a4b · $12,847.00</span>
+```
+
+---
+
 ## Color System
 
-> Full brand, accent, neutral, and status color scales with hex values are in `_features/design-system/tokens.css`. Always use semantic tokens in components — they auto-switch in dark mode.
+> Brand, accent, and neutral color scales with hex values are in `packages/tailwind-config/src/tokens.css`. Always use semantic tokens in components — they auto-switch in dark mode.
 
 ### Brand Palette
 
@@ -169,26 +366,9 @@ Brand Dark    #024D7C  (brand-800)  — Depth, strong CTA backgrounds
 Cyan Accent   #02ABE3  (accent-500) — Icons, gradients, borders, decorative only
 ```
 
+Brand scale includes: 50, 100, 200, 400, 500, 600, 700, 800, 900, 950. Only `accent-500` is defined — no other accent scale values exist.
+
 > `accent-500` is decorative only — 3.0:1 contrast ratio fails WCAG AA. Never use it for text on white.
-
-### Status Colors
-
-For feedback states only — alerts, toasts, validation. Not for decoration.
-
-| Scale | Light | Base | Dark |
-|---|---|---|---|
-| `success-*` | `#dcfce7` | `#22c55e` | `#15803d` |
-| `warning-*` | `#fef9c3` | `#eab308` | `#a16207` |
-| `danger-*`  | `#fee2e2` | `#ef4444` | `#b91c1c` |
-| `info-*`    | `#ecfcff` | `#02abe3` | `#0369a1` |
-
-Use `-dark` variant for text, base variant for icons.
-
-```html
-<div class="rounded-sm bg-danger-light border border-danger/30 text-danger-dark px-4 py-3">
-  Something went wrong.
-</div>
-```
 
 ### Semantic Tokens
 
@@ -196,28 +376,25 @@ Use `-dark` variant for text, base variant for icons.
 
 ```css
 /* Backgrounds */
-var(--color-bg-base)       /* #fff / dark: #0a0f1c */
-var(--color-bg-subtle)     /* card, panel bg */
-var(--color-bg-muted)      /* hover bg */
-var(--color-bg-emphasis)   /* selected / active state */
+var(--color-base)       /* #fff / dark: #0a0f1c */
+var(--color-subtle)     /* card, panel bg */
+var(--color-muted)      /* hover bg */
 
 /* Borders */
-var(--color-border-subtle)   /* dividers, table lines */
-var(--color-border-default)  /* input borders, card borders */
-var(--color-border-strong)   /* focused inputs */
-var(--color-border-brand)    /* active/selected brand borders */
+var(--color-divider)   /* dividers, table lines */
+var(--color-rule)  /* input borders, card borders */
 
 /* Text */
-var(--color-text-primary)    /* headings, body */
-var(--color-text-secondary)  /* secondary labels, captions */
-var(--color-text-muted)      /* placeholder, helper text */
-var(--color-text-inverse)    /* white text on dark/brand bg */
-var(--color-text-brand)      /* links, brand highlights */
+var(--color-primary)    /* headings, body */
+var(--color-secondary)  /* secondary labels, captions */
+var(--color-dim)      /* placeholder, helper text */
+var(--color-inverse)    /* white text on dark/brand bg */
+var(--color-link)      /* links, brand highlights */
 
 /* Interactive */
-var(--color-interactive-default)  /* resting — brand-500 */
-var(--color-interactive-hover)    /* hover — brand-600 */
-var(--color-interactive-active)   /* pressed — brand-700 */
+var(--color-interact)  /* resting — brand-500 */
+var(--color-interact-hover)    /* hover — brand-600 */
+var(--color-interact-active)   /* pressed — brand-700 */
 ```
 
 ### Accessibility (WCAG AA)
@@ -231,7 +408,6 @@ Minimum 4.5:1 normal text · 3:1 large text (18px+ or 14px bold+).
 | `brand-500`   | white | 4.8:1  | AA  |
 | `brand-800`   | white | 9.6:1  | AAA |
 | `brand-400`   | dark bg-base | 5.2:1 | AA |
-| `accent-400`  | dark bg-base | 4.5:1 | AA |
 | `accent-500`  | white | 3.0:1  | FAIL — decorative only |
 
 > Text on any `brand-500`–`brand-800` background: always `text-white`.
@@ -240,22 +416,22 @@ Minimum 4.5:1 normal text · 3:1 large text (18px+ or 14px bold+).
 
 ## Spacing
 
-4px base grid. All spacing is a multiple of 4.
+4px base grid. All spacing is a multiple of 4. Uses **Tailwind v4's built-in spacing scale** — no custom tokens needed in `tokens.css`.
 
-| Token | px | Common use |
+| Class | px | Common use |
 |---|---|---|
-| `spacing-1`  |  4px | Icon gap, tight padding |
-| `spacing-2`  |  8px | Inline gap, compact items |
-| `spacing-3`  | 12px | Button padding Y, chip padding |
-| `spacing-4`  | 16px | Default gap, input padding |
-| `spacing-5`  | 20px | Card padding (compact) |
-| `spacing-6`  | 24px | Card padding, button padding X |
-| `spacing-8`  | 32px | Section internal gap |
-| `spacing-10` | 40px | Medium section padding |
-| `spacing-12` | 48px | Large section padding |
-| `spacing-16` | 64px | Section vertical padding (mobile) |
-| `spacing-20` | 80px | Section vertical padding (tablet) |
-| `spacing-32` | 128px | Section vertical padding (desktop) |
+| `p-1` / `gap-1`   |  4px | Icon gap, tight padding |
+| `p-2` / `gap-2`   |  8px | Inline gap, compact items |
+| `p-3` / `gap-3`   | 12px | Button padding Y, chip padding |
+| `p-4` / `gap-4`   | 16px | Default gap, input padding |
+| `p-5` / `gap-5`   | 20px | Card padding (compact) |
+| `p-6` / `gap-6`   | 24px | Card padding, button padding X |
+| `p-8` / `gap-8`   | 32px | Section internal gap |
+| `p-10` / `gap-10` | 40px | Medium section padding |
+| `p-12` / `gap-12` | 48px | Large section padding |
+| `py-16`  | 64px | Section vertical padding (mobile) |
+| `py-20`  | 80px | Section vertical padding (tablet) |
+| `py-32`  | 128px | Section vertical padding (desktop) |
 
 ---
 
@@ -319,6 +495,39 @@ Use `squircle` (CSS `border-radius: 28%`) only on equal-dimension elements:
 
 ---
 
+## Borders
+
+### Border Width
+
+All borders default to **1px**. No other border widths are used in the system except focus indicators and gradient borders.
+
+| Context | Width | Method | Why |
+|---|---|---|---|
+| Cards, panels | 1px | `border border-divider` | Standard separation |
+| Inputs (resting) | 1px | `border border-rule` | Consistent with cards |
+| Inputs (focused) | 1px + glow | `border-brand-500` + `shadow-focus-ring` | No layout shift — shadow adds the visual emphasis |
+| Outlined buttons | 1px | `ring-1 ring-brand-500` | `ring` avoids height increase that `border` causes (border adds 2px total to element height) |
+| Gradient borders | 1px | `::before` pseudo with `inset: -1px` | Allows gradient fill on the border |
+| Blockquotes | 3px | `border-left: 3px solid brand-500` | Accent indicator |
+| Nav active link | 2px | `::after` pseudo, `height: 2px` | Bottom bar indicator |
+
+### Rules
+
+- **Never change border-width on focus.** Changing from 1px to 2px on focus causes a 1px layout shift. Use `box-shadow` (`shadow-focus-ring`) for focus indication instead.
+- **Use `ring-1` instead of `border` on outlined buttons.** `border` adds 2px to the element's box model, making outlined buttons taller than fill buttons. `ring` is painted outside the box model and doesn't affect layout.
+- **Gradient borders use `::before`.** The `.gradient-border-brand` utility places a gradient-filled pseudo-element at `inset: -1px` behind the element.
+
+### Border Color Tokens
+
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `border-divider` | neutral-200 | `rgba(255,255,255,0.06)` | Cards, panels, table lines, section separators |
+| `border-rule` | neutral-300 | `rgba(255,255,255,0.10)` | Input borders, card borders requiring more contrast |
+| `border-brand-200` | brand-200 | brand-800 | Eyebrow badge borders |
+| `border-brand-500` | brand-500 | brand-400 | Focused inputs, active indicators |
+
+---
+
 ## Shadows
 
 ### Philosophy
@@ -352,19 +561,18 @@ Focus    →  shadow-focus-ring
 
 ## Gradients
 
-### Rules
+### Available Gradients
 
-| Gradient type | Use | Max per page |
+| Token | Use | Max per page |
 |---|---|---|
-| Hero bg — brand radial | Page hero section (required) | 1 |
-| CTA background (linear brand) | CTA / contact section | 1 |
-| Animated gradient | CTA sections only | 1 |
-| Gradient text | Hero headline keywords | 2–3 spans total |
-| Icon container fill | Feature icons | Unlimited |
-| Card border | Featured cards only | 3–4 |
+| `--gradient-hero-light` / `--gradient-hero-dark` | Page hero section (required) | 1 |
+| `--gradient-cta` | CTA / contact section | 1 |
+| `--gradient-brand` | Icon containers, card borders | Unlimited |
+| `--gradient-text-brand` | Hero headline keywords (via `.text-gradient-brand`) | 2–3 spans total |
+| `--gradient-glass-light` / `--gradient-glass-dark` | Glass morphism cards | As needed |
 | Gradient on body text | Never | 0 |
 
-> All gradient variables (`--gradient-brand`, `--gradient-hero-light`, `--gradient-cta`, etc.) are defined in `_features/design-system/tokens.css`.
+> All gradient variables are defined in `packages/tailwind-config/src/tokens.css`.
 
 ### Hero Section Pattern (required)
 
@@ -381,8 +589,6 @@ background-image:
   radial-gradient(ellipse 80% 50% at 70% -10%, rgba(47,116,178,0.12) 0%, transparent 70%),
   radial-gradient(ellipse 60% 40% at -10% 90%, rgba(2,171,227,0.08) 0%, transparent 60%);
 ```
-
-Use `bg-hero-gradient` as default. Use `bg-mesh-gradient` as secondary option for alternate layouts or content-heavy pages.
 
 ### Gradient Border on Cards
 
@@ -417,39 +623,22 @@ Use `bg-hero-gradient` as default. Use `bg-mesh-gradient` as secondary option fo
 
 - **Stroke width:** Always `1.5` — do not change
 - **Color:** Always `currentColor`
-- **Size:** Match context using icon size tokens
-
-### Size Scale
-
-| Token | Size | Use |
-|---|---|---|
-| `icon-xs`   | 12px | Inline text decorators |
-| `icon-sm`   | 16px | Nav items, small buttons |
-| `icon-md`   | 20px | Button icons, list items |
-| `icon-base` | 24px | **Default** — all standard use |
-| `icon-lg`   | 28px | Card header icons |
-| `icon-xl`   | 32px | Feature icons (small container) |
-| `icon-2xl`  | 40px | Feature icons (medium container) |
-| `icon-3xl`  | 48px | Feature section hero icons |
+- **Size:** Use standard `width` / `height` attributes — no custom icon size tokens. Default is `24x24`.
 
 ### Icon Containers
+
+Three sizes using hardcoded rem values (no custom @theme tokens):
+
+| Class | Size | Use |
+|---|---|---|
+| `icon-container-sm` | 2rem (32px) | Small icons, nav |
+| `icon-container-md` | 2.5rem (40px) | Button icons, hamburger |
+| `icon-container-xl` | 3.5rem (56px) | Feature icons, hero icons |
 
 ```html
 <!-- Brand gradient -->
 <div class="icon-container icon-container-xl squircle"
      style="background: var(--gradient-brand);">
-  <svg class="text-white" width="28" height="28" stroke-width="1.5" ...></svg>
-</div>
-
-<!-- Soft brand tint (light mode friendly) -->
-<div class="icon-container icon-container-xl squircle"
-     style="background: var(--gradient-brand-soft);">
-  <svg style="color: var(--color-brand-600);" width="28" height="28" stroke-width="1.5" ...></svg>
-</div>
-
-<!-- Accent -->
-<div class="icon-container icon-container-xl squircle"
-     style="background: var(--gradient-accent);">
   <svg class="text-white" width="28" height="28" stroke-width="1.5" ...></svg>
 </div>
 ```
@@ -464,8 +653,16 @@ Use `bg-hero-gradient` as default. Use `bg-mesh-gradient` as secondary option fo
 |---|---|---|
 | `--transition-fast`   | 150ms ease-out | Buttons, badges, icon states |
 | `--transition-base`   | 200ms ease-in-out | Cards, nav links, most UI |
-| `--transition-slow`   | 300ms ease-in-out | Image zoom, shadow elevation |
 | `--transition-spring` | 400ms ease-spring | Drawer open, accordion |
+
+> Standard easing functions (`ease-in`, `ease-out`, `ease-in-out`) use Tailwind v4 defaults. Only custom easing (`--ease-spring`, `--ease-bounce`) is defined in `tokens.css`.
+
+### Custom Easing
+
+| Token | Value | Use |
+|---|---|---|
+| `--ease-spring` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | Drawer, accordion |
+| `--ease-bounce` | `cubic-bezier(0.68, -0.55, 0.265, 1.55)` | Playful micro-interactions |
 
 ### Utility Classes
 
@@ -480,15 +677,6 @@ Use `bg-hero-gradient` as default. Use `bg-mesh-gradient` as secondary option fo
 
 **`.focus-ring`** — see [Focus & Accessibility](#focus--accessibility).
 
-### Animated Gradient
-
-For CTA sections only — max 1 per page:
-```html
-<section class="bg-cta-animated">
-  <!-- 12s rotating brand gradient loop -->
-</section>
-```
-
 ### Rules
 
 | Element | Transition |
@@ -496,31 +684,7 @@ For CTA sections only — max 1 per page:
 | Buttons (color, shadow) | `--transition-fast` |
 | Nav links, form inputs | `--transition-fast` |
 | Cards (shadow, transform) | `--transition-base` |
-| Image zoom on hover | `--transition-slow` |
 | Drawer / accordion | `--transition-spring` |
-| Animated gradient bg | CSS `@keyframes` (12s, not transition) |
-
----
-
-## Z-index Scale
-
-Use `var(--z-*)` tokens only — no arbitrary z-index values. Full scale in `_features/design-system/tokens.css`.
-
-### Component Layer Assignments
-
-| Component | Z-index tier |
-|---|---|
-| Card click anchor (inset `<a>`) | `z-raised` |
-| Dropdown menu | `z-dropdown` |
-| Sticky navbar | `z-sticky` |
-| Modal backdrop | `z-overlay` |
-| Modal panel | `z-modal` |
-| Toast notification | `z-toast` |
-
-```html
-<!-- Example usage -->
-<div style="z-index: var(--z-dropdown);">...</div>
-```
 
 ---
 
@@ -576,10 +740,9 @@ Apply to every `<button>`, `<a>`, `<input>`, `<select>`, `<textarea>`, and custo
 ### Dark Background Layers
 
 ```
---color-bg-base     #0a0f1c   deep navy-black — page root
---color-bg-subtle   #0f1823   cards, side panels
---color-bg-muted    #162032   elevated cards, hover
---color-bg-emphasis #1c2b3e   selected, active states
+--color-base     #0a0f1c   deep navy-black — page root
+--color-subtle   #0f1823   cards, side panels
+--color-muted    #162032   elevated cards, hover
 ```
 
 Navy night palette — not pure black. Brand undertone preserved throughout.
@@ -601,9 +764,9 @@ function toggleDark() {
 
 ### Dark Mode Checklist
 
-- [ ] All backgrounds use semantic tokens (`--color-bg-*`)
-- [ ] All text uses semantic tokens (`--color-text-*`)
-- [ ] All borders use semantic tokens (`--color-border-*`)
+- [ ] All backgrounds use semantic tokens (`--color-base`, `--color-subtle`, `--color-muted`)
+- [ ] All text uses semantic tokens (`--color-primary`, `--color-secondary`, `--color-dim`, etc.)
+- [ ] All borders use semantic tokens (`--color-divider`, `--color-rule`)
 - [ ] Images: sufficient contrast on dark bg
 - [ ] Logos: dark-mode variant provided (or brand-colored version)
 - [ ] Gradient text: tested on dark bg (may need `text-gradient-light` variant)
@@ -618,13 +781,13 @@ Pick one width per section — never nest a wider container inside a narrower on
 
 | Class | Max-width | Use |
 |---|---|---|
-| `container-site` / `max-w-7xl` | 1280px | Nav, footer, hero (side-by-side) |
+| `max-w-7xl` | 1280px | Nav, footer, hero (side-by-side) |
 | `max-w-6xl` | 1152px | **Standard** — card grids, feature lists, blog grids |
 | `max-w-4xl` | 896px  | Wide text blocks, trust bars, alert callouts |
 | `max-w-3xl` | 768px  | FAQ accordions, focused reading, contact copy |
 | `max-w-xl`  | 576px  | Form cards, inline forms |
 
-> Nav and footer always use `container-site` regardless of surrounding sections.
+> Nav and footer always use `max-w-7xl` regardless of surrounding sections.
 
 ### Full-Bleed vs Constrained
 
@@ -640,7 +803,7 @@ Pick one width per section — never nest a wider container inside a narrower on
 </section>
 
 <!-- Constrained -->
-<section class="bg-white dark:bg-[var(--color-bg-base)] py-20 px-6">
+<section class="bg-white dark:bg-[var(--color-base)] py-20 px-6">
   <div class="max-w-6xl mx-auto"><!-- content --></div>
 </section>
 ```
@@ -664,7 +827,7 @@ Hero (full-bleed, bg-hero-gradient)
 
 | Element | Mobile | Desktop (`lg:`) |
 |---|---|---|
-| Landing h1 | `text-6xl font-light` | `lg:text-7xl` |
+| Landing h1 | `text-6xl font-bold` | `lg:text-7xl` |
 | Section h2 | `text-4xl font-bold` | `lg:text-5xl` |
 | Lead paragraph | `text-base` | `lg:text-lg` |
 | Trust bar callout | `text-base` | `lg:text-xl` |
@@ -678,11 +841,11 @@ Hero (full-bleed, bg-hero-gradient)
 
 ### Spec
 
-- **Container:** `container-site` (max-w-7xl) — matches footer
+- **Container:** `max-w-7xl mx-auto` — matches footer
 - **Height:** 64px desktop / 56px mobile
-- **Background:** `bg-bg-base` (auto dark mode via semantic token)
-- **Border bottom:** `border-b border-border-subtle`
-- **Position:** `sticky top-0` + `z-sticky`
+- **Background:** `bg-base` (auto dark mode via semantic token)
+- **Border bottom:** `border-b border-divider`
+- **Position:** `sticky top-0 z-50`
 
 ### Active Link Indicator
 
@@ -707,9 +870,9 @@ Hero (full-bleed, bg-hero-gradient)
 |---|---|
 | Radius | `rounded-md` (12px) |
 | Shadow | `shadow-lg` |
-| Background | `bg-bg-base` |
-| Border | `border border-border-subtle` |
-| Z-index | `z-dropdown` |
+| Background | `bg-base` |
+| Border | `border border-divider` |
+| Z-index | `z-50` |
 | Animation | fade + translateY(-4px) → 0 on open |
 
 ### Mobile
@@ -722,10 +885,9 @@ Hero (full-bleed, bg-hero-gradient)
 ### Structure (Target HTML Pattern)
 
 ```html
-<nav class="sticky top-0 bg-bg-base border-b border-border-subtle"
-     style="z-index: var(--z-sticky);"
+<nav class="sticky top-0 z-50 bg-base border-b border-divider"
      aria-label="Main navigation">
-  <div class="container-site flex items-center justify-between h-16">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
 
     <!-- Logo -->
     <a href="/" class="flex-shrink-0 focus-ring rounded-sm" aria-label="Kruze Consulting home">
@@ -736,20 +898,20 @@ Hero (full-bleed, bg-hero-gradient)
     <ul class="hidden lg:flex items-center gap-1" role="list">
       <li>
         <a href="/services/"
-           class="relative px-3 py-2 text-sm font-bold text-text-primary hover:text-brand-500 transition-fast focus-ring rounded-sm">
+           class="relative px-3 py-2 text-sm font-bold text-primary hover:text-brand-500 transition-fast focus-ring rounded-sm">
           Services
         </a>
       </li>
       <!-- Dropdown trigger -->
       <li class="relative">
-        <button class="flex items-center gap-1 px-3 py-2 text-sm font-bold text-text-primary hover:text-brand-500 transition-fast focus-ring rounded-sm"
+        <button class="flex items-center gap-1 px-3 py-2 text-sm font-bold text-primary hover:text-brand-500 transition-fast focus-ring rounded-sm"
                 aria-expanded="false" aria-haspopup="true">
           Resources
           <svg width="16" height="16" stroke-width="1.5" ...><!-- chevron-down --></svg>
         </button>
         <!-- Dropdown panel -->
-        <div class="absolute top-full left-0 mt-1 rounded-md shadow-lg bg-bg-base border border-border-subtle"
-             style="z-index: var(--z-dropdown); min-width: 220px;">
+        <div class="absolute top-full left-0 mt-1 rounded-md shadow-lg bg-base border border-divider"
+             style="min-width: 220px;">
           <!-- dropdown items -->
         </div>
       </li>
@@ -757,7 +919,7 @@ Hero (full-bleed, bg-hero-gradient)
 
     <!-- Right: CTA -->
     <div class="hidden lg:flex items-center gap-3">
-      <a href="tel:+1..." class="text-sm font-bold text-text-primary hover:text-brand-500 transition-fast focus-ring">
+      <a href="tel:+1..." class="text-sm font-bold text-primary hover:text-brand-500 transition-fast focus-ring">
         (415) 000-0000
       </a>
       <a href="/contact/"
@@ -767,7 +929,7 @@ Hero (full-bleed, bg-hero-gradient)
     </div>
 
     <!-- Mobile hamburger -->
-    <button class="lg:hidden icon-container icon-container-md squircle bg-bg-muted hover:bg-bg-emphasis text-text-primary transition-fast focus-ring"
+    <button class="lg:hidden icon-container icon-container-md squircle bg-muted hover:bg-neutral-200 dark:hover:bg-neutral-700 text-primary transition-fast focus-ring"
             aria-expanded="false" aria-label="Open menu">
       <svg width="20" height="20" stroke-width="1.5" ...><!-- menu --></svg>
     </button>
@@ -794,10 +956,11 @@ Hero (full-bleed, bg-hero-gradient)
 
 #### Size
 
-Two sizes. All form-context buttons use **md**. **lg** is for standalone hero CTAs only.
+Three sizes. All form-context buttons use **md**. **lg** is for standalone hero CTAs only. **sm** is for compact UI (toolbars, inline actions, tags with actions).
 
 | Size | Height | Padding | Font | Use |
 |---|---|---|---|---|
+| **sm** | 32px | `py-1.5 px-4` | `text-xs` | Compact UI — toolbars, inline actions, secondary controls |
 | **md** | 40px | `py-2.5 px-5` | `text-sm` | Default — all UI, forms |
 | **lg** | 48px | `py-3 px-7` | `text-base` | Standalone hero CTAs only |
 
@@ -837,7 +1000,7 @@ Two sizes. All form-context buttons use **md**. **lg** is for standalone hero CT
 </button>
 
 <!-- Icon button (squircle) -->
-<button class="icon-container icon-container-md squircle bg-bg-muted hover:bg-bg-emphasis text-text-secondary hover:text-text-primary transition-fast focus-ring">
+<button class="icon-container icon-container-md squircle bg-muted hover:bg-neutral-200 dark:hover:bg-neutral-700 text-secondary hover:text-primary transition-fast focus-ring">
   <svg width="20" height="20" stroke-width="1.5" ...></svg>
 </button>
 ```
@@ -862,7 +1025,7 @@ Input gets `rounded-l-sm`, button gets `rounded-r-sm`. Both 40px height via arit
 ```html
 <div class="flex">
   <input type="email"
-    class="flex-1 px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base border border-border-default rounded-l-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+    class="flex-1 px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base border border-rule rounded-l-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
     placeholder="you@startup.com" />
   <button class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-brand-500 hover:bg-brand-600 rounded-r-sm transition-fast focus-ring">
     Subscribe
@@ -874,7 +1037,7 @@ Input gets `rounded-l-sm`, button gets `rounded-r-sm`. Both 40px height via arit
 
 ```html
 <!-- Standard card -->
-<div class="rounded-md bg-bg-subtle border border-border-subtle shadow-sm hover:shadow-md hover-lift p-6">
+<div class="rounded-md bg-subtle border border-divider shadow-sm hover:shadow-md hover-lift p-6">
   <!-- content -->
 </div>
 
@@ -895,27 +1058,27 @@ One size: 40px via arithmetic — `border` (2px) + `py-[9px]` (18px) + `text-sm 
 
 ```html
 <div class="flex flex-col gap-1.5">
-  <label class="text-sm font-bold text-text-primary">
+  <label class="text-sm font-bold text-primary">
     Email address
   </label>
   <input type="email"
-    class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-text-primary bg-bg-base dark:bg-bg-subtle border border-border-default rounded-sm placeholder:text-text-muted focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
+    class="w-full px-4 py-[9px] text-sm font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
     placeholder="you@startup.com" />
-  <p class="text-xs text-text-muted">We'll never share your email.</p>
+  <p class="text-xs text-dim">We'll never share your email.</p>
 </div>
 ```
 
 ### Feature Icon Block
 
 ```html
-<div class="flex flex-col gap-4 p-6 rounded-xl bg-bg-subtle border border-border-subtle hover-lift">
+<div class="flex flex-col gap-4 p-6 rounded-xl bg-subtle border border-divider hover-lift">
   <div class="icon-container icon-container-xl squircle"
        style="background: var(--gradient-brand);">
     <svg class="text-white" width="28" height="28" stroke-width="1.5" ...></svg>
   </div>
   <div class="space-y-2">
-    <h3 class="text-xl font-bold text-text-primary">Virtual CFO Services</h3>
-    <p class="text-base text-text-secondary leading-relaxed">
+    <h3 class="text-xl font-bold text-primary">Virtual CFO Services</h3>
+    <p class="text-base text-secondary leading-relaxed">
       Expert financial strategy for Series A+ startups.
     </p>
   </div>
@@ -925,9 +1088,9 @@ One size: 40px via arithmetic — `border` (2px) + `py-[9px]` (18px) + `text-sm 
 ### Stat / Metric Card
 
 ```html
-<div class="squircle bg-bg-subtle border border-border-subtle p-6 text-center hover-lift">
+<div class="squircle bg-subtle border border-divider p-6 text-center hover-lift">
   <p class="text-5xl font-black text-gradient-brand">500+</p>
-  <p class="text-sm font-normal text-text-secondary mt-1">Startups Funded</p>
+  <p class="text-sm font-normal text-secondary mt-1">Startups Funded</p>
 </div>
 ```
 
@@ -935,7 +1098,7 @@ One size: 40px via arithmetic — `border` (2px) + `py-[9px]` (18px) + `text-sm 
 
 ```html
 <section class="bg-hero-gradient section-spacing">
-  <div class="container-site">
+  <div class="max-w-7xl mx-auto px-6">
     <div class="max-w-prose mx-auto text-center flex flex-col gap-6">
 
       <!-- Eyebrow label -->
@@ -945,13 +1108,13 @@ One size: 40px via arithmetic — `border` (2px) + `py-[9px]` (18px) + `text-sm 
       </span>
 
       <!-- Display headline — font-bold, gradient span inherits weight -->
-      <h1 class="text-6xl lg:text-7xl font-bold tracking-tight text-text-primary">
+      <h1 class="text-6xl lg:text-7xl font-bold tracking-tight text-primary">
         Your startup's<br>
         <span class="text-gradient-brand">financial backbone</span>
       </h1>
 
       <!-- Lead -->
-      <p class="text-base lg:text-lg font-normal text-text-secondary leading-relaxed">
+      <p class="text-base lg:text-lg font-normal text-secondary leading-relaxed">
         Kruze Consulting handles accounting, taxes, and CFO advisory
         for VC-backed startups — so you can focus on growth.
       </p>
@@ -980,40 +1143,43 @@ One size: 40px via arithmetic — `border` (2px) + `py-[9px]` (18px) + `text-sm 
 ```css
 /* main.css */
 @import "tailwindcss";
-@import "./_features/design-system/tokens.css";
+@import "./packages/tailwind-config/src/tokens.css";
 ```
 
 Tailwind v4 uses CSS-native `@theme` — no `tailwind.config.js`. All tokens in `tokens.css` become Tailwind utilities automatically.
+
+> **What uses TW4 defaults (not in tokens.css):** spacing, type scale (`text-*`), font weights (`font-*`), letter spacing (`tracking-*`), line heights (`leading-*`), standard easing (`ease-in`, `ease-out`, `ease-in-out`), durations, and z-index.
+>
+> **What is custom (defined in tokens.css):** colors, shadows, border radius, gradients, custom easing (`--ease-spring`, `--ease-bounce`), and composed transitions (`--transition-fast`, `--transition-base`, `--transition-spring`).
 
 ### Token → Utility Quick Reference
 
 | Token | Tailwind class | Example |
 |---|---|---|
 | `--color-brand-500` | `bg-brand-500`, `text-brand-500`, `border-brand-500` | Primary button bg |
-| `--color-bg-subtle` | `bg-bg-subtle` | Card background |
-| `--color-text-primary` | `text-text-primary` | Body text |
-| `--color-border-default` | `border-border-default` | Input border |
+| `--color-subtle` | `bg-subtle` | Card background |
+| `--color-primary` | `text-primary` | Body text |
+| `--color-rule` | `border-rule` | Input border |
 | `--radius-md` | `rounded-md` | Standard card |
 | `rounded-full` (built-in) | `rounded-full` | Buttons, round badges |
 | `--shadow-md` | `shadow-md` | Hover shadow |
 | `--shadow-brand` | `shadow-brand` | CTA button glow |
-| `--color-bg-base` dark mode | `dark:bg-[var(--color-bg-base)]` or semantic via `.dark` | Auto-switches |
+| `--color-base` dark mode | `dark:bg-[var(--color-base)]` or semantic via `.dark` | Auto-switches |
 
 ### CSS Variable Usage
 
-For gradients, transitions, and z-index — use inline `style` or custom CSS:
+For gradients and transitions — use inline `style` or custom CSS:
 
 ```html
 <section style="background: var(--gradient-hero-light);">
 <div style="box-shadow: var(--shadow-brand);">
 <div style="transition: var(--transition-spring);">
-<div style="z-index: var(--z-dropdown);">
 ```
 
 ### Dark Mode Classes
 
 ```html
-<div class="bg-bg-subtle dark:bg-bg-subtle">  <!-- semantic tokens auto-switch -->
-<p class="text-text-primary">               <!-- auto dark mode via .dark on <html> -->
+<div class="bg-subtle dark:bg-subtle">     <!-- semantic tokens auto-switch -->
+<p class="text-primary">                  <!-- auto dark mode via .dark on <html> -->
 <div class="bg-neutral-50 dark:bg-neutral-900"> <!-- manual scale if needed -->
 ```

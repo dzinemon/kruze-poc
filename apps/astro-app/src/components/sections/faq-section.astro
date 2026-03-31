@@ -43,7 +43,7 @@ const jsonLd = {
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
 <section class="py-20 px-6 bg-white dark:bg-[var(--color-base)]">
-  <div class="max-w-3xl mx-auto">
+  <div class="max-w-4xl mx-auto">
     {contentBlocks.length > 0 && (
       <div class="mb-12 flex flex-col gap-4 text-center">
         {contentBlocks.map((b) => {
@@ -74,7 +74,7 @@ const jsonLd = {
                 aria-expanded="false"
                 aria-controls={panelId}
               >
-                <span class="text-base">{faq.question}</span>
+                {faq.question}
                 <svg
                   class="faq-chevron flex-shrink-0 text-dim"
                   width="20"

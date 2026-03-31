@@ -1,6 +1,7 @@
 import type { FeatureGridSection as FeatureGridSectionType } from "@kruze-poc/sanity-schemas/src/types";
 import { ArrowRight } from "lucide-react";
 import { KruzePortableText } from "@kruze-poc/ui/portable-text";
+import { heading } from "@kruze-poc/ui/styles";
 
 const colsClass: Record<number, string> = {
   2: "grid-cols-1 md:grid-cols-2",
@@ -10,7 +11,7 @@ const colsClass: Record<number, string> = {
 
 export function FeatureGridSection({ section }: { section: FeatureGridSectionType }) {
   const cols = section.columns ?? 3;
-  const bgClass = section.background === "light" ? "bg-neutral-50" : "bg-white";
+  const bgClass = section.background === "light" ? "bg-subtle" : "bg-base";
 
   return (
     <section className={`${bgClass} py-20 px-6`}>
@@ -23,7 +24,7 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                 const text = (b.children ?? []).map((c: any) => c.text ?? "").join("");
                 if (b.style === "h2") {
                   return (
-                    <h2 key={b._key} className="text-4xl lg:text-5xl font-bold tracking-tight text-primary">
+                    <h2 key={b._key} className={heading.h2}>
                       {text}
                     </h2>
                   );
@@ -41,7 +42,7 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
             {section.tiles.map((tile) => (
               <div
                 key={tile._key}
-                className="flex flex-col gap-4 p-6 rounded-xl bg-subtle border border-divider hover-lift"
+                className="flex flex-col gap-4 p-6 rounded-md bg-subtle border border-divider shadow-sm hover-lift"
               >
                 {tile.icon?.asset?.url && (
                   <div

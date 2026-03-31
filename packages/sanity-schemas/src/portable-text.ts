@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import { ArrowTopRightIcon, BarChartIcon, InfoOutlineIcon, PlayIcon, WarningOutlineIcon, CheckmarkCircleIcon, ErrorOutlineIcon } from "@sanity/icons";
 
 export const portableText = defineType({
   name: "portableText",
@@ -78,13 +79,61 @@ export const portableText = defineType({
           return {
             title: title || "Chart Reference",
             subtitle: `Chart: ${chartType ?? "unknown type"}`,
+            media: BarChartIcon,
           };
         },
       },
     }),
 
-    // Custom block: CTA (uses shared ctaItem type)
-    defineArrayMember({ type: "ctaItem" }),
+    // Custom block: CTA Section (rich CTA with text + multiple buttons)
+    defineArrayMember({
+      name: "ctaSectionBlock",
+      title: "CTA Section",
+      type: "object",
+      fields: [
+        defineField({
+          name: "variant",
+          title: "Style",
+          type: "string",
+          options: {
+            list: [
+              { title: "Boxed", value: "boxed" },
+              { title: "Flat", value: "flat" },
+              { title: "Outlined", value: "outlined" },
+            ],
+            layout: "radio",
+          },
+          initialValue: "boxed",
+        }),
+        defineField({
+          name: "text",
+          title: "Content",
+          type: "sectionText",
+        }),
+        defineField({
+          name: "ctas",
+          title: "Call to Action Buttons",
+          type: "array",
+          of: [{ type: "ctaItem" }],
+        }),
+      ],
+      preview: {
+        select: { variant: "variant", text: "text" },
+        prepare({ variant, text }) {
+          const firstBlock = Array.isArray(text)
+            ? text.find((b: any) => b._type === "block")
+            : null;
+          const title = firstBlock?.children
+            ?.map((c: any) => c.text)
+            .join("") || "CTA Section";
+          return {
+            title: title.slice(0, 80),
+            subtitle: `CTA Section: ${variant ?? "boxed"}`,
+            media: ArrowTopRightIcon,
+          };
+        },
+      },
+    }),
 
     // Custom block: Alert / Callout
     defineArrayMember({
@@ -109,15 +158,25 @@ export const portableText = defineType({
         defineField({
           name: "content",
           title: "Content",
-          type: "text",
+          type: "sectionText",
         }),
       ],
       preview: {
-        select: { title: "content", alertType: "alertType" },
-        prepare({ title, alertType }) {
+        select: { contentBlocks: "content", alertType: "alertType" },
+        prepare({ contentBlocks, alertType }) {
+          const text = Array.isArray(contentBlocks)
+            ? contentBlocks.find((b: any) => b._type === "block")?.children?.map((c: any) => c.text).join("") || ""
+            : contentBlocks || "";
+          const alertIcons = {
+            info: InfoOutlineIcon,
+            warning: WarningOutlineIcon,
+            success: CheckmarkCircleIcon,
+            danger: ErrorOutlineIcon,
+          };
           return {
-            title: (title || "").slice(0, 80),
+            title: text.slice(0, 80),
             subtitle: `Alert: ${alertType}`,
+            media: alertIcons[alertType as keyof typeof alertIcons] ?? InfoOutlineIcon,
           };
         },
       },
@@ -144,7 +203,7 @@ export const portableText = defineType({
       preview: {
         select: { title: "videoId" },
         prepare({ title }) {
-          return { title: `YouTube: ${title}`, subtitle: "Video embed" };
+          return { title: `YouTube: ${title}`, subtitle: "Video embed", media: PlayIcon };
         },
       },
     }),

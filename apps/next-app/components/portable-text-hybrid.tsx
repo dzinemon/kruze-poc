@@ -1,5 +1,6 @@
 import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
 import { GoogleChart, buildChartJsonConfig } from "@kruze-poc/ui/chart";
+import { stegaClean } from "@sanity/client/stega";
 import YouTubeIsland from "./react/youtube-island";
 
 interface PortableTextHybridProps {
@@ -51,8 +52,9 @@ export function PortableTextHybrid({ value }: PortableTextHybridProps) {
       // Normalize chartReference to the same shape as chartBlock
       if (typedBlock._type === "chartReference") {
         const ref = block as { chart?: Record<string, unknown> };
-        if (ref.chart) {
-          const jsonConfig = buildChartJsonConfig(ref.chart as any);
+        // Guard: in presentation/live mode, the reference may not be resolved yet
+        if (ref.chart && ref.chart._id && ref.chart.chartType) {
+          const jsonConfig = buildChartJsonConfig(stegaClean(ref.chart) as any);
           segments.push({
             type: "chart",
             content: {
@@ -63,6 +65,7 @@ export function PortableTextHybrid({ value }: PortableTextHybridProps) {
             },
           });
         }
+        // If chart ref isn't resolved, skip silently — it will re-render when data arrives
       } else {
         segments.push({ type: "chart", content: block as ChartBlock });
       }

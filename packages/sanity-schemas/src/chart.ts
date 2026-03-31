@@ -1,4 +1,6 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import { BarChartIcon } from "@sanity/icons";
+
 
 export const chart = defineType({
   name: "chart",
@@ -198,6 +200,7 @@ export const chart = defineType({
       return {
         title: title || "Untitled Chart",
         subtitle: chartType ?? "Chart",
+        media: BarChartIcon,
       };
     },
   },
