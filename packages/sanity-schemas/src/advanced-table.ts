@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import { StackCompactIcon } from "@sanity/icons";
 
 export const advancedTableCell = defineType({
   name: "advancedTableCell",
@@ -136,7 +137,7 @@ export const advancedTableBlock = defineType({
         subtitle = `${dims} · ${preview}`;
       }
 
-      return { title, subtitle };
+      return { title, subtitle, media: StackCompactIcon };
     },
   },
 });

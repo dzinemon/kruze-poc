@@ -46,13 +46,13 @@ export function FaqSection({ section }: FaqSectionProps) {
   };
 
   return (
-    <section className="py-20 px-6 bg-white dark:bg-[var(--color-base)]">
+    <section className="py-20 px-6 bg-base">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         {contentBlocks.length > 0 && (
           <div className="mb-12 flex flex-col gap-4 text-center">
             {contentBlocks.map((b) => {
@@ -89,7 +89,7 @@ export function FaqSection({ section }: FaqSectionProps) {
               >
                 {/* h3 wrapping the button: ARIA Accordion Pattern — helps crawlers
                     understand question hierarchy and qualifies for FAQPage rich results */}
-                <div className="m-0">
+                <h3 className="m-0 text-xl">
                   <button
                     id={triggerId}
                     className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring"
@@ -98,7 +98,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                   >
-                    <span className="text-base">{faq.question}</span>
+                    {faq.question}
                     <ChevronDown
                       width={20}
                       height={20}
@@ -111,7 +111,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                       }}
                     />
                   </button>
-                </div>
+                </h3>
 
                 {/* Content stays in DOM (not conditionally rendered) so crawlers
                     index it. max-height animation keeps it visually hidden when closed

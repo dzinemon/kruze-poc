@@ -43,7 +43,7 @@ export function ServicesGridSection({ section }: ServicesGridSectionProps) {
             {section.tiles.map((tile) => (
               <div
                 key={tile._key}
-                className="flex flex-col gap-4 p-6 rounded-md bg-base border border-divider shadow-sm hover:shadow-md hover-lift"
+                className="flex flex-col gap-4 p-6 rounded-md bg-base border border-divider shadow-sm hover-lift"
               >
                 {tile.icon?.asset?.url && (
                   <div

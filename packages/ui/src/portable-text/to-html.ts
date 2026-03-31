@@ -74,10 +74,10 @@ const components: Partial<PortableTextHtmlComponents> = {
             return `<a href="${ctaItem.url || "#"}" class="${cls}">${ctaItem.text}${arrow}</a>`;
           })
           .join("");
-        ctasHtml = `<div class="flex flex-wrap justify-center gap-3 mt-2">${buttons}</div>`;
+        ctasHtml = `<div class="flex flex-wrap justify-center gap-3 mt-4">${buttons}</div>`;
       }
 
-      return `<div class="pt-block ${wrapperCls}"><div class="text-center flex flex-col gap-4">${textHtml}${ctasHtml}</div></div>`;
+      return `<div class="pt-block ${wrapperCls}"><div class="text-center flex flex-col">${textHtml}${ctasHtml}</div></div>`;
     },
 
     alertBlock: ({ value }) => {

@@ -322,6 +322,135 @@
     background-color: rgba(47, 116, 178, 0.20);
     color: var(--color-primary);
   }
+
+  /* ── Article content — long-form body text ─── */
+  /* These rules are in @layer base so that Tailwind utility classes in
+     @layer utilities always override them — no :not(.pt-block *) guards needed. */
+  .article-content {
+    max-width: none;
+  }
+  .article-content h2,
+  .article-content h3,
+  .article-content h4,
+  .article-content h5,
+  .article-content h6 {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-tight);
+  }
+  .article-content h2 { font-size: var(--text-2xl); margin-top: 2em; margin-bottom: 0.75em; }
+  .article-content h3 { font-size: var(--text-xl); margin-top: 1.75em; margin-bottom: 0.5em; }
+  .article-content h4 { font-size: var(--text-lg); margin-top: 1.5em; margin-bottom: 0.5em; }
+  .article-content h5 { font-size: var(--text-base); margin-top: 1.25em; margin-bottom: 0.5em; }
+  .article-content h6 { font-size: var(--text-sm); margin-top: 1.25em; margin-bottom: 0.5em; }
+  .article-content p {
+    font-size: var(--text-base);
+    color: var(--color-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: 1em;
+  }
+  .article-content a {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: var(--color-link);
+    text-underline-offset: 2px;
+  }
+  .article-content a:hover {
+    color: var(--color-interact-hover);
+    text-decoration-color: var(--color-brand-500);
+    text-decoration-style: solid
+  }
+  .article-content blockquote {
+    border-left: 3px solid var(--color-brand-500);
+    padding-left: 1em;
+    color: var(--color-secondary);
+    font-style: italic;
+    margin: 1.5em 0;
+  }
+  .article-content ul,
+  .article-content ol {
+    color: var(--color-secondary);
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+  }
+  .article-content ul { list-style-type: disc; }
+  .article-content ol { list-style-type: decimal; }
+  .article-content li {
+    line-height: var(--leading-relaxed);
+    margin-bottom: 0.5em;
+  }
+  .article-content code {
+    color: var(--color-brand-600);
+    background: var(--color-subtle);
+    padding: 0.125em 0.375em;
+    border-radius: var(--radius-xs);
+    font-size: 0.875em;
+  }
+  .article-content pre {
+    background: var(--color-subtle);
+    border-radius: var(--radius-sm);
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1.5em 0;
+  }
+  .article-content pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: var(--text-sm);
+  }
+  .article-content strong { color: var(--color-primary); }
+  .article-content em { color: var(--color-primary); }
+  .article-content img { border-radius: var(--radius-md); width: 100%; }
+  .article-content hr {
+    border-color: var(--color-rule);
+    margin: 2em 0;
+  }
+
+  /* ── Suppress leading/trailing and intra-block margins ─── */
+  /* First heading in any container needs no top gap — the container's own
+     padding or the page flow already provides it. */
+  .article-content h2:first-child,
+  .article-content h3:first-child,
+  .article-content h4:first-child,
+  .article-content h5:first-child,
+  .article-content h6:first-child { margin-top: 0; }
+  /* Last paragraph/list in a container needs no trailing gap. */
+  .article-content p:last-child,
+  .article-content ul:last-child,
+  .article-content ol:last-child { margin-bottom: 0; }
+  /* Inside pt-block containers (CTA, alert, etc.) spacing is handled by
+     flex gap or space-y — paragraph margin-bottom would double up. */
+  .article-content .pt-block p { margin-bottom: 0; }
+
+  /* ── Section content — compact rich text in cards/grids ─── */
+  .section-content p {
+    font-size: var(--text-base);
+    color: var(--color-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: 0.75em;
+  }
+  .section-content p:last-child { margin-bottom: 0; }
+  .section-content a { color: var(--color-link); }
+  .section-content a:hover { color: var(--color-interact-hover); }
+  .section-content ul,
+  .section-content ol {
+    color: var(--color-secondary);
+    padding-left: 1.25em;
+  }
+  .section-content ul { list-style-type: disc; }
+  .section-content ol { list-style-type: decimal; }
+  .section-content li {
+    line-height: var(--leading-relaxed);
+    margin-bottom: 0.25em;
+  }
+  .section-content strong { color: var(--color-primary); }
+  .section-content h3,
+  .section-content h4 {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -386,6 +515,49 @@
     background-image: var(--gradient-hero-light);
   }
 
+  /* ── Hero background image — responsive ──── */
+  /* Component sets: style="--hero-bg-image: url(...)" */
+
+  .hero-bg-split {
+    background-image:
+      radial-gradient(circle at 0%, white 20%, rgba(255,255,255,0.3) 55%, transparent),
+      var(--hero-bg-image, none);
+    background-size: cover;
+    background-position: right center;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-blend-mode: normal, lighten;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-bg-split {
+      background-size: auto 100%;
+      background-position: 130% 50%;
+      background-blend-mode: normal, normal;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hero-bg-split {
+      background-position: 130% 50%;
+    }
+  }
+  @media (min-width: 1440px) {
+    .hero-bg-split {
+      background-position: 120% 50%;
+    }
+  }
+
+  .hero-bg-centered {
+    background-image:
+      radial-gradient(ellipse at center, white 25%, rgba(255,255,255,0.7) 55%, rgba(255,255,255,0.15) 100%),
+      var(--hero-bg-image, none);
+    background-size: cover;
+    background-position: center;
+    background-color: white;
+    background-repeat: no-repeat;
+  }
+
   /* ── Smooth hover lift ───────────────────── */
   .hover-lift {
     transition:
@@ -401,118 +573,6 @@
   .focus-ring:focus-visible {
     box-shadow: var(--shadow-focus-ring);
     outline: none;
-  }
-
-  /* ── Article content — long-form body text ─── */
-  /* Custom portable-text blocks (.pt-block, .alert-block, etc.) own their
-     styling via Tailwind utility classes. We exclude them from article
-     typographic rules so the utilities aren't overridden by specificity. */
-  .article-content {
-    max-width: none;
-  }
-  .article-content h2:not(.pt-block *),
-  .article-content h3:not(.pt-block *),
-  .article-content h4:not(.pt-block *),
-  .article-content h5:not(.pt-block *),
-  .article-content h6:not(.pt-block *) {
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
-    letter-spacing: var(--tracking-tight);
-  }
-  .article-content h2:not(.pt-block *) { font-size: var(--text-2xl); margin-top: 2em; margin-bottom: 0.75em; }
-  .article-content h3:not(.pt-block *) { font-size: var(--text-xl); margin-top: 1.75em; margin-bottom: 0.5em; }
-  .article-content h4:not(.pt-block *) { font-size: var(--text-lg); margin-top: 1.5em; margin-bottom: 0.5em; }
-  .article-content h5:not(.pt-block *) { font-size: var(--text-base); margin-top: 1.25em; margin-bottom: 0.5em; }
-  .article-content h6:not(.pt-block *) { font-size: var(--text-sm); margin-top: 1.25em; margin-bottom: 0.5em; }
-  .article-content p:not(.pt-block *) {
-    font-size: var(--text-base);
-    color: var(--color-secondary);
-    line-height: var(--leading-relaxed);
-    margin-bottom: 1em;
-  }
-  .article-content a:not(.pt-block *) {
-    color: var(--color-link);
-    text-decoration: underline;
-    text-decoration-color: var(--color-brand-200);
-    text-underline-offset: 2px;
-  }
-  .article-content a:not(.pt-block *):hover {
-    color: var(--color-interact-hover);
-    text-decoration-color: var(--color-brand-500);
-  }
-  .article-content blockquote {
-    border-left: 3px solid var(--color-brand-500);
-    padding-left: 1em;
-    color: var(--color-secondary);
-    font-style: italic;
-    margin: 1.5em 0;
-  }
-  .article-content ul,
-  .article-content ol {
-    color: var(--color-secondary);
-    padding-left: 1.5em;
-    margin-bottom: 1em;
-  }
-  .article-content ul { list-style-type: disc; }
-  .article-content ol { list-style-type: decimal; }
-  .article-content li {
-    line-height: var(--leading-relaxed);
-    margin-bottom: 0.5em;
-  }
-  .article-content code {
-    color: var(--color-brand-600);
-    background: var(--color-subtle);
-    padding: 0.125em 0.375em;
-    border-radius: var(--radius-xs);
-    font-size: 0.875em;
-  }
-  .article-content pre {
-    background: var(--color-subtle);
-    border-radius: var(--radius-sm);
-    padding: 1em;
-    overflow-x: auto;
-    margin: 1.5em 0;
-  }
-  .article-content pre code {
-    background: none;
-    padding: 0;
-    border-radius: 0;
-    font-size: var(--text-sm);
-  }
-  .article-content strong { color: var(--color-primary); }
-  .article-content em { color: var(--color-primary); }
-  .article-content img { border-radius: var(--radius-md); width: 100%; }
-  .article-content hr {
-    border-color: var(--color-rule);
-    margin: 2em 0;
-  }
-
-  /* ── Section content — compact rich text in cards/grids ─── */
-  .section-content p {
-    font-size: var(--text-base);
-    color: var(--color-secondary);
-    line-height: var(--leading-relaxed);
-    margin-bottom: 0.75em;
-  }
-  .section-content p:last-child { margin-bottom: 0; }
-  .section-content a { color: var(--color-link); }
-  .section-content a:hover { color: var(--color-interact-hover); }
-  .section-content ul,
-  .section-content ol {
-    color: var(--color-secondary);
-    padding-left: 1.25em;
-  }
-  .section-content ul { list-style-type: disc; }
-  .section-content ol { list-style-type: decimal; }
-  .section-content li {
-    line-height: var(--leading-relaxed);
-    margin-bottom: 0.25em;
-  }
-  .section-content strong { color: var(--color-primary); }
-  .section-content h3,
-  .section-content h4 {
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
   }
 
   /* ── Rich table — Portable Text ─────────── */

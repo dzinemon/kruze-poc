@@ -6,19 +6,19 @@ import type { ContactFormBlock } from "@kruze-poc/sanity-schemas/src/types";
 const SUBMIT_ENDPOINT =
   process.env.NEXT_PUBLIC_SUBMIT_ENDPOINT ?? "http://localhost:7071/api/submit";
 
-const ATTRIBUTION_FIELDS: { key: keyof AttributionFields; label: string }[] = [
-  { key: "lead_source",            label: "lead_source" },
-  { key: "lead_type",              label: "lead_type" },
-  { key: "referral_partner",       label: "referral_partner" },
-  { key: "MKTG_Landing_Page",      label: "MKTG_Landing_Page" },
-  { key: "current_page",           label: "current_page" },
-  { key: "MKTG_Lead_Source",       label: "MKTG_Lead_Source" },
-  { key: "MKTG_Lead_Source_Detail",label: "MKTG_Lead_Source_Detail" },
-  { key: "MKTG_UTM_Campaign",      label: "MKTG_UTM_Campaign" },
-  { key: "MKTG_UTM_Content",       label: "MKTG_UTM_Content" },
-  { key: "MKTG_UTM_Medium",        label: "MKTG_UTM_Medium" },
-  { key: "MKTG_UTM_Term",          label: "MKTG_UTM_Term" },
-  { key: "MKTG_UTM_Source",        label: "MKTG_UTM_Source" },
+const ATTRIBUTION_FIELDS: { key: keyof AttributionFields; label: string; placeholder?: string }[] = [
+  { key: "lead_source",            label: "lead_source", placeholder: "Website, Client Referral, Partner Referral, Outbound, Bank, Law Firm, Conferences & Events" },
+  { key: "lead_type",        label: "lead_type", placeholder: "Monthly Recurring - Tier 1 Premium, CFO Consulting, R&D Tax Credit, etc." },
+  { key: "referral_partner",       label: "referral_partner", placeholder: " Should be ID from SF. If referred by a partner, please specify which one." },
+  { key: "MKTG_Landing_Page",      label: "MKTG_Landing_Page", placeholder: "The first page the lead landed on (if known)" },
+  { key: "current_page",           label: "current_page", placeholder: "The current page the lead is on" },
+  { key: "MKTG_Lead_Source",       label: "MKTG_Lead_Source", placeholder: "referral, direct, organic, cpc" },
+  { key: "MKTG_Lead_Source_Detail",label: "MKTG_Lead_Source_Detail", placeholder: " -,google, duckduckgo.com, brex, bing, bookface.ycombinator.com, www.linkedin.com" },
+  { key: "MKTG_UTM_Campaign",      label: "MKTG_UTM_Campaign", placeholder: "" },
+  { key: "MKTG_UTM_Content",       label: "MKTG_UTM_Content", placeholder: "" },
+  { key: "MKTG_UTM_Medium",        label: "MKTG_UTM_Medium", placeholder: "" },
+  { key: "MKTG_UTM_Term",          label: "MKTG_UTM_Term", placeholder: "" },
+  { key: "MKTG_UTM_Source",        label: "MKTG_UTM_Source", placeholder: "" },
 ];
 
 const STAGE_OPTIONS = [
@@ -113,11 +113,13 @@ function AttributionInput({
   name,
   value,
   onChange,
+  placeholder,
 }: {
   label: string;
   name: string;
   value: string;
   onChange: (v: string) => void;
+  placeholder?: string;
 }) {
   return (
     <div className="flex flex-col gap-1">
@@ -127,6 +129,7 @@ function AttributionInput({
         name={name}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
         className="w-full px-3 py-1.5 text-xs font-normal leading-5 text-primary bg-base dark:bg-subtle border border-rule rounded-sm placeholder:text-dim focus:outline-none focus:border-brand-500 focus:shadow-focus-ring transition-fast"
       />
     </div>
@@ -503,12 +506,13 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
 
                 {devOpen && (
                   <div className="mt-3 flex flex-col gap-3">
-                    {ATTRIBUTION_FIELDS.map(({ key, label }) => (
+                    {ATTRIBUTION_FIELDS.map(({ key, label, placeholder }) => (
                       <AttributionInput
                         key={key}
                         label={label}
                         name={key}
                         value={attribution[key]}
+                        placeholder={placeholder}
                         onChange={(v) => setAttr(key, v)}
                       />
                     ))}

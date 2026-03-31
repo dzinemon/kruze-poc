@@ -11,7 +11,7 @@ const colsClass: Record<number, string> = {
 
 export function FeatureGridSection({ section }: { section: FeatureGridSectionType }) {
   const cols = section.columns ?? 3;
-  const bgClass = section.background === "light" ? "bg-neutral-50" : "bg-white";
+  const bgClass = section.background === "light" ? "bg-subtle" : "bg-base";
 
   return (
     <section className={`${bgClass} py-20 px-6`}>
@@ -42,7 +42,7 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
             {section.tiles.map((tile) => (
               <div
                 key={tile._key}
-                className="flex flex-col gap-4 p-6 rounded-xl bg-subtle border border-divider hover-lift"
+                className="flex flex-col gap-4 p-6 rounded-md bg-subtle border border-divider shadow-sm hover-lift"
               >
                 {tile.icon?.asset?.url && (
                   <div

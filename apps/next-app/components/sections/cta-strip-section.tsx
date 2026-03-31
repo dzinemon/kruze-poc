@@ -25,8 +25,8 @@ export function CtaStripSection({ section }: { section: CtaStripSectionType }) {
   const sectionClass = onDark
     ? "py-20 px-6"
     : bg === "light"
-    ? "bg-neutral-50 py-20 px-6"
-    : "bg-white py-20 px-6";
+    ? "bg-subtle py-20 px-6"
+    : "bg-base py-20 px-6";
 
   return (
     <section

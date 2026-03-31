@@ -64,7 +64,7 @@ export function CtaContent({ textBlocks, ctas, colors }: CtaContentProps) {
         })}
 
       {ctas && ctas.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-3 mt-2">
+        <div className="flex flex-wrap justify-center gap-3 mt-4">
           {ctas.map((ctaItem, i) => {
             const isPrimary = !ctaItem.style || ctaItem.style === "primary";
             const isSecondary = ctaItem.style === "secondary" || ctaItem.style === "outline";

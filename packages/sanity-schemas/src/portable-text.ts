@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import { ArrowTopRightIcon, BarChartIcon, InfoOutlineIcon, PlayIcon, WarningOutlineIcon, CheckmarkCircleIcon, ErrorOutlineIcon } from "@sanity/icons";
 
 export const portableText = defineType({
   name: "portableText",
@@ -78,6 +79,7 @@ export const portableText = defineType({
           return {
             title: title || "Chart Reference",
             subtitle: `Chart: ${chartType ?? "unknown type"}`,
+            media: BarChartIcon,
           };
         },
       },
@@ -127,6 +129,7 @@ export const portableText = defineType({
           return {
             title: title.slice(0, 80),
             subtitle: `CTA Section: ${variant ?? "boxed"}`,
+            media: ArrowTopRightIcon,
           };
         },
       },
@@ -164,9 +167,16 @@ export const portableText = defineType({
           const text = Array.isArray(contentBlocks)
             ? contentBlocks.find((b: any) => b._type === "block")?.children?.map((c: any) => c.text).join("") || ""
             : contentBlocks || "";
+          const alertIcons = {
+            info: InfoOutlineIcon,
+            warning: WarningOutlineIcon,
+            success: CheckmarkCircleIcon,
+            danger: ErrorOutlineIcon,
+          };
           return {
             title: text.slice(0, 80),
             subtitle: `Alert: ${alertType}`,
+            media: alertIcons[alertType as keyof typeof alertIcons] ?? InfoOutlineIcon,
           };
         },
       },
@@ -193,7 +203,7 @@ export const portableText = defineType({
       preview: {
         select: { title: "videoId" },
         prepare({ title }) {
-          return { title: `YouTube: ${title}`, subtitle: "Video embed" };
+          return { title: `YouTube: ${title}`, subtitle: "Video embed", media: PlayIcon };
         },
       },
     }),
