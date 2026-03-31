@@ -179,13 +179,36 @@ pnpm dev:astro    # Astro at localhost:4321
 
 **Requirements:** Docker Desktop
 
-Docker bind-mounts the entire repo, so it reads the same per-app `.env.local` files as local dev. Create them as described above (same step as Option A), then:
+Docker bind-mounts the entire repo, so it reads the same per-app `.env.local` files as local dev. Create them as described above (same step as Option A).
+
+#### First-time setup
+
+You must run `pnpm install` locally once to generate/update `pnpm-lock.yaml` before building the Docker image. The image runs `pnpm install --frozen-lockfile` and will fail if the lockfile is missing or out of date.
 
 ```bash
+pnpm install          # generates/updates pnpm-lock.yaml
 docker compose up --build
 ```
 
-All three apps start with hot reload:
+#### Subsequent runs
+
+```bash
+docker compose up
+```
+
+Hot reload is enabled for all three apps — file changes on the host are picked up immediately.
+
+#### After adding or updating dependencies
+
+The Docker named volumes cache `node_modules`. When you change any `package.json`, you must rebuild and wipe the old volumes:
+
+```bash
+pnpm install                  # update pnpm-lock.yaml on the host
+docker compose down -v        # destroy stale node_modules volumes
+docker compose up --build     # rebuild image + reinitialise volumes
+```
+
+#### All three apps start with hot reload
 
 | App | URL |
 |-----|-----|
@@ -193,7 +216,7 @@ All three apps start with hot reload:
 | Astro | http://localhost:4321 |
 | Sanity Studio | http://localhost:3333 |
 
-Run a single app:
+#### Run a single app
 
 ```bash
 docker compose up next-app

@@ -13,6 +13,8 @@ services:
       # Protect installed node_modules from being overwritten by the bind mount.
       # All 3 services share this named volume since pnpm uses a single root node_modules.
       - root_node_modules:/app/node_modules
+      # Protect app-level node_modules (pnpm symlinks) from the bind mount overlay.
+      - next_node_modules:/app/apps/next-app/node_modules
     env_file:
       - path: .env          # base config (checked in)
         required: true
@@ -28,11 +30,14 @@ services:
     working_dir: /app/apps/astro-app
     # --host exposes the dev server on all interfaces inside the container
     command: pnpm exec astro dev --host 0.0.0.0
+    depends_on:
+      - next-app
     ports:
       - "4321:4321"
     volumes:
       - .:/app
       - root_node_modules:/app/node_modules
+      - astro_node_modules:/app/apps/astro-app/node_modules
     env_file:
       - path: .env
         required: true
@@ -50,11 +55,14 @@ services:
       dockerfile: Dockerfile.dev
     working_dir: /app/apps/studio
     command: pnpm exec sanity dev --host 0.0.0.0
+    depends_on:
+      - next-app
     ports:
       - "3333:3333"
     volumes:
       - .:/app
       - root_node_modules:/app/node_modules
+      - studio_node_modules:/app/apps/studio/node_modules
     env_file:
       - path: .env
         required: true
@@ -66,3 +74,7 @@ services:
 volumes:
   # Shared pnpm root node_modules — all services read from the same pre-installed tree
   root_node_modules:
+  # Per-app node_modules — protects pnpm symlinks from being overwritten by the .:/app bind mount
+  next_node_modules:
+  astro_node_modules:
+  studio_node_modules:
