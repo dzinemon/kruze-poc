@@ -48,6 +48,11 @@ export default defineConfig({
           enable: "/api/draft-mode/enable",
         },
       },
+      allowOrigins: [
+        "https://kruze-poc-next-app.vercel.app",
+        "https://kruze-poc-next-app-git-dev-andriishas-projects.vercel.app",
+        "http://localhost:3000",
+      ],
       resolve,
     }),
     assist()

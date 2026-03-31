@@ -72,13 +72,12 @@ export default async function RootLayout({
           </div>
         </footer>
 
-        {isDraftMode && (
-          <>
-            <SanityLive />
-            <DraftModeBanner />
-          </>
-        )}
+        {isDraftMode && <SanityLive />}
         {isDraftMode && <VisualEditing />}
+        <DraftModeBanner
+          isDraftMode={isDraftMode}
+          isVercelPreview={process.env.VERCEL_ENV === "preview"}
+        />
       </body>
     </html>
   );
