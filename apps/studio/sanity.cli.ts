@@ -5,14 +5,14 @@ export default defineCliConfig({
     projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
     dataset: process.env.SANITY_STUDIO_DATASET!,
   },
+  deployment: {
+    appId: process.env.SANITY_APP_ID!,
+  },
   vite: (config) => ({
     ...config,
     build: {
       ...config.build,
       sourcemap: false,
-    },
-    deployment: {
-      appId: process.env.SANITY_APP_ID!,
     },
     optimizeDeps: {
       ...config.optimizeDeps,
