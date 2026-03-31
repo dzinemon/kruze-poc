@@ -11,6 +11,9 @@ export default defineCliConfig({
       ...config.build,
       sourcemap: false,
     },
+    deployment: {
+      appId: process.env.SANITY_APP_ID!,
+    },
     optimizeDeps: {
       ...config.optimizeDeps,
       esbuildOptions: {
