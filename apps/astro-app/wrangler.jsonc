@@ -6,5 +6,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist"
+  },
+  "env": {
+    "staging": {
+      "name": "dev-kruze-poc"
+    }
   }
 }

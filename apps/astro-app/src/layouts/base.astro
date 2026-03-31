@@ -70,13 +70,13 @@ const { title, description } = Astro.props;
 
     <script>
       const btn = document.getElementById("theme-toggle") as HTMLButtonElement;
-      const sun = document.getElementById("icon-sun") as SVGElement;
-      const moon = document.getElementById("icon-moon") as SVGElement;
+      const sun = document.getElementById("icon-sun") as HTMLElement | null;
+      const moon = document.getElementById("icon-moon") as HTMLElement | null;
 
       function syncIcons() {
         const isDark = document.documentElement.classList.contains("dark");
-        sun.style.display = isDark ? "block" : "none";
-        moon.style.display = isDark ? "none" : "block";
+        if (sun) sun.style.display = isDark ? "block" : "none";
+        if (moon) moon.style.display = isDark ? "none" : "block";
         btn.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
       }
 

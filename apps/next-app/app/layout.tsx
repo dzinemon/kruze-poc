@@ -4,6 +4,7 @@ import Link from "next/link";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
 import { SanityLive } from "@/lib/sanity";
+import { DraftModeBanner } from "@/components/draft-mode-banner";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
@@ -71,7 +72,12 @@ export default async function RootLayout({
           </div>
         </footer>
 
-        {isDraftMode && <SanityLive />}
+        {isDraftMode && (
+          <>
+            <SanityLive />
+            <DraftModeBanner />
+          </>
+        )}
         {isDraftMode && <VisualEditing />}
       </body>
     </html>
