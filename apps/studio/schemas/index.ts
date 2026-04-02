@@ -18,6 +18,7 @@ import { PortableTextWithPaste } from "../components/PortableTextWithPaste";
 import { AdvancedTableInput } from "../components/advanced-table";
 import { ChartDataTable } from "../components/ChartDataTable";
 import { ColorHexInput } from "../components/ColorHexInput";
+import { SlugWithPrefixInput } from "../components/SlugWithPrefixInput";
 
 const portableTextWithPaste = {
   ...portableText,
@@ -53,8 +54,29 @@ const chartWithComponents = {
   }),
 };
 
+const blogPostWithSlugInput = {
+  ...blogPost,
+  fields: (blogPost.fields as any[]).map((field: any) => {
+    if (field.name === "slug") {
+      return {
+        ...field,
+        components: {
+          input: (props: any) =>
+            SlugWithPrefixInput({
+              ...props,
+              prefix: "/blog/",
+              suffix: "/",
+              baseUrl: import.meta.env.SANITY_STUDIO_PREVIEW_URL ?? "http://localhost:3000",
+            }),
+        },
+      };
+    }
+    return field;
+  }),
+};
+
 export const schemaTypes = [
-  blogPost,
+  blogPostWithSlugInput,
   blockPage,
   author,
   testimonial,

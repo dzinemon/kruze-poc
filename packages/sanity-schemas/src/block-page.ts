@@ -543,6 +543,26 @@ export const blockPage = defineType({
           },
         }),
 
+        // Multi-step contact form block
+        defineArrayMember({
+          name: "multiStepContactBlock",
+          title: "Contact Form (Multi-Step)",
+          type: "object",
+          fields: [
+            defineField({
+              name: "headingOverride",
+              title: "Heading Override",
+              type: "string",
+              description: "Optional: override the default 'Get In Touch' heading.",
+            }),
+          ],
+          preview: {
+            prepare() {
+              return { title: "Contact Form (Multi-Step)", subtitle: "Free Consultation" };
+            },
+          },
+        }),
+
         // Contact form block
         defineArrayMember({
           name: "contactFormBlock",

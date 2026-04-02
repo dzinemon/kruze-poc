@@ -13,6 +13,7 @@ import { CalculatorSection } from "./sections/calculator-section";
 import { PressLogosSection } from "./sections/press-logos-section";
 import { NewsSection } from "./sections/news-section";
 import { ContactFormSection } from "./sections/contact-form-section";
+import { ContactFormMultistep } from "./sections/contact-form-multistep";
 import { CustomEmbedSection } from "./sections/custom-embed-section";
 import { FlexSection } from "./sections/flex-section";
 
@@ -48,6 +49,8 @@ export async function SectionRenderer({ section }: SectionRendererProps) {
       return <PressLogosSection section={section} />;
     case "newsBlock":
       return <NewsSection section={section} />;
+    case "multiStepContactBlock":
+      return <ContactFormMultistep section={section} />;
     case "contactFormBlock":
       return <ContactFormSection section={section} />;
     case "customEmbedBlock":

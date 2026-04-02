@@ -339,6 +339,12 @@ export interface NewsBlock {
   items?: NewsItem[];
 }
 
+export interface MultiStepContactBlock {
+  _type: "multiStepContactBlock";
+  _key: string;
+  headingOverride?: string;
+}
+
 export interface ContactFormBlock {
   _type: "contactFormBlock";
   _key: string;
@@ -385,6 +391,7 @@ export type BlockPageSection =
   | CalculatorBlock
   | PressLogosBlock
   | NewsBlock
+  | MultiStepContactBlock
   | ContactFormBlock
   | CustomEmbedBlock
   | FlexSectionBlock;

@@ -2,23 +2,34 @@
 
 import { useState } from "react";
 import { MapPin, Mail, Phone } from "lucide-react";
-import type { ContactFormBlock } from "@kruze-poc/sanity-schemas/src/types";
-import { ContactFormFields } from "./contact-form-fields";
+import { AnimatePresence, motion } from "framer-motion";
+import type { MultiStepContactBlock } from "@kruze-poc/sanity-schemas/src/types";
 import type {
   CoreFields,
   VcFields,
   AttributionFields,
   FieldErrors,
   TouchedFields,
-} from "./contact-form-fields";
-import { ContactFormLoadingPanel } from "./contact-form-loading-panel";
+} from "../contact-form-fields";
+import { StepIndicator } from "./step-indicator";
+import { Step1Contact } from "./step1-contact";
+import { Step2Company } from "./step2-company";
+import { Step3Message } from "./step3-message";
 
 const SUBMIT_ENDPOINT =
   process.env.NEXT_PUBLIC_SUBMIT_ENDPOINT ?? "http://localhost:7071/api/submit";
 
 const EMAIL_RE = /.+@.+\..+/;
 
-function validate(fields: CoreFields, isVcFunded: boolean, vc: VcFields): FieldErrors {
+const stepVariants = {
+  enter: (dir: number) => ({ x: dir * 40, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir * -40, opacity: 0 }),
+};
+
+const stepTransition = { duration: 0.25, ease: [0.4, 0, 0.2, 1] } as const;
+
+function validateStep1(fields: CoreFields): FieldErrors {
   const errors: FieldErrors = {};
   if (!fields.contact_name.trim()) {
     errors.contact_name = "Full name is required.";
@@ -39,22 +50,21 @@ function validate(fields: CoreFields, isVcFunded: boolean, vc: VcFields): FieldE
   if (fields.phone_number.trim() && !/^\(\d{3}\) \d{3}-\d{4}$/.test(fields.phone_number)) {
     errors.phone_number = "Phone must be in (555) 123-4567 format.";
   }
-  if (isVcFunded && !vc.stage) errors.stage = "Please select your funding stage.";
   return errors;
 }
 
-interface ContactFormSectionProps {
-  section: ContactFormBlock;
+interface ContactFormMultistepProps {
+  section: MultiStepContactBlock;
 }
 
-export function ContactFormSection({ section }: ContactFormSectionProps) {
-  const isNewsletter = section.formType === "newsletter";
-
+export function ContactFormMultistep({ section }: ContactFormMultistepProps) {
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [direction, setDirection] = useState<1 | -1>(1);
   const [fields, setFields] = useState<CoreFields>({
     contact_name: "", company_name: "", email: "",
     phone_number: "", message: "", subscription_agreed: false,
   });
-  const [isVcFunded, setIsVcFunded] = useState(false);
+  const [isVcFunded, setIsVcFunded] = useState(true);
   const [vc, setVc] = useState<VcFields>({ stage: "", raised: "" });
   const [attribution, setAttribution] = useState<AttributionFields>({
     lead_source: "", lead_type: "", referral_partner: "",
@@ -70,42 +80,48 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  function goTo(next: 1 | 2 | 3, dir: 1 | -1) {
+    setDirection(dir);
+    setStep(next);
+  }
+
   function setField<K extends keyof CoreFields>(key: K, value: CoreFields[K]) {
-    const nextFields = { ...fields, [key]: value };
-    setFields(nextFields);
-    if (touched[key]) setErrors(validate(nextFields, isVcFunded, vc));
+    const next = { ...fields, [key]: value };
+    setFields(next);
+    if (touched[key]) setErrors(validateStep1(next));
     else setErrors((e) => ({ ...e, [key]: undefined }));
+  }
+
+  function handleBlurCore(key: keyof CoreFields) {
+    setTouched((prev) => ({ ...prev, [key]: true }));
+    setErrors(validateStep1(fields));
+  }
+
+  function handleBlurVc(key: keyof VcFields) {
+    setTouched((prev) => ({ ...prev, [key]: true }));
   }
 
   function handleVc(key: keyof VcFields, value: string) {
-    const nextVc = { ...vc, [key]: value };
-    setVc(nextVc);
-    if (touched[key]) setErrors(validate(fields, isVcFunded, nextVc));
-    else setErrors((e) => ({ ...e, [key]: undefined }));
+    setVc((prev) => ({ ...prev, [key]: value }));
+    if (touched[key]) setErrors((e) => ({ ...e, [key]: undefined }));
   }
 
-  function touchField(key: keyof CoreFields | keyof VcFields) {
-    setTouched((prev) => ({ ...prev, [key]: true }));
-    setErrors(validate(fields, isVcFunded, vc));
-  }
-
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (isNewsletter) {
-      await submitNewsletter();
-      return;
-    }
-
+  function handleStep1Next() {
     const allTouched: TouchedFields = {
-      contact_name: true, company_name: true, email: true, phone_number: true, stage: true,
+      contact_name: true, company_name: true, email: true, phone_number: true,
     };
     setTouched(allTouched);
-    const errs = validate(fields, isVcFunded, vc);
-    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    const errs = validateStep1(fields);
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+    goTo(2, 1);
+  }
 
+  async function handleSubmit() {
     const nameParts = fields.contact_name.trim().split(/\s+/);
-    await postPayload({
+    const payload: Record<string, unknown> = {
       form_type: "contact",
       contact_fname: nameParts[0],
       contact_lname: nameParts.slice(1).join(" "),
@@ -116,27 +132,12 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
       subscription_agreed: fields.subscription_agreed,
       ...attribution,
       ...(isVcFunded ? { stage: vc.stage, raised: vc.raised } : {}),
-    });
-  }
+    };
 
-  async function submitNewsletter() {
-    if (!fields.email.trim() || !EMAIL_RE.test(fields.email)) {
-      setTouched({ email: true });
-      setErrors({ email: "Please enter a valid email address." });
-      return;
-    }
-    await postPayload({
-      form_type: "newsletter",
-      email: fields.email.trim(),
-      subscription_agreed: fields.subscription_agreed,
-      ...attribution,
-    });
-  }
-
-  async function postPayload(payload: Record<string, unknown>) {
     const cleaned = Object.fromEntries(
       Object.entries(payload).filter(([, v]) => v !== "" && v !== null && v !== undefined),
     );
+
     setSubmitError(null);
     setLoading(true);
     try {
@@ -158,84 +159,67 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
     }
   }
 
-  const formFields = (
-    <ContactFormFields
-      fields={fields}
-      onField={setField}
-      onBlur={touchField}
-      errors={errors}
-      touched={touched}
-      isVcFunded={isVcFunded}
-      onVcFundedChange={setIsVcFunded}
-      vc={vc}
-      onVc={handleVc}
-      isNewsletter={isNewsletter}
-      submitError={submitError}
-      loading={loading}
-      submitLabel={isNewsletter ? "Subscribe" : "Request Consultation"}
-      attribution={attribution}
-      onAttr={(key, value) => setAttribution((prev) => ({ ...prev, [key]: value }))}
-      devOpen={devOpen}
-      onDevOpen={setDevOpen}
-      twoCol={!isNewsletter}
-    />
-  );
-
-  // ── Newsletter: unchanged single-column layout ────────────────────────────
-  if (isNewsletter) {
-    return (
-      <section className="bg-hero-gradient py-20 px-6">
-        <div className="max-w-xl mx-auto flex flex-col gap-8">
-          <div className="text-center flex flex-col gap-4">
-            <span className="inline-flex items-center gap-1.5 mx-auto px-3 py-1 text-xs font-black tracking-wide uppercase text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950 rounded-full border border-brand-200 dark:border-brand-800">
-              <span className="size-1.5 rounded-full bg-brand-500" />
-              Newsletter
-            </span>
-            <h2 className="text-4xl font-bold tracking-tight text-primary">
-              Stay in the <span className="text-gradient-brand">loop</span>
-            </h2>
-            <p className="text-base font-normal text-secondary leading-relaxed">
-              Get startup finance tips, tax deadlines, and CFO insights delivered to your inbox.
-            </p>
-          </div>
-          <div className="rounded-lg bg-subtle border border-divider shadow-sm p-8">
-            {success ? (
-              <div className="text-center flex flex-col gap-3 py-4">
-                <p className="text-2xl font-bold text-primary">You're subscribed!</p>
-                <p className="text-base text-secondary leading-relaxed">
-                  Thanks for subscribing. You'll hear from us soon.
-                </p>
-              </div>
-            ) : (
-              <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-4">
-                {formFields}
-              </form>
-            )}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // ── Consultation: two-column layout ──────────────────────────────────────
-  const rightContent = loading ? (
-    <ContactFormLoadingPanel />
-  ) : success ? (
-    <div className="text-center flex flex-col gap-3 py-8">
+  const rightContent = success ? (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="text-center flex flex-col gap-3 py-8"
+    >
       <p className="text-2xl font-bold text-primary">Request received!</p>
       <p className="text-base text-secondary leading-relaxed">
         Thanks! A Kruze CFO will be in touch within one business day.
       </p>
-    </div>
+    </motion.div>
   ) : (
-    <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-4">
-      {formFields}
-    </form>
+    <>
+      <StepIndicator currentStep={step} />
+      <div className="border-t border-divider mt-6 pt-6 overflow-hidden">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={step}
+            custom={direction}
+            variants={stepVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={stepTransition}
+          >
+            {step === 1 && (
+              <Step1Contact
+                fields={fields} onField={setField}
+                onBlur={handleBlurCore} errors={errors} touched={touched}
+                onNext={handleStep1Next}
+              />
+            )}
+            {step === 2 && (
+              <Step2Company
+                isVcFunded={isVcFunded} onVcFundedChange={setIsVcFunded}
+                vc={vc} onVc={handleVc} onBlur={handleBlurVc}
+                errors={errors} touched={touched}
+                onNext={() => goTo(3, 1)} onBack={() => goTo(1, -1)}
+              />
+            )}
+            {step === 3 && (
+              <Step3Message
+                fields={fields} onField={setField}
+                submitError={submitError} loading={loading}
+                devOpen={devOpen} onDevOpen={setDevOpen}
+                attribution={attribution}
+                onAttr={(key, value) => setAttribution((prev) => ({ ...prev, [key]: value }))}
+                onBack={() => goTo(2, -1)} onSubmit={handleSubmit}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </>
   );
 
   return (
     <section className="bg-hero-gradient py-20 px-6">
       <div className="max-w-5xl mx-auto">
+        {/* Mobile: info on top, form below | Desktop: side-by-side grid */}
         <div className="flex flex-col lg:grid lg:grid-cols-5 rounded-xl overflow-hidden shadow-md">
 
           {/* Left — contact info */}
@@ -243,16 +227,15 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             className="lg:col-span-2 flex flex-col gap-6 p-8 lg:p-10"
             style={{ background: "var(--gradient-cta)" }}
           >
-            <span className="inline-flex items-center gap-1.5 self-start px-3 py-1 text-xs font-black tracking-wide uppercase text-white/80 bg-white/10 rounded-full border border-white/20">
-              <span className="size-1.5 rounded-full bg-white/60" />
-              Free Consultation
-            </span>
             <div className="flex flex-col gap-3">
-              <h2 className="text-2xl font-bold text-white tracking-tight">Get In Touch</h2>
+              <h2 className="text-2xl font-bold text-white tracking-tight">
+                {section.headingOverride ?? "Get In Touch"}
+              </h2>
               <p className="text-sm font-normal leading-relaxed text-white/80">
                 We are the experts at helping seed/VC-backed Delaware C-Corps with their accounting and finances!
               </p>
             </div>
+
             <div className="flex flex-col gap-4 mt-2">
               <div className="flex items-start gap-3">
                 <MapPin size={16} strokeWidth={1.5} className="shrink-0 text-white/70 mt-0.5" aria-hidden="true" />
@@ -271,7 +254,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
             </div>
           </div>
 
-          {/* Right — form */}
+          {/* Right — multistep form */}
           <div className="lg:col-span-3 bg-subtle p-8 lg:p-10">
             {rightContent}
           </div>
