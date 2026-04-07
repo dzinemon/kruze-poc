@@ -1,4 +1,85 @@
 // TypeScript types derived from Sanity schemas.
+// Navigation & Footer global singletons
+
+export interface NavLink {
+  _key: string;
+  title: string;
+  url: string;
+  helpText?: string;
+  icon?: { asset?: { url: string }; alt?: string };
+}
+
+export interface NavColumn {
+  _key: string;
+  heading?: string;
+  featured?: boolean;
+  featuredImage?: { asset?: { url: string }; alt?: string };
+  featuredImageUrl?: string;
+  featuredImageLinkText?: string;
+  navLinks?: NavLink[];
+}
+
+export interface NavItem {
+  _key: string;
+  title: string;
+  url?: string;
+  dropdownColumns?: NavColumn[];
+  dropdownInfoBar?: {
+    text?: string;
+    linkText?: string;
+    linkUrl?: string;
+  };
+}
+
+export interface SiteNavigation {
+  _id: string;
+  infoBar?: {
+    enabled?: boolean;
+    text?: string;
+    linkText?: string;
+    linkUrl?: string;
+  };
+  phoneNumber?: string;
+  ctaButton?: {
+    text: string;
+    url?: string;
+    style?: "primary" | "secondary" | "outline";
+  };
+  navItems?: NavItem[];
+}
+
+export interface FooterLink {
+  _key: string;
+  title: string;
+  url: string;
+  external?: boolean;
+}
+
+export interface FooterColumn {
+  _key: string;
+  heading: string;
+  links?: FooterLink[];
+}
+
+export interface SocialLink {
+  _key: string;
+  platform: string;
+  url: string;
+}
+
+export interface SiteFooter {
+  _id: string;
+  companyDescription?: string;
+  licenseNumber?: string;
+  licenseUrl?: string;
+  incAwardText?: string;
+  columns?: FooterColumn[];
+  socialLinks?: SocialLink[];
+  copyrightText?: string;
+  legalLinks?: FooterLink[];
+}
+
+// END Navigation & Footer types
 // In a full migration these would be auto-generated via sanity-typegen.
 // For the POC, manual types are sufficient.
 
@@ -224,7 +305,7 @@ export interface FaqSection {
 
 export interface FeatureTile {
   _key: string;
-  icon?: SanityImage;
+  icon?: string;
   title: string;
   body?: any[];
   ctas?: CtaItem[];
@@ -258,7 +339,7 @@ export interface RecentBlogsSection {
 
 export interface ServiceTile {
   _key: string;
-  icon?: SanityImage;
+  icon?: string;
   title: string;
   body?: any[];
   ctas?: CtaItem[];

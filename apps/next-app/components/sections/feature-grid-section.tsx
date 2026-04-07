@@ -2,6 +2,8 @@ import type { FeatureGridSection as FeatureGridSectionType } from "@kruze-poc/sa
 import { ArrowRight } from "lucide-react";
 import { KruzePortableText } from "@kruze-poc/ui/portable-text";
 import { heading } from "@kruze-poc/ui/styles";
+import { Icon } from "@kruze-poc/ui/icons";
+import type { IconName } from "@kruze-poc/ui/icons";
 
 const colsClass: Record<number, string> = {
   2: "grid-cols-1 md:grid-cols-2",
@@ -44,18 +46,12 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
                 key={tile._key}
                 className="flex flex-col gap-4 p-6 rounded-md bg-subtle border border-divider shadow-sm hover-lift"
               >
-                {tile.icon?.asset?.url && (
+                {tile.icon && (
                   <div
                     className="icon-container icon-container-xl squircle flex-shrink-0"
                     style={{ background: "var(--gradient-brand)" }}
                   >
-                    <img
-                      src={tile.icon.asset.url}
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="object-contain"
-                    />
+                    <Icon name={tile.icon as IconName} size={28} className="text-white" />
                   </div>
                 )}
                 <div className="flex flex-col gap-2">

@@ -1,6 +1,8 @@
 import type { ServicesGridBlock } from "@kruze-poc/sanity-schemas/src/types";
 import { KruzePortableText } from "@kruze-poc/ui/portable-text";
 import { heading } from "@kruze-poc/ui/styles";
+import { Icon } from "@kruze-poc/ui/icons";
+import type { IconName } from "@kruze-poc/ui/icons";
 
 const colsClass: Record<number, string> = {
   3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
@@ -45,18 +47,12 @@ export function ServicesGridSection({ section }: ServicesGridSectionProps) {
                 key={tile._key}
                 className="flex flex-col gap-4 p-6 rounded-md bg-base border border-divider shadow-sm hover-lift"
               >
-                {tile.icon?.asset?.url && (
+                {tile.icon && (
                   <div
                     className="icon-container icon-container-xl squircle flex-shrink-0"
                     style={{ background: "var(--gradient-brand)" }}
                   >
-                    <img
-                      src={tile.icon.asset.url}
-                      alt=""
-                      width={28}
-                      height={28}
-                      className="object-contain"
-                    />
+                    <Icon name={tile.icon as IconName} size={28} className="text-white" />
                   </div>
                 )}
                 <div className="flex flex-col gap-2">

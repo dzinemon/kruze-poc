@@ -8,3 +8,67 @@
 @config "../tailwind.config.ts";
 
 @source "../../packages/ui/src/**/*.{ts,tsx}";
+
+@layer utilities {
+  /* ── Nav dropdown — fade + slide-down with visibility delay trick ── */
+  .nav-dropdown {
+    opacity: 0;
+    transform: translateY(-8px);
+    visibility: hidden;
+    transition:
+      opacity 200ms ease-in-out,
+      transform 200ms ease-in-out,
+      visibility 0ms 200ms;
+  }
+  .group:hover > .nav-dropdown,
+  .group:focus-within > .nav-dropdown {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    transition:
+      opacity 200ms ease-in-out,
+      transform 200ms ease-in-out,
+      visibility 0ms 0ms;
+  }
+
+  /* ── Nav link — underline expands from center on hover / active ── */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--color-brand-500);
+    border-radius: 9999px;
+    transition: left 150ms ease-out, right 150ms ease-out;
+  }
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after {
+    left: 0.75rem;
+    right: 0.75rem;
+  }
+
+  /* ── Header scroll shadow ── */
+  header[data-nav] {
+    transition: box-shadow var(--transition-base);
+  }
+  header[data-nav][data-scrolled="true"] {
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── Mobile nav panel — top-reveal ── */
+  .mobile-panel {
+    transition:
+      opacity 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ── Mobile backdrop ── */
+  .mobile-backdrop {
+    transition: opacity 250ms ease-out;
+  }
+}

@@ -1,0 +1,116 @@
+---
+import { sanityClient } from "../lib/sanity";
+import { siteFooterQuery } from "@kruze-poc/groq-queries";
+import type { SiteFooter } from "@kruze-poc/sanity-schemas/src/types";
+
+const footer = await sanityClient.fetch<SiteFooter>(siteFooterQuery);
+const year = new Date().getFullYear();
+---
+
+{!footer ? (
+  <footer class="border-t border-divider mt-auto">
+    <div class="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-secondary">
+      Kruze POC — Astro 5 + Sanity CMS
+    </div>
+  </footer>
+) : (
+  <footer class="bg-subtle border-t border-divider mt-auto pt-12 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-10">
+        <!-- Company column -->
+        <div class="col-span-2 md:col-span-1 lg:col-span-1">
+          <p class="text-xl font-black text-primary mb-3">Kruze Consulting</p>
+          {footer.companyDescription && (
+            <p class="text-sm text-secondary leading-relaxed mb-4">
+              {footer.companyDescription}
+            </p>
+          )}
+          {footer.licenseNumber && (
+            <p class="text-xs text-dim mb-4">
+              CA CPA License{" "}
+              {footer.licenseUrl ? (
+                <a
+                  href={footer.licenseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-bold text-brand-500 hover:text-brand-600"
+                >
+                  {footer.licenseNumber}
+                </a>
+              ) : footer.licenseNumber}
+            </p>
+          )}
+          {footer.incAwardText && (
+            <p class="text-xs text-secondary bg-muted rounded-md px-3 py-2 mb-4">
+              {footer.incAwardText}
+            </p>
+          )}
+          {footer.socialLinks && footer.socialLinks.length > 0 && (
+            <ul class="space-y-1">
+              {footer.socialLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-secondary hover:text-brand-500 transition-fast"
+                  >
+                    {link.platform}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <!-- Dynamic columns -->
+        {footer.columns?.map((col) => (
+          <div>
+            <p class="text-xs font-black uppercase tracking-wide text-primary mb-3">
+              {col.heading}
+            </p>
+            {col.links && col.links.length > 0 && (
+              <ul class="space-y-1">
+                {col.links.map((link) => (
+                  <li>
+                    <a
+                      href={link.url}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                      class="text-sm text-secondary hover:text-brand-500 transition-fast py-0.5 inline-block"
+                    >
+                      {link.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="border-t border-divider pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
+        <p class="text-xs text-dim">
+          {footer.copyrightText ?? "Copyright © Kruze Consulting"} {year}
+        </p>
+        {footer.legalLinks && footer.legalLinks.length > 0 && (
+          <ul class="flex flex-wrap gap-4">
+            {footer.legalLinks.map((link) => (
+              <li>
+                <a
+                  href={link.url}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  class="text-xs text-dim hover:text-secondary transition-fast"
+                >
+                  {link.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  </footer>
+)}

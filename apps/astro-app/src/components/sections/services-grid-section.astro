@@ -1,6 +1,7 @@
 ---
 import type { ServicesGridBlock } from "@kruze-poc/sanity-schemas/src/types";
 import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
+import { Icon, type IconName } from "@kruze-poc/ui/icons";
 
 interface Props {
   section: ServicesGridBlock;
@@ -53,18 +54,12 @@ const contentBlocks = (section.content ?? []).filter(
             : "";
           return (
             <div class="flex flex-col gap-4 p-6 rounded-md bg-base border border-divider shadow-sm hover:shadow-md hover-lift">
-              {tile.icon?.asset?.url && (
+              {tile.icon && (
                 <div
                   class="icon-container icon-container-xl squircle flex-shrink-0"
                   style="background: var(--gradient-brand);"
                 >
-                  <img
-                    src={tile.icon.asset.url}
-                    alt=""
-                    width={28}
-                    height={28}
-                    class="object-contain"
-                  />
+                  <Icon name={tile.icon as IconName} size={28} className="text-white" />
                 </div>
               )}
               <div class="flex flex-col gap-2">

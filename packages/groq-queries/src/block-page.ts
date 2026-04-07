@@ -37,7 +37,7 @@ export const blockPageQuery = groq`
         tiles[] {
           _key, title, body,
           ctas[] { _key, text, url, style },
-          icon { asset-> { _id, url }, hotspot, crop }
+          icon
         }
       },
       _type == "ctaStripSection" => {
@@ -57,7 +57,7 @@ export const blockPageQuery = groq`
         tiles[] {
           _key, title, body,
           ctas[] { _key, text, url, style },
-          icon { asset-> { _id, url }, hotspot, crop }
+          icon
         }
       },
       _type == "mediaAndTextBlock" => {

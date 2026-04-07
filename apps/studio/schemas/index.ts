@@ -1,4 +1,6 @@
 import {
+  siteNavigation,
+  siteFooter,
   blogPost,
   blockPage,
   author,
@@ -76,6 +78,8 @@ const blogPostWithSlugInput = {
 };
 
 export const schemaTypes = [
+  siteNavigation,
+  siteFooter,
   blogPostWithSlugInput,
   blockPage,
   author,

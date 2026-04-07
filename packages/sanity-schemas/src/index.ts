@@ -1,3 +1,5 @@
+export { siteNavigation } from "./site-navigation";
+export { siteFooter } from "./site-footer";
 export { blogPost } from "./blog-post";
 export { chart } from "./chart";
 export { blockPage } from "./block-page";

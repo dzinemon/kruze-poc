@@ -1,5 +1,47 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
 
+const iconOptions = [
+  { title: "Trending Up", value: "trending-up" },
+  { title: "Trending Down", value: "trending-down" },
+  { title: "Shield", value: "shield" },
+  { title: "Shield Check", value: "shield-check" },
+  { title: "Bar Chart", value: "bar-chart" },
+  { title: "Bar Chart 3", value: "bar-chart-3" },
+  { title: "Pie Chart", value: "pie-chart" },
+  { title: "Line Chart", value: "line-chart" },
+  { title: "Calculator", value: "calculator" },
+  { title: "Dollar Sign", value: "dollar-sign" },
+  { title: "Credit Card", value: "credit-card" },
+  { title: "Wallet", value: "wallet" },
+  { title: "Banknote", value: "banknote" },
+  { title: "Coins", value: "coins" },
+  { title: "Receipt", value: "receipt" },
+  { title: "File Text", value: "file-text" },
+  { title: "File Check", value: "file-check" },
+  { title: "File Pen", value: "file-pen" },
+  { title: "Briefcase", value: "briefcase" },
+  { title: "Building", value: "building" },
+  { title: "Users", value: "users" },
+  { title: "User Check", value: "user-check" },
+  { title: "Lightbulb", value: "lightbulb" },
+  { title: "Zap", value: "zap" },
+  { title: "Rocket", value: "rocket" },
+  { title: "Target", value: "target" },
+  { title: "Check Circle", value: "check-circle" },
+  { title: "Clock", value: "clock" },
+  { title: "Globe", value: "globe" },
+  { title: "Lock", value: "lock" },
+  { title: "Star", value: "star" },
+  { title: "Award", value: "award" },
+  { title: "Heart Handshake", value: "heart-handshake" },
+  { title: "Handshake", value: "handshake" },
+  { title: "Life Buoy", value: "life-buoy" },
+  { title: "Phone", value: "phone" },
+  { title: "Mail", value: "mail" },
+  { title: "Arrow Right", value: "arrow-right" },
+  { title: "Chevron Right", value: "chevron-right" },
+];
+
 export const blockPage = defineType({
   name: "blockPage",
   title: "Block Page",
@@ -172,7 +214,12 @@ export const blockPage = defineType({
                   type: "object",
                   name: "featureTile",
                   fields: [
-                    defineField({ name: "icon", title: "Icon / Image", type: "image" }),
+                    defineField({
+                      name: "icon",
+                      title: "Icon",
+                      type: "string",
+                      options: { list: iconOptions, layout: "dropdown" },
+                    }),
                     defineField({ name: "title", title: "Title", type: "string", validation: (rule) => rule.required() }),
                     defineField({ name: "body", title: "Description", type: "inlineText" }),
                     defineField({
@@ -306,7 +353,12 @@ export const blockPage = defineType({
                   type: "object",
                   name: "serviceTile",
                   fields: [
-                    defineField({ name: "icon", title: "Icon / Image", type: "image" }),
+                    defineField({
+                      name: "icon",
+                      title: "Icon",
+                      type: "string",
+                      options: { list: iconOptions, layout: "dropdown" },
+                    }),
                     defineField({ name: "title", title: "Title", type: "string", validation: (rule) => rule.required() }),
                     defineField({ name: "body", title: "Description", type: "inlineText" }),
                     defineField({

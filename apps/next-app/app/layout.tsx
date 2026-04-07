@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
-import Link from "next/link";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
 import { SanityLive } from "@/lib/sanity";
 import { DraftModeBanner } from "@/components/draft-mode-banner";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
 const lato = Lato({
@@ -41,36 +41,11 @@ export default async function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
       </head>
       <body className="font-sans bg-base text-primary min-h-screen flex flex-col">
-        <header className="border-b border-divider">
-          <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <Link href="/" className="text-xl font-black text-primary">
-              Kruze POC
-            </Link>
-            <div className="flex items-center gap-6">
-              <Link
-                href="/blog"
-                className="text-secondary hover:text-primary transition-colors"
-              >
-                Blog
-              </Link>
-              <Link
-                href="/landing"
-                className="text-secondary hover:text-primary transition-colors"
-              >
-                Pages
-              </Link>
-              <ThemeToggle />
-            </div>
-          </nav>
-        </header>
+        <SiteHeader />
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-divider mt-auto">
-          <div className="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-secondary">
-            Kruze POC — Next.js 15 + Sanity CMS
-          </div>
-        </footer>
+        <SiteFooter />
 
         {isDraftMode && <SanityLive />}
         {isDraftMode && <VisualEditing />}

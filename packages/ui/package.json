@@ -15,7 +15,8 @@
     "./image": "./src/image/index.ts",
     "./styles": "./src/styles.ts",
     "./render-inline": "./src/render-inline.tsx",
-    "./cta-content": "./src/cta-content.tsx"
+    "./cta-content": "./src/cta-content.tsx",
+    "./icons": "./src/icons/index.ts"
   },
   "scripts": {
     "type-check": "tsc --noEmit"

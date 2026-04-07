@@ -1,3 +1,4 @@
+export { siteNavigationQuery, siteFooterQuery } from "./global";
 export { blogPostsListQuery, blogPostQuery, relatedPostsQuery, relatedByTagsQuery } from "./blog-post";
 export { blockPageQuery, blockPagesListQuery, recentBlogsByCategoryQuery } from "./block-page";
 export { testimonialsQuery } from "./testimonial";

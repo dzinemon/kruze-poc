@@ -107,7 +107,7 @@
   --radius-lg:       1rem;       /* 16px */
   --radius-xl:       1.25rem;    /* 20px */
   --radius-2xl:      1.5rem;     /* 24px */
-  --radius-squircle: 28%;
+  --radius-squircle: 50%;
 
   /* ═══════════════════════════════════
      SHADOWS — Brand-tinted, not gray (light mode)

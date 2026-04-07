@@ -3,7 +3,7 @@ import { assist } from '@sanity/assist'
 import { structureTool } from "sanity/structure";
 import type { StructureBuilder } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
-import { RocketIcon } from "@sanity/icons";
+import { RocketIcon, EarthGlobeIcon } from "@sanity/icons";
 import { schemaTypes } from "./schemas";
 import { resolve } from "./presentation/resolve";
 import { DeployWidget } from "./plugins/deployWidget/DeployWidget";
@@ -23,6 +23,34 @@ export default defineConfig({
           .title("Content")
           .items([
             S.listItem()
+              .title("Global")
+              .icon(EarthGlobeIcon)
+              .child(
+                S.list()
+                  .title("Global Settings")
+                  .items([
+                    S.listItem()
+                      .title("Navigation")
+                      .schemaType("siteNavigation")
+                      .child(
+                        S.document()
+                          .documentId("siteNavigation")
+                          .schemaType("siteNavigation")
+                          .title("Navigation"),
+                      ),
+                    S.listItem()
+                      .title("Footer")
+                      .schemaType("siteFooter")
+                      .child(
+                        S.document()
+                          .documentId("siteFooter")
+                          .schemaType("siteFooter")
+                          .title("Footer"),
+                      ),
+                  ]),
+              ),
+            S.divider(),
+            S.listItem()
               .title("Charts")
               .schemaType("chart")
               .child(
@@ -37,7 +65,10 @@ export default defineConfig({
                 ),
               ),
             ...S.documentTypeListItems().filter(
-              (item) => item.getId() !== "chart",
+              (item) =>
+                item.getId() !== "chart" &&
+                item.getId() !== "siteNavigation" &&
+                item.getId() !== "siteFooter",
             ),
           ]),
     }),
