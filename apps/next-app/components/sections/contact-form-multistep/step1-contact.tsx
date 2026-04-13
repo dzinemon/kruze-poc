@@ -99,7 +99,7 @@ export function Step1Contact({ fields, onField, onBlur, errors, touched, onNext 
       <button
         type="button"
         onClick={onNext}
-        className="inline-flex items-center justify-center gap-2 w-full px-5 py-2.5 text-sm font-bold text-white rounded-sm bg-brand-500 hover:bg-brand-600 active:bg-brand-700 shadow-sm hover:shadow-brand transition-fast focus-ring mt-2"
+        className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-bold text-white rounded-sm bg-brand-500 hover:bg-brand-600 active:bg-brand-700 shadow-sm hover:shadow-brand transition-fast focus-ring mt-2"
       >
         Get Started
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

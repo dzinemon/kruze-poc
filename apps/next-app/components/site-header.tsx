@@ -12,7 +12,7 @@ function DropdownPanel({ item }: { item: NavItem }) {
 
   return (
     <div className="nav-dropdown absolute top-full left-1/2 -translate-x-1/2 mt-1 z-50">
-      <div className="bg-base border border-divider rounded-md shadow-lg min-w-[680px] p-6">
+      <div className="bg-base border border-divider rounded-md shadow-lg min-w-6xl p-6">
         <div
           className="grid gap-6"
           style={{ gridTemplateColumns: `repeat(${item.dropdownColumns.length}, minmax(0, 1fr))` }}
@@ -131,7 +131,7 @@ export async function SiteHeader() {
         </div>
       )}
 
-      <nav className="max-w-7xl mx-auto px-4 py-0 flex items-center justify-between h-16">
+      <nav className="max-w-7xl mx-auto px-4 py-0 flex items-center justify-between h-14 lg:h-16">
         <Link href="/" className="text-xl font-black text-primary flex-shrink-0">
           Kruze POC
         </Link>
@@ -172,7 +172,7 @@ export async function SiteHeader() {
           </div>
         )}
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           {data?.phoneNumber && (
             <a
               href={`tel:${data.phoneNumber.replace(/\D/g, "")}`}
@@ -185,7 +185,7 @@ export async function SiteHeader() {
           {data?.ctaButton?.text && (
             <Link
               href={data.ctaButton.url ?? "/free-consultation"}
-              className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white rounded-full bg-brand-500 hover:bg-brand-600 shadow-sm hover:shadow-brand transition-fast focus-ring"
+              className="hidden lg:inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white rounded-full bg-brand-500 hover:bg-brand-600 shadow-sm hover:shadow-brand transition-fast focus-ring"
             >
               {data.ctaButton.text}
             </Link>

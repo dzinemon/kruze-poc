@@ -15,7 +15,7 @@
 
 export const heading = {
   h2: "text-4xl lg:text-5xl font-bold tracking-tight text-primary",
-  h3: "text-4xl font-bold tracking-tight text-primary",
+  h3: "text-2xl lg:text-4xl font-bold tracking-tight text-primary",
   h4: "text-2xl font-bold text-primary",
 } as const;
 

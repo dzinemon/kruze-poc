@@ -8,8 +8,8 @@ interface BlogBreadcrumbsProps {
 export function BlogBreadcrumbs({ title }: BlogBreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className="border-b border-divider">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        <ol className="flex items-center gap-1 text-sm flex-wrap">
+      <div className="max-w-7xl mx-auto px-4 sm:px-4 py-2">
+        <ol className="flex items-center gap-1 text-sm flex-row">
           <li>
             <Link href="/" className="text-dim hover:text-brand-500 transition-fast focus-ring rounded-sm">
               Home
@@ -26,7 +26,7 @@ export function BlogBreadcrumbs({ title }: BlogBreadcrumbsProps) {
           <li aria-hidden="true">
             <ChevronRight size={14} strokeWidth={1.5} className="text-dim" />
           </li>
-          <li aria-current="page" className="text-secondary font-bold">
+          <li aria-current="page" className="text-secondary font-bold whitespace-nowrap overflow-x-auto hide-scrollbar">
             {title}
           </li>
         </ol>

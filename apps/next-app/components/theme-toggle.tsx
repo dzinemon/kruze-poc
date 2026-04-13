@@ -20,7 +20,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="icon-container icon-container-md squircle bg-muted hover:bg-emphasis text-primary transition-fast focus-ring"
+      className="icon-container icon-container-md squircle bg-muted hover:bg-emphasis text-primary transition-fast focus-ring cursor-pointer"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (

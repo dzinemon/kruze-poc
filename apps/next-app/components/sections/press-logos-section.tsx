@@ -6,7 +6,7 @@ interface PressLogosSectionProps {
 
 export function PressLogosSection({ section }: PressLogosSectionProps) {
   return (
-    <section className="py-12 px-6 bg-base">
+    <section className="py-12 px-4 bg-base">
       <div className="max-w-6xl mx-auto">
         <p className="text-xs text-dim mb-6">pressLogosBlock — {section.variant ?? "press"}</p>
         {section.logos && section.logos.length > 0 && (

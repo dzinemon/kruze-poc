@@ -55,7 +55,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     <article>
       <BlogBreadcrumbs title={post.title} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-4 py-8 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 xl:gap-12">
 
           {/* Main content */}

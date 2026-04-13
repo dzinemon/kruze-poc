@@ -20,7 +20,7 @@ export async function SiteFooter() {
 
   return (
     <footer className="bg-subtle border-t border-divider mt-auto pt-12 pb-8">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-10">
           {/* Company column */}
           <div className="col-span-2 md:col-span-1 lg:col-span-1">

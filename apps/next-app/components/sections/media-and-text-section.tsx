@@ -8,7 +8,7 @@ export function MediaAndTextSection({ section }: MediaAndTextSectionProps) {
   const isImageLeft = (section.imagePosition ?? "left") === "left";
 
   return (
-    <section className="py-16 px-6 bg-base">
+    <section className="py-16 px-4 bg-base">
       <div className="max-w-6xl mx-auto">
         <p className="text-xs text-dim mb-8">mediaAndTextBlock — image {section.imagePosition ?? "left"}</p>
         <div className={`flex flex-col lg:flex-row gap-12 items-center ${isImageLeft ? "" : "lg:flex-row-reverse"}`}>

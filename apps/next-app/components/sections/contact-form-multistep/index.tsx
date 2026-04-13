@@ -217,7 +217,7 @@ export function ContactFormMultistep({ section }: ContactFormMultistepProps) {
   );
 
   return (
-    <section className="bg-hero-gradient py-20 px-6">
+    <section className="bg-hero-gradient py-20 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Mobile: info on top, form below | Desktop: side-by-side grid */}
         <div className="flex flex-col lg:grid lg:grid-cols-5 rounded-xl overflow-hidden shadow-md">
@@ -243,11 +243,11 @@ export function ContactFormMultistep({ section }: ContactFormMultistepProps) {
                   221B Baker Street, Suite 400<br />San Francisco, CA 94107
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 md:gap-3">
                 <Mail size={16} strokeWidth={1.5} className="shrink-0 text-white/70" aria-hidden="true" />
                 <p className="text-sm font-normal text-white/80">hello@kruzeconsulting.com</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 md:gap-3">
                 <Phone size={16} strokeWidth={1.5} className="shrink-0 text-white/70" aria-hidden="true" />
                 <p className="text-sm font-normal text-white/80">(415) 322-1610</p>
               </div>

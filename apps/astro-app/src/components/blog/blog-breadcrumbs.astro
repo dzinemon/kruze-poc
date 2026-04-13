@@ -7,7 +7,7 @@ const { title } = Astro.props;
 ---
 
 <nav aria-label="Breadcrumb" class="border-b border-divider">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-4 py-2">
     <ol class="flex items-center gap-1 text-sm flex-wrap">
       <li>
         <a href="/" class="text-dim hover:text-brand-500 transition-fast focus-ring rounded-sm">
@@ -33,7 +33,7 @@ const { title } = Astro.props;
           <path d="m9 18 6-6-6-6"/>
         </svg>
       </li>
-      <li aria-current="page" class="text-secondary font-bold">
+      <li aria-current="page" class="text-secondary font-bold whitespace-nowrap overflow-x-auto hide-scrollbar">
         {title}
       </li>
     </ol>

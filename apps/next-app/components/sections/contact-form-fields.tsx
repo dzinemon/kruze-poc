@@ -345,7 +345,7 @@ export function ContactFormFields({
 
       <button
         type="submit" disabled={loading}
-        className="inline-flex items-center justify-center w-full px-5 py-2.5 text-sm font-bold text-white rounded-sm bg-brand-500 hover:bg-brand-600 active:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm hover:shadow-brand transition-fast focus-ring"
+        className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-bold text-white rounded-sm bg-brand-500 hover:bg-brand-600 active:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm hover:shadow-brand transition-fast focus-ring"
       >
         {submitLabel}
       </button>

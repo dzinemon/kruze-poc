@@ -60,7 +60,7 @@
 
   /* Text */
   --color-primary:   var(--color-neutral-900);
-  --color-secondary: var(--color-neutral-600);
+  --color-secondary: var(--color-neutral-700);
   --color-dim:       var(--color-neutral-400);
   --color-inverse:   var(--color-neutral-0);
   --color-link:      var(--color-brand-500);
@@ -286,11 +286,17 @@
   }
 
   h1 { font-size: var(--text-6xl); }
-  h2 { font-size: var(--text-5xl); }
-  h3 { font-size: var(--text-4xl); }
-  h4 { font-size: var(--text-2xl); }
+  h2 { font-size: var(--text-3xl); }
+  h3 { font-size: var(--text-2xl); }
+  h4 { font-size: var(--text-xl); }
   h5 { font-size: var(--text-xl); }
   h6 { font-size: var(--text-lg); }
+
+  @media (min-width: 1024px) {
+    h2 { font-size: var(--text-5xl); }
+    h3 { font-size: var(--text-4xl); }
+    h4 { font-size: var(--text-2xl); }
+  }
 
   a {
     color: var(--color-link);
@@ -338,11 +344,17 @@
     color: var(--color-primary);
     letter-spacing: var(--tracking-tight);
   }
-  .article-content h2 { font-size: var(--text-2xl); margin-top: 2em; margin-bottom: 0.75em; }
-  .article-content h3 { font-size: var(--text-xl); margin-top: 1.75em; margin-bottom: 0.5em; }
-  .article-content h4 { font-size: var(--text-lg); margin-top: 1.5em; margin-bottom: 0.5em; }
-  .article-content h5 { font-size: var(--text-base); margin-top: 1.25em; margin-bottom: 0.5em; }
+  .article-content h2 { font-size: var(--text-xl); margin-top: 2em; margin-bottom: 0.75em; }
+  .article-content h3 { font-size: var(--text-lg); margin-top: 1.75em; margin-bottom: 0.5em; }
+  .article-content h4 { font-size: var(--text-base); margin-top: 1.5em; margin-bottom: 0.5em; }
+  .article-content h5 { font-size: var(--text-sm); margin-top: 1.25em; margin-bottom: 0.5em; }
   .article-content h6 { font-size: var(--text-sm); margin-top: 1.25em; margin-bottom: 0.5em; }
+
+  @media (min-width: 1024px) {
+    .article-content h2 { font-size: var(--text-2xl); }
+    .article-content h3 { font-size: var(--text-xl); }
+    .article-content h4 { font-size: var(--text-lg); }
+  }
   .article-content p {
     font-size: var(--text-base);
     color: var(--color-secondary);
@@ -611,4 +623,11 @@
     margin-top: 0.5em;
   }
 
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
 }

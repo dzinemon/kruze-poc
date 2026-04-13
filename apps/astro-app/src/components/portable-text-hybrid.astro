@@ -1,6 +1,6 @@
 ---
 import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
-import { buildChartJsonConfig } from "@kruze-poc/ui/chart";
+import { buildChartJsonConfig, getChartAspectRatio } from "@kruze-poc/ui/chart";
 import ChartIsland from "./react/chart-island";
 import YouTubeIsland from "./react/youtube-island";
 
@@ -25,15 +25,15 @@ value.forEach((block: any) => {
       currentHtmlBlocks = [];
     }
     // Normalize chartReference to the same shape as chartBlock
-    // Guard: chart ref must be fully resolved (has _id and chartType)
-    if (block._type === "chartReference" && block.chart && block.chart._id && block.chart.chartType) {
+    // Guard: chart ref must be fully resolved (has _id and options)
+    if (block._type === "chartReference" && block.chart && block.chart._id && block.chart.options) {
       const jsonConfig = buildChartJsonConfig(block.chart);
       segments.push({
         type: "chart",
         content: {
           jsonConfig,
           title: block.chart.title,
-          aspectRatio: block.chart.aspectRatio ?? "4/3",
+          aspectRatio: getChartAspectRatio(block.chart.options),
         },
       });
     }

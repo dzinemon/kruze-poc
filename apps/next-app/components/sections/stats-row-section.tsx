@@ -13,7 +13,7 @@ export function StatsRowSection({ section }: StatsRowSectionProps) {
   const gridClass = layoutMap[section.layout ?? "3-col"] ?? "grid-cols-1 sm:grid-cols-3";
 
   return (
-    <section className="py-16 px-6 bg-base">
+    <section className="py-16 px-4 bg-base">
       <div className="max-w-6xl mx-auto">
         <p className="text-xs text-dim mb-8">statsRowBlock — {section.layout ?? "3-col"}</p>
         {section.stats && section.stats.length > 0 && (

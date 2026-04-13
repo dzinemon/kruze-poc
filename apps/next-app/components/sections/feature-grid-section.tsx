@@ -16,7 +16,7 @@ export function FeatureGridSection({ section }: { section: FeatureGridSectionTyp
   const bgClass = section.background === "light" ? "bg-subtle" : "bg-base";
 
   return (
-    <section className={`${bgClass} py-20 px-6`}>
+    <section className={`${bgClass} py-20 px-4`}>
       <div className="max-w-6xl mx-auto">
         {section.content && section.content.length > 0 && (
           <div className="text-center mb-12 flex flex-col gap-3">

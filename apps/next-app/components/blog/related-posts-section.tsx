@@ -25,7 +25,7 @@ export async function RelatedPostsSection({ currentSlug, categoryIds, tagIds }: 
   if (!byCategory?.length && !byTags.length) return null;
 
   return (
-    <section className="bg-neutral-50 dark:bg-[var(--color-subtle)] py-16 px-4 sm:px-6">
+    <section className="bg-neutral-50 dark:bg-[var(--color-subtle)] py-16 px-4 sm:px-4">
       <div className="max-w-7xl mx-auto space-y-12">
         {byCategory && byCategory.length > 0 && (
           <div>

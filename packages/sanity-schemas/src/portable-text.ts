@@ -74,11 +74,17 @@ export const portableText = defineType({
         }),
       ],
       preview: {
-        select: { title: "chart.title", chartType: "chart.chartType" },
-        prepare({ title, chartType }) {
+        select: { title: "chart.title", options: "chart.options" },
+        prepare({ title, options }) {
+          let chartType = "unknown type";
+          try {
+            chartType = JSON.parse(options).chartType ?? "unknown type";
+          } catch {
+            // ignore
+          }
           return {
             title: title || "Chart Reference",
-            subtitle: `Chart: ${chartType ?? "unknown type"}`,
+            subtitle: `Chart: ${chartType}`,
             media: BarChartIcon,
           };
         },

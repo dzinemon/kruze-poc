@@ -7,7 +7,7 @@ interface FlexSectionProps {
 
 export function FlexSection({ section }: FlexSectionProps) {
   const sectionClass = [
-    section.paddingStyle ?? "py-20 px-6",
+    section.paddingStyle ?? "py-20 px-4",
     section.backgroundStyle ?? "bg-base",
   ].join(" ");
 
@@ -21,13 +21,24 @@ export function FlexSection({ section }: FlexSectionProps) {
               .filter(Boolean)
               .join(" ")}
           >
-            {(row.columns ?? []).map((col) => (
+            {(row.columns ?? []).map((col, colIndex, colArray) => {
+
+              if (colArray.length === 1) {
+                return <div key={col._key} className={[col.columnWidth ?? "flex-1", "min-w-0", "max-w-3xl", "mx-auto"].join(" ")}>
+                {col.content && col.content.length > 0 && (
+                  <KruzePortableText value={col.content} />
+                )}
+              </div>;
+              }
+
+              return (
               <div key={col._key} className={[col.columnWidth ?? "flex-1", "min-w-0"].join(" ")}>
                 {col.content && col.content.length > 0 && (
                   <KruzePortableText value={col.content} />
                 )}
               </div>
-            ))}
+            )
+            })}
           </div>
         ))}
       </div>

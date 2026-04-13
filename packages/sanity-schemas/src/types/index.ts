@@ -142,37 +142,14 @@ export interface Testimonial {
 
 // Chart document (standalone, referenceable)
 // Must stay assignable to ChartDocumentData in @kruze-poc/ui/chart/build-chart-config.ts
-export interface ChartNumberFormat {
-  prefix?: string;
-  suffix?: string;
-  pattern?: string;
-}
-
 export interface ChartDocument {
   _id: string;
   _type: "chart";
   title: string;
   slug: SanitySlug;
-  chartType:
-    | "ComboChart"
-    | "ColumnChart"
-    | "LineChart"
-    | "PieChart"
-    | "BarChart"
-    | "AreaChart"
-    | "Table";
   data: string; // JSON array for arrayToDataTable
   colors?: string[];
-  seriesType?: "line" | "bars" | "area";
-  isStacked?: boolean;
-  vAxisTitle?: string;
-  hAxisTitle?: string;
-  vAxisFormat?: string;
-  hAxisFormat?: string;
-  legendPosition?: "bottom" | "top" | "right" | "none";
-  numberFormat?: ChartNumberFormat;
-  aspectRatio?: string;
-  advancedOptions?: string; // raw JSON object
+  options: string; // JSON object with chartType + Google Charts options
 }
 
 export interface ChartReferenceBlock {

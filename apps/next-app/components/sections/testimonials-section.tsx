@@ -24,7 +24,7 @@ export function TestimonialsSection({ section }: TestimonialsSectionProps) {
                 &ldquo;{t.quoteText}&rdquo;
               </blockquote>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 md:gap-3">
                 {t.contactImage?.asset?.url && (
                   <img
                     src={t.contactImage.asset.url}

@@ -17,7 +17,7 @@ export function ServicesGridSection({ section }: ServicesGridSectionProps) {
   const cols = section.columns ?? 3;
 
   return (
-    <section className="bg-subtle py-20 px-6">
+    <section className="bg-subtle py-20 px-4">
       <div className="max-w-6xl mx-auto">
         {section.content && section.content.length > 0 && (
           <div className="text-center mb-12 flex flex-col gap-3">

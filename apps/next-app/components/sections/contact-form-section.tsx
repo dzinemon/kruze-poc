@@ -184,7 +184,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
   // ── Newsletter: unchanged single-column layout ────────────────────────────
   if (isNewsletter) {
     return (
-      <section className="bg-hero-gradient py-20 px-6">
+      <section className="bg-hero-gradient py-20 px-4">
         <div className="max-w-xl mx-auto flex flex-col gap-8">
           <div className="text-center flex flex-col gap-4">
             <span className="inline-flex items-center gap-1.5 mx-auto px-3 py-1 text-xs font-black tracking-wide uppercase text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950 rounded-full border border-brand-200 dark:border-brand-800">
@@ -234,7 +234,7 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
   );
 
   return (
-    <section className="bg-hero-gradient py-20 px-6">
+    <section className="bg-hero-gradient py-20 px-4">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col lg:grid lg:grid-cols-5 rounded-xl overflow-hidden shadow-md">
 
@@ -260,11 +260,11 @@ export function ContactFormSection({ section }: ContactFormSectionProps) {
                   221B Baker Street, Suite 400<br />San Francisco, CA 94107
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 md:gap-3">
                 <Mail size={16} strokeWidth={1.5} className="shrink-0 text-white/70" aria-hidden="true" />
                 <p className="text-sm font-normal text-white/80">hello@kruzeconsulting.com</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 md:gap-3">
                 <Phone size={16} strokeWidth={1.5} className="shrink-0 text-white/70" aria-hidden="true" />
                 <p className="text-sm font-normal text-white/80">(415) 322-1610</p>
               </div>

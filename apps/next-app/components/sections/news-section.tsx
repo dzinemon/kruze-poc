@@ -6,7 +6,7 @@ interface NewsSectionProps {
 
 export function NewsSection({ section }: NewsSectionProps) {
   return (
-    <section className="py-16 px-6 bg-subtle">
+    <section className="py-16 px-4 bg-subtle">
       <div className="max-w-6xl mx-auto">
         <p className="text-xs text-dim mb-8">newsBlock</p>
         {section.items && section.items.length > 0 && (

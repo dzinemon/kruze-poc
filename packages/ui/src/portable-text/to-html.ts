@@ -3,7 +3,7 @@ import {
   type PortableTextHtmlComponents,
 } from "@portabletext/to-html";
 import { responsiveImageData } from "../image/sanity-image-url";
-import { buildChartJsonConfig } from "../chart/build-chart-config";
+import { buildChartJsonConfig, getChartAspectRatio } from "../chart/build-chart-config";
 import { cta, heading, text, ctaSectionWrapper } from "../styles";
 
 const components: Partial<PortableTextHtmlComponents> = {
@@ -29,7 +29,7 @@ const components: Partial<PortableTextHtmlComponents> = {
     chartReference: ({ value }) => {
       if (!value.chart) return "";
       const jsonConfig = buildChartJsonConfig(value.chart);
-      const block = { jsonConfig, title: value.chart.title, aspectRatio: value.chart.aspectRatio ?? "4/3" };
+      const block = { jsonConfig, title: value.chart.title, aspectRatio: getChartAspectRatio(value.chart.options) };
       return `<div class="pt-block my-8" data-chart-block='${JSON.stringify(block)}'><p class="text-sm text-dim italic text-center py-8">[Chart: ${value.chart.title ?? "Interactive chart"}]</p></div>`;
     },
 

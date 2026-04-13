@@ -56,44 +56,20 @@ export function ChartPreview() {
   const chartRef = useRef<HTMLDivElement>(null);
 
   const title = useFormValue(["title"]) as string | undefined;
-  const chartType = useFormValue(["chartType"]) as string | undefined;
   const data = useFormValue(["data"]) as string | undefined;
   const colors = useFormValue(["colors"]) as string[] | undefined;
-  const seriesType = useFormValue(["seriesType"]) as string | undefined;
-  const isStacked = useFormValue(["isStacked"]) as boolean | undefined;
-  const vAxisTitle = useFormValue(["vAxisTitle"]) as string | undefined;
-  const hAxisTitle = useFormValue(["hAxisTitle"]) as string | undefined;
-  const vAxisFormat = useFormValue(["vAxisFormat"]) as string | undefined;
-  const hAxisFormat = useFormValue(["hAxisFormat"]) as string | undefined;
-  const legendPosition = useFormValue(["legendPosition"]) as string | undefined;
-  const numberFormat = useFormValue(["numberFormat"]) as
-    | { prefix?: string; suffix?: string; pattern?: string }
-    | undefined;
-  const aspectRatio = useFormValue(["aspectRatio"]) as string | undefined;
-  const advancedOptions = useFormValue(["advancedOptions"]) as
-    | string
-    | undefined;
+  const options = useFormValue(["options"]) as string | undefined;
 
   const drawChart = useCallback(async () => {
-    if (!chartRef.current || !chartType || !data) return;
+    if (!chartRef.current || !options || !data) return;
 
     try {
       const doc: ChartDocumentData = {
         _id: "",
         title: title ?? "",
-        chartType,
         data,
         colors,
-        seriesType,
-        isStacked,
-        vAxisTitle,
-        hAxisTitle,
-        vAxisFormat,
-        hAxisFormat,
-        legendPosition,
-        numberFormat,
-        aspectRatio,
-        advancedOptions,
+        options: options ?? "{}",
       };
 
       const jsonConfig = buildChartJsonConfig(doc);
@@ -113,7 +89,7 @@ export function ChartPreview() {
       const ChartClass = google.visualization[config.type];
       if (typeof ChartClass !== "function") return;
 
-      const options = {
+      const mergedOptions = {
         backgroundColor: "transparent",
         colors: [
           "#2C5B7A",
@@ -130,7 +106,7 @@ export function ChartPreview() {
       };
 
       // Apply number formatting
-      const nf = options.numberFormat as
+      const nf = mergedOptions.numberFormat as
         | { prefix?: string; suffix?: string; pattern?: string }
         | undefined;
       if (nf && (nf.prefix || nf.suffix || nf.pattern)) {
@@ -144,44 +120,37 @@ export function ChartPreview() {
             formatter.format(dataTable, col);
           }
         }
-        delete options.numberFormat;
+        delete mergedOptions.numberFormat;
       }
 
       const chart = new ChartClass(chartRef.current);
-      chart.draw(dataTable, options);
+      chart.draw(dataTable, mergedOptions);
     } catch (err) {
       if (chartRef.current) {
         chartRef.current.innerHTML = `<p style="color: red; padding: 16px;">Preview error: ${err instanceof Error ? err.message : "Unknown error"}</p>`;
       }
     }
-  }, [
-    title,
-    chartType,
-    data,
-    colors,
-    seriesType,
-    isStacked,
-    vAxisTitle,
-    hAxisTitle,
-    vAxisFormat,
-    hAxisFormat,
-    legendPosition,
-    numberFormat,
-    aspectRatio,
-    advancedOptions,
-  ]);
+  }, [title, data, colors, options]);
 
   useEffect(() => {
     const timeout = setTimeout(drawChart, 300);
     return () => clearTimeout(timeout);
   }, [drawChart]);
 
-  if (!chartType || !data) {
+  // Parse aspectRatio from options JSON
+  let aspectRatio = "4/3";
+  try {
+    aspectRatio = JSON.parse(options || "{}").aspectRatio || "4/3";
+  } catch {
+    // use default
+  }
+
+  if (!options || !data) {
     return (
       <Card padding={5}>
         <Stack space={3}>
           <Text size={2} muted>
-            Fill in the Chart Type and Data Table fields to see a preview.
+            Fill in the Data Table and Chart Options fields to see a preview.
           </Text>
         </Stack>
       </Card>
@@ -200,7 +169,7 @@ export function ChartPreview() {
           ref={chartRef}
           style={{
             width: "100%",
-            aspectRatio: aspectRatio || "4/3",
+            aspectRatio,
             minHeight: 300,
           }}
         />

@@ -42,7 +42,7 @@ const jsonLd = {
 
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
-<section class="py-20 px-6 bg-white dark:bg-[var(--color-base)]">
+<section class="py-20 px-4 bg-white dark:bg-[var(--color-base)]">
   <div class="max-w-4xl mx-auto">
     {contentBlocks.length > 0 && (
       <div class="mb-12 flex flex-col gap-4 text-center">
@@ -70,7 +70,7 @@ const jsonLd = {
             <div class="m-0">
               <button
                 id={triggerId}
-                class="faq-trigger w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring"
+                class="faq-trigger w-full flex items-center justify-between gap-4 px-4 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring cursor-pointer"
                 aria-expanded="false"
                 aria-controls={panelId}
               >
@@ -102,7 +102,7 @@ const jsonLd = {
               class="faq-panel overflow-hidden"
               style="max-height: 0;"
             >
-              <div class="px-6 pb-5 pt-0">
+              <div class="px-4 pb-5 pt-0">
                 <div class="border-t border-divider pt-4">
                   <p class="text-base font-normal text-secondary leading-relaxed">
                     {extractText(faq.answer)}

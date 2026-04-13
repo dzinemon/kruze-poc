@@ -46,7 +46,7 @@ export function FaqSection({ section }: FaqSectionProps) {
   };
 
   return (
-    <section className="py-20 px-6 bg-base">
+    <section className="py-20 px-4 bg-base">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -92,7 +92,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                 <h3 className="m-0 text-xl">
                   <button
                     id={triggerId}
-                    className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring"
+                    className="w-full flex items-center justify-between gap-4 px-4 py-5 text-left font-bold text-primary hover:text-brand-500 focus-ring cursor-pointer"
                     style={{ transition: "color var(--transition-fast)" }}
                     onClick={() => toggle(i)}
                     aria-expanded={isOpen}
@@ -126,7 +126,7 @@ export function FaqSection({ section }: FaqSectionProps) {
                     transition: "max-height var(--transition-spring)",
                   }}
                 >
-                  <div className="px-6 pb-5 pt-0">
+                  <div className="px-4 pb-5 pt-0">
                     <div className="border-t border-divider pt-4">
                       <p className="text-base font-normal text-secondary leading-relaxed">
                         {extractText(faq.answer)}

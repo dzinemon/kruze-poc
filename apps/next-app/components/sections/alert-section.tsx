@@ -16,7 +16,7 @@ export function AlertSection({ section }: AlertSectionProps) {
   const style = alertStyles[type] ?? alertStyles.info;
 
   return (
-    <section className="py-8 px-6">
+    <section className="py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className={`rounded-sm border p-4 ${style}`}>
           <p className="text-xs text-dim mb-2">alertBlock — {type}</p>

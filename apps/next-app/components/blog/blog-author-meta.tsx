@@ -23,9 +23,9 @@ export function BlogAuthorMeta({ author, authorImageUrl, date, modifiedDate }: B
   const authorSubtitle = [author?.certification, author?.position].filter(Boolean).join(", ");
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 mb-6 border-b border-divider">
+    <div className="flex flex-row items-center justify-between gap-2 md:gap-4 pb-4 mb-4 md:pb-6 md:mb-6 border-b border-divider">
       {author && (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 bg-brand-50 dark:bg-brand-900/40 flex items-center justify-center">
             {authorImageUrl ? (
               <Image

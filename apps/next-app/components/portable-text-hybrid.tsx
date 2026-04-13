@@ -1,5 +1,5 @@
 import { renderPortableTextHtml } from "@kruze-poc/ui/portable-text/to-html";
-import { GoogleChart, buildChartJsonConfig } from "@kruze-poc/ui/chart";
+import { GoogleChart, buildChartJsonConfig, getChartAspectRatio } from "@kruze-poc/ui/chart";
 import { stegaClean } from "@sanity/client/stega";
 import YouTubeIsland from "./react/youtube-island";
 
@@ -53,7 +53,7 @@ export function PortableTextHybrid({ value }: PortableTextHybridProps) {
       if (typedBlock._type === "chartReference") {
         const ref = block as { chart?: Record<string, unknown> };
         // Guard: in presentation/live mode, the reference may not be resolved yet
-        if (ref.chart && ref.chart._id && ref.chart.chartType) {
+        if (ref.chart && ref.chart._id && ref.chart.options) {
           const jsonConfig = buildChartJsonConfig(stegaClean(ref.chart) as any);
           segments.push({
             type: "chart",
@@ -61,7 +61,7 @@ export function PortableTextHybrid({ value }: PortableTextHybridProps) {
               _type: "chartBlock" as const,
               jsonConfig,
               title: ref.chart.title as string | undefined,
-              aspectRatio: (ref.chart.aspectRatio as string) ?? "4/3",
+              aspectRatio: getChartAspectRatio(ref.chart.options as string),
             },
           });
         }

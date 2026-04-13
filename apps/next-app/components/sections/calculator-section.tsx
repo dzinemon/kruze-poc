@@ -17,7 +17,7 @@ export function CalculatorSection({ section }: CalculatorSectionProps) {
   const label = calculatorLabels[section.calculatorType] ?? section.calculatorType;
 
   return (
-    <section className="py-16 px-6 bg-subtle">
+    <section className="py-16 px-4 bg-subtle">
       <div className="max-w-4xl mx-auto">
         <p className="text-xs text-dim mb-4">calculatorBlock</p>
         <div className="rounded-md border border-rule p-8 text-center bg-base">

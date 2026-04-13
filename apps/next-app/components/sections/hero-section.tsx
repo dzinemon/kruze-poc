@@ -136,7 +136,7 @@ export function HeroSection({ section }: { section: HeroSectionType }) {
 
   return (
     <section className={sectionClass} style={sectionStyle}>
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4">
         {layout === "split" ? (
           <div className="py-20 flex flex-col gap-6 max-w-4xl">
             <Eyebrow blocks={section.eyebrow} />

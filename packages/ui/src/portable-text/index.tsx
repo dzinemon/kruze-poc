@@ -3,7 +3,7 @@ import {
   type PortableTextComponents,
 } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import { GoogleChart, buildChartJsonConfig } from "../chart";
+import { GoogleChart, buildChartJsonConfig, getChartAspectRatio } from "../chart";
 import { CtaSectionBlock } from "./cta-section-block";
 import { AlertBlock } from "./alert-block";
 import { YouTubeFacade } from "./youtube-facade";
@@ -68,7 +68,7 @@ const components: PortableTextComponents = {
           <GoogleChart
             jsonConfig={jsonConfig}
             title={value.chart.title}
-            aspectRatio={value.chart.aspectRatio ?? "4/3"}
+            aspectRatio={getChartAspectRatio(value.chart.options)}
           />
         </div>
       );

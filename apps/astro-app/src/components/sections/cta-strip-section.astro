@@ -12,7 +12,7 @@ const bgClass = bg === "light" ? "bg-neutral-50" : bg === "brand" ? "" : "bg-whi
 ---
 
 <section
-  class={`${bgClass} py-20 px-6`}
+  class={`${bgClass} py-20 px-4`}
   style={onDark ? "background: var(--gradient-cta);" : undefined}
 >
   <div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
@@ -39,7 +39,7 @@ const bgClass = bg === "light" ? "bg-neutral-50" : bg === "brand" ? "" : "bg-whi
             ? (
               <a
                 href={cta.url ?? "#"}
-                class={`inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full ring-1 transition-fast focus-ring ${
+                class={`inline-flex items-center gap-2 px-5 py-3 text-base font-bold rounded-full ring-1 transition-fast focus-ring ${
                   onDark ? "text-white ring-white/30 hover:bg-white/10" : "text-brand-500 ring-brand-500 hover:bg-brand-50"
                 }`}
               >
@@ -49,7 +49,7 @@ const bgClass = bg === "light" ? "bg-neutral-50" : bg === "brand" ? "" : "bg-whi
             : (
               <a
                 href={cta.url ?? "#"}
-                class={`inline-flex items-center gap-2 px-7 py-3 text-base font-bold rounded-full shadow-md transition-fast focus-ring ${
+                class={`inline-flex items-center gap-2 px-5 py-3 text-base font-bold rounded-full shadow-md transition-fast focus-ring ${
                   onDark ? "bg-white text-brand-800 hover:bg-neutral-100" : "bg-brand-500 text-white hover:bg-brand-600 hover:shadow-brand"
                 }`}
               >

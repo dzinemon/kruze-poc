@@ -43,9 +43,7 @@ export const blogPostQuery = groq`
       _type == "chartReference" => {
         ...,
         chart-> {
-          _id, title, chartType, data, colors, seriesType,
-          isStacked, vAxisTitle, hAxisTitle, vAxisFormat, hAxisFormat,
-          legendPosition, aspectRatio, numberFormat, advancedOptions
+          _id, title, data, colors, options
         }
       }
     },
